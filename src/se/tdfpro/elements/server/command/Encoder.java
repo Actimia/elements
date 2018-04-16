@@ -15,7 +15,7 @@ public class Encoder {
     public byte[] getBytes() {
         var res = new byte[buf.position()];
         buf.rewind();
-        buf.get(res, 0, res.length);
+        buf.get(res,0, res.length);
         return res;
     }
 
@@ -88,7 +88,7 @@ public class Encoder {
             var bytes = move.encode();
 //            System.out.println(Arrays.toString(bytes));
             var comm = new Decoder(ByteBuffer.wrap(bytes)).decode();
-            comm.execute(null);
+//            comm.execute(null);
         }
         var dur = System.currentTimeMillis() - start;
         System.out.println("enc: " + dur / (float) iters + " ms");

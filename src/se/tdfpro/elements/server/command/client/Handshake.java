@@ -5,6 +5,7 @@ import se.tdfpro.elements.server.command.Send;
 import se.tdfpro.elements.server.engine.Game;
 
 public class Handshake extends ClientCommand {
+    public Handshake(){};
     @Send
     public String username;
 
