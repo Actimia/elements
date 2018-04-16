@@ -22,10 +22,15 @@ public class ElementsServer {
     }
 
     public void listen() throws IOException {
+        System.out.println("Listening on 7777");
         while(true) {
             Socket sock = server.accept();
             sock.setTcpNoDelay(true);
+
+            Client client = new Client(sock, game);
             clients.add(new Client(sock, game));
+
+            client.run();
         }
     }
 

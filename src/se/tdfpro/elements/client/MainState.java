@@ -23,7 +23,7 @@ public class MainState extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         try {
-            net = new Network("192.168.0.1", 7777);
+            net = new Network("localhost", 7777);
         } catch (IOException e) {
             e.printStackTrace();
             gc.exit();
