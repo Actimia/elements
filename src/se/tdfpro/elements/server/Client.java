@@ -1,6 +1,6 @@
 package se.tdfpro.elements.server;
 
-import se.tdfpro.elements.server.commands.ClientCommand;
+import se.tdfpro.elements.server.command.ClientCommand;
 import se.tdfpro.elements.server.engine.Game;
 
 import java.net.Socket;

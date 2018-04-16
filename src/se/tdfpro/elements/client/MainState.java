@@ -7,13 +7,17 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import se.tdfpro.elements.client.engine.Camera;
+import se.tdfpro.elements.client.engine.Entity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainState extends BasicGameState {
 
     public Camera camera = new Camera();
     private Player player = new Player(camera);
+    private List<Entity> entities = new ArrayList<>();
     private Network net;
 
     @Override
@@ -47,6 +51,7 @@ public class MainState extends BasicGameState {
             gc.exit();
         }
         player.update(gc, game, delta);
+        entities.forEach(ent -> ent.update(gc, game, delta));
     }
 
     @Override
@@ -54,4 +59,7 @@ public class MainState extends BasicGameState {
         return 0;
     }
 
+    public void addEntity(Entity ent) {
+        entities.add(ent);
+    }
 }

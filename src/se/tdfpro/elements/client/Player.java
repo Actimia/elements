@@ -29,7 +29,7 @@ public class Player extends DrawableEntity {
     }
 
     @Override
-    public boolean update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+    public boolean update(GameContainer gc, StateBasedGame game, int delta) {
         Input input = gc.getInput();
         var movement = new Vector2f();
         if (input.isKeyDown(Input.KEY_W)) {

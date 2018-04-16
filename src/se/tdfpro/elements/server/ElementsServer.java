@@ -1,16 +1,13 @@
 package se.tdfpro.elements.server;
 
-import se.tdfpro.elements.server.commands.ClientCommand;
+import se.tdfpro.elements.server.command.ClientCommand;
 import se.tdfpro.elements.server.engine.Game;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.nio.channels.*;
 
 public class ElementsServer {
 

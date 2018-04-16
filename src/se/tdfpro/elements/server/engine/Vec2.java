@@ -28,9 +28,11 @@ public class Vec2  {
     public float length() {
         return (float) Math.sqrt(length2());
     }
+
     public float length2() {
         return dot(this);
     }
+
     public float dot(Vec2 o) {
         return x*o.x + y*o.y;
     }
@@ -41,5 +43,10 @@ public class Vec2  {
 
     public Vec2 scale(float delta) {
         return new Vec2(x * delta, y * delta);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(%f, %f)", x, y);
     }
 }

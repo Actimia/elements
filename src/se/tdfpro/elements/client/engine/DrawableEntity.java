@@ -3,7 +3,6 @@ package se.tdfpro.elements.client.engine;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public abstract class DrawableEntity implements Entity {
@@ -12,7 +11,7 @@ public abstract class DrawableEntity implements Entity {
     protected float facing = 0;
 
     @Override
-    public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+    public void render(GameContainer gc, StateBasedGame game, Graphics g) {
         g.pushTransform();
 
         g.translate(position.x, position.y);

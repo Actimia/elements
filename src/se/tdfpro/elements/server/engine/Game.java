@@ -45,7 +45,7 @@ public class Game {
 
     public void executeCommands() {
         var commands = networking.getCommands();
-//        commands.forEach(cmd -> cmd.execute(this));
+//        command.forEach(cmd -> cmd.execute(this));
     }
 
     public void update(float delta) {
