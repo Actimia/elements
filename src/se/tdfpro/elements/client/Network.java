@@ -1,6 +1,8 @@
 package se.tdfpro.elements.client;
 
 import org.newdawn.slick.util.Log;
+import se.tdfpro.elements.server.command.Command;
+import se.tdfpro.elements.server.command.Encoder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +30,30 @@ public class Network extends Thread{
             try {
                 Thread.sleep(1000);
             } catch (Exception ex) { }
+        }
+    }
+
+    public void send(Command com) {
+        var encoder = new Encoder();
+        encoder.encode(com);
+        var encoded = encoder.getBytes();
+
+        byte[] MAGIC_SEQUENCE = { 0, 0, 0, 0 };
+        int len = encoded.length;
+        byte[] headerLengthVal = {
+                (byte) (len >> 24),
+                (byte) (len >> 16),
+                (byte) (len >> 8),
+                (byte) len
+        };
+
+        try {
+            var out = this.socket.getOutputStream();
+            out.write(MAGIC_SEQUENCE);
+            out.write(headerLengthVal);
+            out.write(encoded);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
