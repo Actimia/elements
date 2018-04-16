@@ -18,5 +18,23 @@
     <orderEntry type="library" name="jnlp" level="project" />
     <orderEntry type="library" name="ibxm" level="project" />
     <orderEntry type="library" name="native" level="project" />
+    <orderEntry type="library" name="slick" level="project" />
+    <orderEntry type="library" name="ibxm" level="project" />
+    <orderEntry type="library" name="jinput" level="project" />
+    <orderEntry type="library" name="jnlp" level="project" />
+    <orderEntry type="library" name="jogg-0.0.7" level="project" />
+    <orderEntry type="library" name="jorbis-0.0.15" level="project" />
+    <orderEntry type="library" name="lwjgl" level="project" />
+    <orderEntry type="library" name="lwjgl_util" level="project" />
+    <orderEntry type="module-library">
+      <library name="natives">
+        <CLASSES />
+        <JAVADOC />
+        <NATIVE>
+          <root url="file://$MODULE_DIR$/lib/native" />
+        </NATIVE>
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
