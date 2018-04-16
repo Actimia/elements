@@ -17,6 +17,15 @@
     <orderEntry type="library" name="jinput" level="project" />
     <orderEntry type="library" name="jnlp" level="project" />
     <orderEntry type="library" name="ibxm" level="project" />
-    <orderEntry type="library" name="native" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES />
+        <JAVADOC />
+        <NATIVE>
+          <root url="file://$MODULE_DIR$/lib/native" />
+        </NATIVE>
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

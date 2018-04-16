@@ -1,8 +1,6 @@
 package se.tdfpro.elements.server.engine;
 
-import se.tdfpro.elements.server.Client;
 import se.tdfpro.elements.server.ElementsServer;
-import se.tdfpro.elements.server.commands.Command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,7 @@ public class Game {
     private long lastTickStart = 0;
 
     private ElementsServer networking;
-    private List<Entity> entities = new ArrayList<>();
+    private List<PhysicsEntity> entities = new ArrayList<>();
 
     public Game(ElementsServer networking) {
 
@@ -41,20 +39,20 @@ public class Game {
         }
     }
 
-    public void spawnEntity(Entity ent) {
+    public void spawnEntity(PhysicsEntity ent) {
         entities.add(ent);
     }
 
     public void executeCommands() {
         var commands = networking.getCommands();
-        commands.forEach(cmd -> cmd.execute(this));
+//        commands.forEach(cmd -> cmd.execute(this));
     }
 
     public void update(float delta) {
         entities.forEach(ent -> ent.update(this, delta));
     }
 
-    public List<Entity> getEntities() {
+    public List<PhysicsEntity> getEntities() {
         return entities;
     }
 }

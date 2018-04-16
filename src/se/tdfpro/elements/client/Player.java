@@ -15,6 +15,7 @@ public class Player extends DrawableEntity {
     public Player(Camera camera) {
         this.camera = camera;
     }
+
     @Override
     public void draw(Graphics g) {
         g.setColor(Color.white);

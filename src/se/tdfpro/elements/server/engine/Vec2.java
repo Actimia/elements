@@ -4,8 +4,8 @@ package se.tdfpro.elements.server.engine;
 import static se.tdfpro.elements.client.engine.Camera.TO_DEGREES;
 
 public class Vec2  {
-    private final float x;
-    private final float y;
+    public final float x;
+    public final float y;
 
     public Vec2(float x, float y) {
         this.x = x;

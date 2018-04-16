@@ -1,6 +1,6 @@
 package se.tdfpro.elements.server;
 
-import se.tdfpro.elements.server.commands.Command;
+import se.tdfpro.elements.server.commands.ClientCommand;
 import se.tdfpro.elements.server.engine.Game;
 
 import java.net.Socket;
@@ -14,11 +14,11 @@ public class Client {
         this.game = game;
     }
 
-    public void send(Command com){
+    public void send(ClientCommand com) {
 
     }
 
-    public void receive(Command com) {
-        com.execute(game);
+    public void receive(ClientCommand com) {
+//        com.execute(game);
     }
 }

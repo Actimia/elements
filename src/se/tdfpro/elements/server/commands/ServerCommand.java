@@ -2,8 +2,9 @@ package se.tdfpro.elements.server.commands;
 
 import se.tdfpro.elements.server.engine.Game;
 
-public class Command {
-    public void execute(Game game) {
+public interface ServerCommand {
 
-    }
+    byte[] encode();
+
+    public void execute(Game game);
 }

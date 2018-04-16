@@ -1,14 +1,13 @@
 package se.tdfpro.elements.server.engine;
 
-public class Entity {
+public class PhysicsEntity {
     private Vec2 position;
     private Vec2 velocity;
     private float radius;
     private float restitution = 0.4f;
-    private float friction = 0.2f;
     private float mass = 70f;
 
-    public Entity(Vec2 pos, Vec2 velo, float radius) {
+    public PhysicsEntity(Vec2 pos, Vec2 velo, float radius) {
         position = pos;
         velocity = velo;
         this.radius = radius;
@@ -18,7 +17,7 @@ public class Entity {
         position = position.add(velocity.scale(delta));
 
 
-        for (Entity ent : game.getEntities()) {
+        for (PhysicsEntity ent : game.getEntities()) {
             var limit = radius + ent.radius;
             limit *= limit; // squared to avoid sqrt
             var normal = position.sub(ent.position);
@@ -28,7 +27,7 @@ public class Entity {
         }
     }
 
-    private void resolveCollision(Entity other, Vec2 normal) {
+    private void resolveCollision(PhysicsEntity other, Vec2 normal) {
         normal = normal.norm();
         var velocity_along_normal = (other.velocity.sub(velocity)).dot(normal);
         if(velocity_along_normal > 0) {

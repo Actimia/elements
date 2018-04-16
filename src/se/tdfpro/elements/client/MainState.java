@@ -8,14 +8,22 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import se.tdfpro.elements.client.engine.Camera;
 
+import java.io.IOException;
+
 public class MainState extends BasicGameState {
 
     public Camera camera = new Camera();
     private Player player = new Player(camera);
+    private Network net;
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-
+        try {
+            net = new Network("192.168.0.1", 7777);
+        } catch (IOException e) {
+            e.printStackTrace();
+            gc.exit();
+        }
     }
 
     @Override
