@@ -1,5 +1,6 @@
 package se.tdfpro.elements.server.command;
 
+import se.tdfpro.elements.client.engine.entity.Entity;
 import se.tdfpro.elements.server.engine.Vec2;
 
 import java.lang.reflect.Field;
@@ -14,10 +15,6 @@ public class Decoder <T extends Command> {
 
     private Decoder(ByteBuffer buf) {
         this.buf = buf;
-    }
-
-    private Decoder(byte[] buf) {
-        this(ByteBuffer.wrap(buf));
     }
 
     private T decode() {
@@ -37,15 +34,18 @@ public class Decoder <T extends Command> {
     }
 
     private void decode(T obj, Field f) {
+        var type = f.getType();
         try {
-            if (f.getType().equals(Integer.TYPE)) {
+            if (type.equals(Integer.TYPE)) {
                 f.setInt(obj, decodeInt());
-            } else if(f.getType().equals(Float.TYPE)) {
+            } else if(type.equals(Float.TYPE)) {
                 f.setFloat(obj, decodeFloat());
-            } else if(f.getType().equals(String.class)) {
+            } else if(type.equals(String.class)) {
                 f.set(obj, decodeString());
-            } else if(f.getType().equals(Vec2.class)) {
+            } else if(type.equals(Vec2.class)) {
                 f.set(obj, decodeVec2());
+            } else if(type.equals(Entity.class)){
+                f.set(obj, decodeEntity());
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -62,6 +62,41 @@ public class Decoder <T extends Command> {
 
     private Vec2 decodeVec2() {
         return new Vec2(decodeFloat(), decodeFloat());
+    }
+
+    private Entity decodeEntity() {
+
+        try {
+            var name = decodeString();
+            Class<? extends Entity> cls = (Class<? extends Entity>) Class.forName(name);
+            var constructor = cls.getDeclaredConstructor();
+            var ptypes = constructor.getParameterTypes();
+            var params = new Object[constructor.getParameterCount()];
+
+            for (int i = 0; i < params.length; i++) {
+                var type = ptypes[i];
+                if (type.equals(Integer.TYPE)) {
+                    params[i] = decodeInt();
+                } else if(type.equals(Float.TYPE)) {
+                    params[i] = decodeFloat();
+                } else if(type.equals(String.class)) {
+                    params[i] = decodeString();
+                } else if(type.equals(Vec2.class)) {
+                    params[i] = decodeVec2();
+                } else if(type.equals(Entity.class)){
+                    params[i] = decodeEntity();
+                }
+            }
+
+            var res = constructor.newInstance(params);
+            return res;
+        } catch (ClassNotFoundException |
+                NoSuchMethodException |
+                InstantiationException |
+                IllegalAccessException |
+                InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String decodeString() {

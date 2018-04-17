@@ -1,6 +1,8 @@
 package se.tdfpro.elements.server.engine;
 
 
+import org.newdawn.slick.geom.Vector2f;
+
 import static se.tdfpro.elements.client.engine.Camera.TO_DEGREES;
 
 public class Vec2  {
@@ -48,5 +50,9 @@ public class Vec2  {
     @Override
     public String toString() {
         return String.format("(%f, %f)", x, y);
+    }
+
+    public Vector2f toVector2f() {
+        return new Vector2f(x,y);
     }
 }
