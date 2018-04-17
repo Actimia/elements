@@ -17,12 +17,15 @@ public class CreateEntity extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
+        System.out.println("CreateEntity");
         var player = new Player(id, "");
         player.position = position.toVector2f();
         player.velocity = position.toVector2f();
-        System.out.println(player.position);
-        System.out.println(player.velocity);
 
+        System.out.println(position);
+        System.out.println(player.position);
+        System.out.println(velocity);
+        System.out.println(player.velocity);
         game.addEntity(player);
     }
 }

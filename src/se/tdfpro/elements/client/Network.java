@@ -15,11 +15,13 @@ public class Network extends Thread{
 
     public static final byte[] MAGIC_SEQUENCE = { 1, 3, 3, 7 };
     private Socket socket;
+    private final OutputStream out;
     private CommandQueue<ServerCommand> commands = new CommandQueue<>();
 
     public Network(String host, int port) throws IOException {
         Log.info("Connecting to " + host + "@" + port + "...");
         socket = new Socket(host, port);
+        out = socket.getOutputStream();
         socket.setTcpNoDelay(true);
 
         Log.info("Connected");
@@ -36,10 +38,11 @@ public class Network extends Thread{
                 (byte) len
         };
         try {
-            var out = this.socket.getOutputStream();
-            out.write(MAGIC_SEQUENCE);
-            out.write(headerLengthVal);
-            out.write(encoded);
+            synchronized (out) {
+                out.write(MAGIC_SEQUENCE);
+                out.write(headerLengthVal);
+                out.write(encoded);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,13 +60,13 @@ public class Network extends Thread{
                 while(header_read < HEADER_LENGTH) {
                     header_read += in.read(headerBuffer, header_read, HEADER_LENGTH - header_read);
                 }
-
                 if (header_read != HEADER_LENGTH) throw new RuntimeException("Incomplete header");
                 for (int i = 0; i<4; i++) {
                     if (headerBuffer[i] != MAGIC_SEQUENCE[i]){
                         throw new RuntimeException("Bad magic sequence");
                     }
                 }
+
 
                 int length = headerBuffer[4] << 24
                         | headerBuffer[5] << 16
@@ -74,10 +77,10 @@ public class Network extends Thread{
                 int cmd_read = 0;
                 while(cmd_read < length) {
                     cmd_read += in.read(commandBuffer, cmd_read, length - cmd_read);
+                    System.out.println(cmd_read);
                 }
 
                 if (cmd_read < length) throw new RuntimeException("Read less than indicated # of bytes");
-
                 commands.onReceive(Decoder.decode(commandBuffer));
             }
         } catch (IOException e) {

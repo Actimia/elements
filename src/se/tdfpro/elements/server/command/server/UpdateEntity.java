@@ -28,6 +28,7 @@ public class UpdateEntity extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
+        System.out.println("UpdateEntity");
         var ent = (DrawableEntity) game.getEntity(eid);
         if(ent == null) return;
         ent.position = position.toVector2f();
