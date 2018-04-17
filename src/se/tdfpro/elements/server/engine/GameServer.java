@@ -4,9 +4,7 @@ import se.tdfpro.elements.server.Network;
 import se.tdfpro.elements.server.command.ServerCommand;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static java.lang.Thread.sleep;
@@ -18,7 +16,7 @@ public class GameServer {
     private long lastTickStart = 0;
 
     private Network networking;
-    private List<PhysicsEntity> entities = new ArrayList<>();
+    private Map<Integer, PhysicsEntity> entities = new HashMap<>();
 
     public GameServer(int port) throws IOException {
         this.networking = new Network(port);
