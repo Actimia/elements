@@ -1,20 +1,16 @@
 package se.tdfpro.elements.server.command;
 
-import se.tdfpro.elements.server.engine.Game;
+import se.tdfpro.elements.server.engine.GameServer;
 
 public abstract class ClientCommand implements Command { // from client
 
     public byte[] encode() {
-        Encoder encoder = new Encoder();
-        encoder.encode(this);
-
-        return encoder.getBytes();
+        return Encoder.encodeCommand(this);
     }
 
-    @Send
-    public int player;
+    public int pid = -1;
 
-    public abstract void execute(Game game);
+    public abstract void execute(GameServer game);
 }
 
 

@@ -5,11 +5,11 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class Launcher extends StateBasedGame {
+public class ElementsClient extends StateBasedGame {
 
     public static void main(String[] args) {
         try {
-            AppGameContainer gc = new AppGameContainer(new Launcher());
+            AppGameContainer gc = new AppGameContainer(new ElementsClient());
             gc.setDisplayMode(1600, 1000, false);
             gc.setTargetFrameRate(60);
             gc.start();
@@ -18,12 +18,12 @@ public class Launcher extends StateBasedGame {
         }
     }
 
-    public Launcher() {
+    public ElementsClient() {
         super("Elements");
     }
 
     @Override
-    public void initStatesList(GameContainer gc) throws SlickException {
-        addState(new MainState());
+    public void initStatesList(GameContainer gc) {
+        addState(new GameClient());
     }
 }

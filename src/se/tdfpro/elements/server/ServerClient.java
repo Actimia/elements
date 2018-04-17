@@ -1,32 +1,24 @@
-package se.tdfpro.elements.client;
+package se.tdfpro.elements.server;
 
-import org.newdawn.slick.util.Log;
+import se.tdfpro.elements.client.Network;
 import se.tdfpro.elements.server.command.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class Network extends Thread{
-
-    public static final byte[] MAGIC_SEQUENCE = { 1, 3, 3, 7 };
+public class ServerClient extends Thread {
     private Socket socket;
-    private CommandQueue<ServerCommand> commands = new CommandQueue<>();
+    private CommandQueue<ClientCommand> commands;
+    private int id;
 
-    public Network(String host, int port) throws IOException {
-        Log.info("Connecting to " + host + "@" + port + "...");
-        socket = new Socket(host, port);
-        socket.setTcpNoDelay(true);
-
-        Log.info("Connected");
-
+    public ServerClient(Socket socket, CommandQueue<ClientCommand> commands, int id) {
+        this.socket = socket;
+        this.commands = commands;
+        this.id = id;
     }
 
-    public void send(Command com) {
+    public void send(ServerCommand com) {
         var encoded = Encoder.encodeCommand(com);
         int len = encoded.length;
         byte[] headerLengthVal = {
@@ -37,7 +29,7 @@ public class Network extends Thread{
         };
         try {
             var out = this.socket.getOutputStream();
-            out.write(MAGIC_SEQUENCE);
+            out.write(Network.MAGIC_SEQUENCE);
             out.write(headerLengthVal);
             out.write(encoded);
         } catch (IOException e) {
@@ -60,7 +52,7 @@ public class Network extends Thread{
 
                 if (header_read != HEADER_LENGTH) throw new RuntimeException("Incomplete header");
                 for (int i = 0; i<4; i++) {
-                    if (headerBuffer[i] != MAGIC_SEQUENCE[i]){
+                    if (headerBuffer[i] != Network.MAGIC_SEQUENCE[i]){
                         throw new RuntimeException("Bad magic sequence");
                     }
                 }
@@ -78,15 +70,12 @@ public class Network extends Thread{
 
                 if (cmd_read < length) throw new RuntimeException("Read less than indicated # of bytes");
 
-                commands.onReceive(Decoder.decode(commandBuffer));
+                ClientCommand comm = Decoder.decode(commandBuffer);
+                comm.pid = id;
+                commands.onReceive(comm);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-    }
-
-    public List<ServerCommand> getCommands() {
-        return commands.getAll();
     }
 }

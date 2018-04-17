@@ -7,23 +7,28 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import se.tdfpro.elements.client.engine.Camera;
-import se.tdfpro.elements.client.engine.Entity;
+import se.tdfpro.elements.client.engine.entity.Entity;
+import se.tdfpro.elements.client.engine.entity.Player;
+import se.tdfpro.elements.server.command.client.Handshake;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MainState extends BasicGameState {
+public class GameClient extends BasicGameState {
 
     public Camera camera = new Camera();
-    private Player player = new Player(camera);
-    private List<Entity> entities = new ArrayList<>();
+    private Map<Integer, Entity> entities = new HashMap<>();
     private Network net;
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         try {
-            net = new Network("192.168.0.1", 7777);
+            net = new Network("localhost", 7777);
+            net.start();
+            var hs = new Handshake();
+            hs.username = "Actimia";
+            net.send(hs);
         } catch (IOException e) {
             e.printStackTrace();
             gc.exit();
@@ -37,11 +42,12 @@ public class MainState extends BasicGameState {
         g.pushTransform();
         camera.project(g);
 
-        player.render(gc, game, g);
+
+        entities.values().forEach(ent -> ent.render(gc, this, g));
 
         g.popTransform();
 
-        player.renderInterface(gc, game, g);
+        entities.values().forEach(ent -> ent.renderInterface(gc, this, g));
     }
 
     @Override
@@ -50,8 +56,8 @@ public class MainState extends BasicGameState {
         if (input.isKeyDown(Input.KEY_ESCAPE)) {
             gc.exit();
         }
-        player.update(gc, game, delta);
-        entities.forEach(ent -> ent.update(gc, game, delta));
+        net.getCommands().forEach(cmd -> cmd.execute(this));
+        entities.values().forEach(ent -> ent.update(gc, this, delta));
     }
 
     @Override
@@ -60,6 +66,6 @@ public class MainState extends BasicGameState {
     }
 
     public void addEntity(Entity ent) {
-        entities.add(ent);
+        entities.put(ent.getID(), ent);
     }
 }

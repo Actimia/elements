@@ -1,11 +1,13 @@
 package se.tdfpro.elements.server.engine;
 
 public class PhysicsEntity {
+    private static int nextid = 0;
     private Vec2 position;
     private Vec2 velocity;
     private float radius;
     private float restitution = 0.4f;
     private float mass = 70f;
+    public final int id = nextid++;
 
     public PhysicsEntity(Vec2 pos, Vec2 velo, float radius) {
         position = pos;
@@ -13,11 +15,11 @@ public class PhysicsEntity {
         this.radius = radius;
     }
 
-    void update(Game game, float delta){
+    void update(GameServer game, float delta){
         position = position.add(velocity.scale(delta));
 
 
-        for (PhysicsEntity ent : game.getEntities()) {
+        for (PhysicsEntity ent : game.getEntities().values()) {
             var limit = radius + ent.radius;
             limit *= limit; // squared to avoid sqrt
             var normal = position.sub(ent.position);
