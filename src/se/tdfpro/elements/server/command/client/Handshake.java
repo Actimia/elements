@@ -8,6 +8,7 @@ import se.tdfpro.elements.server.engine.PhysicsEntity;
 import se.tdfpro.elements.server.engine.Vec2;
 
 public class Handshake extends ClientCommand {
+    public Handshake(){};
     @Send
     public String username;
 

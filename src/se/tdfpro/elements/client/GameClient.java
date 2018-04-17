@@ -14,6 +14,7 @@ import se.tdfpro.elements.server.command.client.Handshake;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class GameClient extends BasicGameState {
 
@@ -27,7 +28,8 @@ public class GameClient extends BasicGameState {
             net = new Network("localhost", 7777);
             net.start();
             var hs = new Handshake();
-            hs.username = "Actimia";
+            String[] usernames = { "Actimia", "Eaan", "Stalin", "Voldemort" };
+            hs.username = usernames[new Random().nextInt(usernames.length)];
             net.send(hs);
         } catch (IOException e) {
             e.printStackTrace();

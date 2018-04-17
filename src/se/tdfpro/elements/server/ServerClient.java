@@ -1,21 +1,39 @@
 package se.tdfpro.elements.server;
 
-import se.tdfpro.elements.client.Network;
 import se.tdfpro.elements.server.command.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 
-public class ServerClient extends Thread {
+public class ServerClient {
+    private Network network;
+    private Thread listenThread;
     private Socket socket;
     private CommandQueue<ClientCommand> commands;
+    private boolean isConnected = true;
     private int id;
 
-    public ServerClient(Socket socket, CommandQueue<ClientCommand> commands, int id) {
+    public ServerClient(Network network, Socket socket, CommandQueue<ClientCommand> commands, int id) {
+        this.network = network;
         this.socket = socket;
         this.commands = commands;
         this.id = id;
+
+        this.listenThread = new Thread(this::listen);
+        this.listenThread.start();
+    }
+
+    public void disconnect() {
+        isConnected = false;
+
+        if (!socket.isClosed()) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void send(ServerCommand com) {
@@ -37,14 +55,14 @@ public class ServerClient extends Thread {
         }
     }
 
-    public void run() {
+    public void listen() {
         int HEADER_LENGTH = 8;
 
         try {
             InputStream in = this.socket.getInputStream();
             byte[] headerBuffer = new byte[HEADER_LENGTH];
 
-            while (true) {
+            while (isConnected) {
                 int header_read = 0;
                 while(header_read < HEADER_LENGTH) {
                     header_read += in.read(headerBuffer, header_read, HEADER_LENGTH - header_read);
@@ -76,6 +94,7 @@ public class ServerClient extends Thread {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            network.disconnectClient(id);
         }
     }
 }

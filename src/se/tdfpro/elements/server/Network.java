@@ -3,19 +3,22 @@ package se.tdfpro.elements.server;
 import se.tdfpro.elements.server.command.ClientCommand;
 import se.tdfpro.elements.server.command.CommandQueue;
 import se.tdfpro.elements.server.command.ServerCommand;
+import se.tdfpro.elements.server.command.server.PlayerDisconnect;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class Network {
+    public static final byte[] MAGIC_SEQUENCE = { 1, 3, 3, 7 };
+
     private ServerSocket server;
 
-    private List<ServerClient> clients = new ArrayList<>();
+    private ConcurrentHashMap<Integer, ServerClient> clients = new ConcurrentHashMap<>();
     private CommandQueue<ClientCommand> commands = new CommandQueue<>();
 
     private Executor senders = Executors.newCachedThreadPool();
@@ -26,7 +29,7 @@ public class Network {
     }
 
     public void broadcast(ServerCommand command) {
-        clients.forEach(client -> senders.execute(() -> client.send(command)));
+        clients.values().forEach(client -> senders.execute(() -> client.send(command)));
     }
 
     public void send(int pid, ServerCommand command) {
@@ -37,6 +40,18 @@ public class Network {
         return commands.getAll();
     }
 
+    public void disconnectClient(int pid) {
+       var client = clients.get(pid);
+       // TODO: Send disconnect message to client?
+       // client.send()
+       client.disconnect();
+       clients.remove(pid);
+
+       PlayerDisconnect playerDisconnect = new PlayerDisconnect();
+       playerDisconnect.playerid = pid;
+       broadcast(playerDisconnect);
+    }
+
     private void listen() {
         System.out.println("Listening on 7777");
         while(true) {
@@ -45,9 +60,9 @@ public class Network {
                 sock.setTcpNoDelay(true);
 
                 // TODO: handle dropped connections
-                ServerClient client = new ServerClient(sock, commands, clients.size());
-                clients.add(client);
-                client.start();
+                int pid = clients.size();
+                ServerClient client = new ServerClient(this, sock, commands, pid);
+                clients.put(pid, client);
             } catch (IOException e) {
                 e.printStackTrace();
             }
