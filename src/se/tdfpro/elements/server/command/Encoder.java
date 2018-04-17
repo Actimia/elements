@@ -94,34 +94,6 @@ public class Encoder {
         buf.put(bytes);
     }
 
-    public static void main(String[] args) {
-        Encoder e = new Encoder();
-        e.encode(4);
-        e.encode("hello \uD83D\uDE09");
-        e.encode(3.1415f);
-        byte[] buf = e.getBytes();
-        System.out.println(Arrays.toString(buf));
-        // [0, 0, 0, 4, 0, 0, 0, 5, 104, 101, 108, 108, 111, 64, 73, 14, 86]
-
-
-        MoveCommand move = new MoveCommand();
-        move.pid = 1;
-        move.something = "Hello, World!";
-        move.velo = new Vec2(4, (float) -Math.PI);
-
-        var iters = 100;
-        var start = System.currentTimeMillis();
-        for (int i = 0; i < iters; i++) {
-            var bytes = move.encode();
-            System.out.println(Arrays.toString(bytes));
-            var comm = Decoder.decode(bytes);
-        }
-        var dur = System.currentTimeMillis() - start;
-        System.out.println("enc: " + dur / (float) iters + " ms");
-
-
-    }
-
     public static byte[] encodeCommand(Command command) {
         var enc = new Encoder();
         enc.encode(command);

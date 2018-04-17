@@ -5,14 +5,13 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.client.engine.Camera;
+import se.tdfpro.elements.server.command.client.MoveCommand;
 
 public class ControlledPlayer extends Player{
 
-    private Camera camera;
 
-    public ControlledPlayer(int id, String name, Camera camera) {
+    public ControlledPlayer(int id, String name) {
         super(id, name);
-        this.camera = camera;
     }
 
     @Override
@@ -34,11 +33,10 @@ public class ControlledPlayer extends Player{
 
         if (movement.lengthSquared() != 0){
             movement.normalise();
-            movement.scale(250 * delta/1000f);
-            position.add(movement);
+            game.send(new MoveCommand(getID(), movement));
         }
 
-        var mouse = camera.unproject(new Vector2f(input.getMouseX(), input.getMouseY()));
+        var mouse = game.camera.unproject(new Vector2f(input.getMouseX(), input.getMouseY()));
         mouse.sub(position);
         facing = (float) mouse.getTheta();
         return false;

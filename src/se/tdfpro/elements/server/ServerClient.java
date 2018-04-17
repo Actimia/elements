@@ -99,7 +99,6 @@ public class ServerClient {
                 commands.onReceive(comm);
             }
         } catch (IOException e) {
-            e.printStackTrace();
             network.disconnectClient(id);
         }
     }

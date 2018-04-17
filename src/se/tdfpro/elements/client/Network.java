@@ -77,7 +77,6 @@ public class Network extends Thread{
                 int cmd_read = 0;
                 while(cmd_read < length) {
                     cmd_read += in.read(commandBuffer, cmd_read, length - cmd_read);
-                    System.out.println(cmd_read);
                 }
 
                 if (cmd_read < length) throw new RuntimeException("Read less than indicated # of bytes");

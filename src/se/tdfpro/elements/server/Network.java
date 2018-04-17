@@ -14,7 +14,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class Network {
-    public static final byte[] MAGIC_SEQUENCE = { 1, 3, 3, 7 };
+    public static final byte[] MAGIC_SEQUENCE = {1, 3, 3, 7};
+
+    private static int nextpid = 0;
 
     private ServerSocket server;
 
@@ -41,26 +43,25 @@ public class Network {
     }
 
     public void disconnectClient(int pid) {
-       var client = clients.get(pid);
-       // TODO: Send disconnect message to client?
-       // client.send()
-       client.disconnect();
-       clients.remove(pid);
+        var client = clients.get(pid);
+        client.disconnect();
+        clients.remove(pid);
 
-       PlayerDisconnect playerDisconnect = new PlayerDisconnect();
-       playerDisconnect.playerid = pid;
-       broadcast(playerDisconnect);
+        PlayerDisconnect playerDisconnect = new PlayerDisconnect();
+        playerDisconnect.playerid = pid;
+        System.out.println(pid + " disconnected.");
+        broadcast(playerDisconnect);
     }
 
     private void listen() {
         System.out.println("Listening on 7777");
-        while(true) {
+        while (true) {
             try {
                 Socket sock = server.accept();
                 sock.setTcpNoDelay(true);
 
                 // TODO: handle dropped connections
-                int pid = clients.size();
+                int pid = nextpid++;
                 ServerClient client = new ServerClient(this, sock, commands, pid);
                 clients.put(pid, client);
             } catch (IOException e) {

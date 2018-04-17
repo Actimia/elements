@@ -6,6 +6,7 @@ public class PhysicsEntity {
     private static int nextid = 0;
     public Vec2 position;
     public Vec2 velocity;
+    public Vec2 impulse = Vec2.ZERO;
     private float radius;
     private float restitution = 0.4f;
     private float mass = 70f;
@@ -19,7 +20,10 @@ public class PhysicsEntity {
     }
 
     void update(GameServer game, float delta){
+        velocity = velocity.add(impulse);
+        impulse = Vec2.ZERO;
         position = position.add(velocity.scale(delta));
+        velocity = velocity.scale(0.95f);
 
         for (PhysicsEntity ent : game.getEntities().values()) {
             if(ent.id != this.id) {
@@ -36,19 +40,19 @@ public class PhysicsEntity {
     private void resolveCollision(PhysicsEntity other, Vec2 normal) {
         normal = normal.norm();
         var velocity_along_normal = (other.velocity.sub(velocity)).dot(normal);
-        if(velocity_along_normal < 0) {
-            System.out.println("no velocity along normal");
-            return;
-        }
-        var e = Math.min(restitution, other.restitution);
-        var j = -(1+e) * velocity_along_normal;
+
         var invMass = 1/mass;
         var invMassOther = 1/other.mass;
-        j /= invMass + invMassOther;
 
-        var impulse = normal.scale(j);
-        velocity = velocity.sub(impulse.scale(invMass));
-        other.velocity = other.velocity.add(impulse.scale(invMassOther));
+        if(velocity_along_normal >= 0) {
+            var e = Math.min(restitution, other.restitution);
+            var j = -(1+e) * velocity_along_normal;
+            j /= invMass + invMassOther;
+
+            var impulse = normal.scale(j);
+            velocity = velocity.sub(impulse.scale(invMass));
+            other.velocity = other.velocity.add(impulse.scale(invMassOther));
+        }
 
         var slop = 0f;
         var depth = position.sub(other.position).length() - (radius + other.radius);

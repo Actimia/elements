@@ -12,6 +12,7 @@ public class ElementsClient extends StateBasedGame {
             AppGameContainer gc = new AppGameContainer(new ElementsClient());
             gc.setDisplayMode(1600, 1000, false);
             gc.setTargetFrameRate(60);
+            gc.setAlwaysRender(true);
             gc.start();
         } catch (SlickException e) {
             e.printStackTrace();

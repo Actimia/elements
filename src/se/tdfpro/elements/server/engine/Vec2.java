@@ -6,12 +6,17 @@ import org.newdawn.slick.geom.Vector2f;
 import static se.tdfpro.elements.client.engine.Camera.TO_DEGREES;
 
 public class Vec2  {
+    public static final Vec2 ZERO = new Vec2(0,0);
     public final float x;
     public final float y;
 
     public Vec2(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Vec2(Vector2f v2f) {
+        this(v2f.x, v2f.y);
     }
 
     public Vec2 add(Vec2 o) {

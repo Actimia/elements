@@ -6,9 +6,12 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 import se.tdfpro.elements.client.engine.Camera;
 import se.tdfpro.elements.client.engine.entity.Entity;
 import se.tdfpro.elements.client.engine.entity.Player;
+import se.tdfpro.elements.server.command.ClientCommand;
+import se.tdfpro.elements.server.command.ServerCommand;
 import se.tdfpro.elements.server.command.client.Handshake;
 
 import java.io.IOException;
@@ -21,6 +24,7 @@ public class GameClient extends BasicGameState {
     public Camera camera = new Camera();
     private Map<Integer, Entity> entities = new HashMap<>();
     private Network net;
+    private int pid;
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
@@ -28,7 +32,7 @@ public class GameClient extends BasicGameState {
             net = new Network("localhost", 7777);
             net.start();
             var hs = new Handshake();
-            String[] usernames = { "Actimia", "Eaan", "Stalin", "Voldemort" };
+            String[] usernames = {"Actimia", "Eaan", "Stalin", "Voldemort", "Arthas"};
             hs.username = usernames[new Random().nextInt(usernames.length)];
             net.send(hs);
         } catch (IOException e) {
@@ -73,5 +77,21 @@ public class GameClient extends BasicGameState {
 
     public Entity getEntity(int eid) {
         return entities.get(eid);
+    }
+
+    public Map<Integer, Entity> getEntities() {
+        return entities;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
+
+    public int getPid() {
+        return pid;
+    }
+
+    public void send(ClientCommand command) {
+        net.send(command);
     }
 }
