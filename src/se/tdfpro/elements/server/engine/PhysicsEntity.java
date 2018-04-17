@@ -1,9 +1,11 @@
 package se.tdfpro.elements.server.engine;
 
+import se.tdfpro.elements.server.command.server.UpdateEntity;
+
 public class PhysicsEntity {
     private static int nextid = 0;
-    private Vec2 position;
-    private Vec2 velocity;
+    public Vec2 position;
+    public Vec2 velocity;
     private float radius;
     private float restitution = 0.4f;
     private float mass = 70f;
@@ -20,13 +22,18 @@ public class PhysicsEntity {
 
 
         for (PhysicsEntity ent : game.getEntities().values()) {
-            var limit = radius + ent.radius;
-            limit *= limit; // squared to avoid sqrt
-            var normal = position.sub(ent.position);
-            if (normal.length2() < limit) {
-                resolveCollision(ent, normal);
+            if(ent.id != this.id) {
+                var limit = radius + ent.radius;
+                limit *= limit; // squared to avoid sqrt
+                var normal = position.sub(ent.position);
+                if (normal.length2() < limit) {
+                    resolveCollision(ent, normal);
+                }
             }
         }
+        System.out.println(position);
+        System.out.println(velocity);
+        game.broadcast(new UpdateEntity(this));
     }
 
     private void resolveCollision(PhysicsEntity other, Vec2 normal) {

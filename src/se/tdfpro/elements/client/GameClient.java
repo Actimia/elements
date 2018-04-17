@@ -68,4 +68,8 @@ public class GameClient extends BasicGameState {
     public void addEntity(Entity ent) {
         entities.put(ent.getID(), ent);
     }
+
+    public Entity getEntity(int eid) {
+        return entities.get(eid);
+    }
 }

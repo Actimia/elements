@@ -1,5 +1,6 @@
 package se.tdfpro.elements.server.command;
 
+import se.tdfpro.elements.client.engine.entity.Entity;
 import se.tdfpro.elements.server.command.client.MoveCommand;
 import se.tdfpro.elements.server.engine.Vec2;
 
@@ -28,14 +29,15 @@ public class Encoder {
     }
 
     private void encode(Command obj, Field f) {
+        var type = f.getType();
         try {
-            if (f.getType().equals(Integer.TYPE)) {
+            if (type.equals(Integer.TYPE)) {
                 encode(f.getInt(obj));
-            } else if(f.getType().equals(Float.TYPE)) {
+            } else if(type.equals(Float.TYPE)) {
                 encode(f.getFloat(obj));
-            } else if(f.getType().equals(String.class)) {
+            } else if(type.equals(String.class)) {
                 encode((String)f.get(obj));
-            } else if(f.getType().equals(Vec2.class)) {
+            } else if(type.equals(Vec2.class)) {
                 encode((Vec2)f.get(obj));
             }
         } catch (IllegalAccessException e) {
@@ -54,6 +56,35 @@ public class Encoder {
     private void encode(Vec2 vec) {
         encode(vec.x);
         encode(vec.y);
+    }
+
+    private void encode(Class<? extends Entity> cls, Object... params) {
+        try {
+            encode(cls.getName());
+            var ptypes = cls.getDeclaredConstructor().getParameterTypes();
+            if (ptypes.length != params.length) {
+                throw new RuntimeException("Mismatch in constructor args length");
+            }
+            for(int i = 0; i < ptypes.length; i++) {
+                var type = ptypes[i];
+                var param = params[i];
+
+                if(!type.isAssignableFrom(param.getClass())){
+                    throw new RuntimeException("Mismatch in constructor types");
+                }
+                if (type.equals(Integer.TYPE)) {
+                    encode((int) param);
+                } else if(type.equals(Float.TYPE)) {
+                    encode((float) param);
+                } else if(type.equals(String.class)) {
+                    encode((String) param);
+                } else if(type.equals(Vec2.class)) {
+                    encode((Vec2) param);
+                }
+            }
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("No constructor found");
+        }
     }
 
     private void encode(String s) {

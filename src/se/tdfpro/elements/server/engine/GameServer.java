@@ -2,6 +2,7 @@ package se.tdfpro.elements.server.engine;
 
 import se.tdfpro.elements.server.Network;
 import se.tdfpro.elements.server.command.ServerCommand;
+import se.tdfpro.elements.server.command.server.CreateEntity;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,5 +60,9 @@ public class GameServer {
 
     public void send(int pid, ServerCommand command) {
         networking.send(pid, command);
+    }
+
+    public void broadcast(ServerCommand command) {
+        networking.broadcast(command);
     }
 }
