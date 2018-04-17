@@ -19,6 +19,7 @@ public class ServerClient extends Thread {
     }
 
     public void send(ServerCommand com) {
+        System.out.println("actually sending command");
         var encoded = Encoder.encodeCommand(com);
         int len = encoded.length;
         byte[] headerLengthVal = {

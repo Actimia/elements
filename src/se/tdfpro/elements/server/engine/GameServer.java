@@ -1,6 +1,8 @@
 package se.tdfpro.elements.server.engine;
 
 import se.tdfpro.elements.server.ElementsServer;
+import se.tdfpro.elements.server.command.ServerCommand;
+import se.tdfpro.elements.server.command.server.HandshakeReply;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,5 +57,10 @@ public class GameServer {
 
     public List<PhysicsEntity> getEntities() {
         return entities;
+    }
+
+    public void send(int pid, ServerCommand command) {
+        System.out.println("sending to " + pid);
+        networking.send(pid, command);
     }
 }

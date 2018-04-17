@@ -25,6 +25,7 @@ public class GameClient extends BasicGameState {
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         try {
             net = new Network("localhost", 7777);
+            net.start();
             var hs = new Handshake();
             hs.username = "Actimia";
             net.send(hs);
@@ -42,6 +43,8 @@ public class GameClient extends BasicGameState {
         camera.project(g);
 
         player.render(gc, game, g);
+
+        entities.forEach(ent -> ent.render(gc, game, g));
 
         g.popTransform();
 

@@ -2,6 +2,7 @@ package se.tdfpro.elements.server;
 
 import se.tdfpro.elements.server.command.ClientCommand;
 import se.tdfpro.elements.server.command.CommandQueue;
+import se.tdfpro.elements.server.command.ServerCommand;
 import se.tdfpro.elements.server.engine.GameServer;
 
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class ElementsServer {
 
@@ -18,6 +21,8 @@ public class ElementsServer {
     private CommandQueue<ClientCommand> commands = new CommandQueue<>();
     private GameServer game;
 
+    private Executor senders = Executors.newCachedThreadPool();
+
 
     public ElementsServer(int port) throws IOException {
         server = new ServerSocket(port);
@@ -25,7 +30,6 @@ public class ElementsServer {
     }
 
     public void start() {
-
         new Thread(this::listen).start();
         game.run();
     }
@@ -40,7 +44,6 @@ public class ElementsServer {
                 // TODO: handle dropped connections
                 ServerClient client = new ServerClient(sock, commands, clients.size());
                 clients.add(client);
-                System.out.println(sock.getInetAddress() + " connected");
                 client.start();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -59,5 +62,13 @@ public class ElementsServer {
 
     public List<ClientCommand> getCommands() {
         return commands.getAll();
+    }
+
+    public void broadcast(ServerCommand command) {
+        clients.forEach(client -> senders.execute(() -> client.send(command)));
+    }
+
+    public void send(int pid, ServerCommand command) {
+        senders.execute(() -> clients.get(pid).send(command));
     }
 }

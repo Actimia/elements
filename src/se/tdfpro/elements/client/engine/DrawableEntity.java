@@ -7,8 +7,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public abstract class DrawableEntity implements Entity {
 
-    protected Vector2f position = new Vector2f(0,0);
-    protected float facing = 0;
+    public Vector2f position = new Vector2f(0,0);
+    public float facing = 0;
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) {
