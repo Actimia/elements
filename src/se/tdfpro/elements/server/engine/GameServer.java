@@ -26,7 +26,7 @@ public class GameServer {
     public void run() {
         while (true){
 
-            var delta = System.currentTimeMillis() - lastTickStart;
+            var delta = (System.currentTimeMillis() - lastTickStart) / 1000f;
             lastTickStart = System.currentTimeMillis();
 
             executeCommands();

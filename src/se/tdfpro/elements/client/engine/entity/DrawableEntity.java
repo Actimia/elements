@@ -27,7 +27,7 @@ public abstract class DrawableEntity implements Entity {
         g.pushTransform();
 
         g.translate(position.x, position.y);
-        g.rotate(0,0, facing);
+        g.rotate(0,0, (float) velocity.getTheta());
 
         draw(g);
 

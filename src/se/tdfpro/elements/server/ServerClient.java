@@ -4,21 +4,25 @@ import se.tdfpro.elements.server.command.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 public class ServerClient {
     private Network network;
     private Thread listenThread;
     private Socket socket;
+    private final OutputStream out;
     private CommandQueue<ClientCommand> commands;
     private boolean isConnected = true;
     private int id;
 
-    public ServerClient(Network network, Socket socket, CommandQueue<ClientCommand> commands, int id) {
+    public ServerClient(Network network, Socket socket, CommandQueue<ClientCommand> commands, int id) throws IOException {
         this.network = network;
         this.socket = socket;
         this.commands = commands;
         this.id = id;
+
+        out = socket.getOutputStream();
 
         this.listenThread = new Thread(this::listen);
         this.listenThread.start();
@@ -46,10 +50,12 @@ public class ServerClient {
                 (byte) len
         };
         try {
-            var out = this.socket.getOutputStream();
-            out.write(Network.MAGIC_SEQUENCE);
-            out.write(headerLengthVal);
-            out.write(encoded);
+
+            synchronized (out) {
+                out.write(Network.MAGIC_SEQUENCE);
+                out.write(headerLengthVal);
+                out.write(encoded);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
