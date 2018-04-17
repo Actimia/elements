@@ -1,9 +1,9 @@
 package se.tdfpro.elements.server.engine;
 
-import se.tdfpro.elements.server.ElementsServer;
+import se.tdfpro.elements.server.Network;
 import se.tdfpro.elements.server.command.ServerCommand;
-import se.tdfpro.elements.server.command.server.HandshakeReply;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +17,11 @@ public class GameServer {
 
     private long lastTickStart = 0;
 
-    private ElementsServer networking;
+    private Network networking;
+    private List<PhysicsEntity> entities = new ArrayList<>();
 
-    private Map<Integer, PhysicsEntity> entities = new HashMap<>();
-
-    public GameServer(ElementsServer networking) {
-        this.networking = networking;
+    public GameServer(int port) throws IOException {
+        this.networking = new Network(port);
     }
 
     public void run() {
@@ -49,7 +48,6 @@ public class GameServer {
 
     public void executeCommands() {
         var commands = networking.getCommands();
-
         commands.forEach(cmd -> cmd.execute(this));
     }
 
