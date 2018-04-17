@@ -16,6 +16,7 @@ public class ControlledPlayer extends Player{
 
     @Override
     public boolean update(GameContainer gc, GameClient game, int delta) {
+        super.update(gc, game, delta);
         Input input = gc.getInput();
         var movement = new Vector2f();
         if (input.isKeyDown(Input.KEY_W)) {
