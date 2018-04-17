@@ -8,12 +8,13 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import se.tdfpro.elements.client.engine.Camera;
 import se.tdfpro.elements.client.engine.Entity;
+import se.tdfpro.elements.server.command.client.Handshake;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainState extends BasicGameState {
+public class GameClient extends BasicGameState {
 
     public Camera camera = new Camera();
     private Player player = new Player(camera);
@@ -24,6 +25,9 @@ public class MainState extends BasicGameState {
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         try {
             net = new Network("localhost", 7777);
+            var hs = new Handshake();
+            hs.username = "Actimia";
+            net.send(hs);
         } catch (IOException e) {
             e.printStackTrace();
             gc.exit();
@@ -50,6 +54,7 @@ public class MainState extends BasicGameState {
         if (input.isKeyDown(Input.KEY_ESCAPE)) {
             gc.exit();
         }
+        net.getCommands().forEach(cmd -> cmd.execute(this));
         player.update(gc, game, delta);
         entities.forEach(ent -> ent.update(gc, game, delta));
     }

@@ -2,14 +2,17 @@ package se.tdfpro.elements.server.command.client;
 
 import se.tdfpro.elements.server.command.ClientCommand;
 import se.tdfpro.elements.server.command.Send;
-import se.tdfpro.elements.server.engine.Game;
+import se.tdfpro.elements.server.engine.GameServer;
+import se.tdfpro.elements.server.engine.PhysicsEntity;
+import se.tdfpro.elements.server.engine.Vec2;
 
 public class Handshake extends ClientCommand {
     @Send
     public String username;
 
     @Override
-    public void execute(Game game) {
-
+    public void execute(GameServer game) {
+        System.out.println(username + " has connected (id " + pid + ")");
+        game.spawnEntity(new PhysicsEntity(new Vec2(200, 200), new Vec2(0,0), 40f));
     }
 }

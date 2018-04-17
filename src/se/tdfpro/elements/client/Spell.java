@@ -21,7 +21,7 @@ public class Spell extends DrawableEntity {
     }
 
     @Override
-    public boolean update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+    public boolean update(GameContainer gc, StateBasedGame game, int delta) {
         return false;
     }
 }

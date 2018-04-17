@@ -13,7 +13,7 @@ public class PhysicsEntity {
         this.radius = radius;
     }
 
-    void update(Game game, float delta){
+    void update(GameServer game, float delta){
         position = position.add(velocity.scale(delta));
 
 

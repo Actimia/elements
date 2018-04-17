@@ -7,7 +7,7 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class Game {
+public class GameServer {
     public static final int TICKS = 20;
     public static final int TICK_TIME = 1000/TICKS;
 
@@ -16,7 +16,7 @@ public class Game {
     private ElementsServer networking;
     private List<PhysicsEntity> entities = new ArrayList<>();
 
-    public Game(ElementsServer networking) {
+    public GameServer(ElementsServer networking) {
 
         this.networking = networking;
     }
@@ -45,7 +45,8 @@ public class Game {
 
     public void executeCommands() {
         var commands = networking.getCommands();
-//        command.forEach(cmd -> cmd.execute(this));
+
+        commands.forEach(cmd -> cmd.execute(this));
     }
 
     public void update(float delta) {
