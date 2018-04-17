@@ -5,7 +5,9 @@ import se.tdfpro.elements.server.command.ServerCommand;
 import se.tdfpro.elements.server.command.server.HandshakeReply;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.Thread.sleep;
 
@@ -16,10 +18,10 @@ public class GameServer {
     private long lastTickStart = 0;
 
     private ElementsServer networking;
-    private List<PhysicsEntity> entities = new ArrayList<>();
+
+    private Map<Integer, PhysicsEntity> entities = new HashMap<>();
 
     public GameServer(ElementsServer networking) {
-
         this.networking = networking;
     }
 
@@ -42,7 +44,7 @@ public class GameServer {
     }
 
     public void spawnEntity(PhysicsEntity ent) {
-        entities.add(ent);
+        entities.put(ent.id, ent);
     }
 
     public void executeCommands() {
@@ -52,15 +54,14 @@ public class GameServer {
     }
 
     public void update(float delta) {
-        entities.forEach(ent -> ent.update(this, delta));
+        entities.values().forEach(ent -> ent.update(this, delta));
     }
 
-    public List<PhysicsEntity> getEntities() {
+    public Map<Integer, PhysicsEntity> getEntities() {
         return entities;
     }
 
     public void send(int pid, ServerCommand command) {
-        System.out.println("sending to " + pid);
         networking.send(pid, command);
     }
 }

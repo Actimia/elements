@@ -7,18 +7,18 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import se.tdfpro.elements.client.engine.Camera;
-import se.tdfpro.elements.client.engine.Entity;
+import se.tdfpro.elements.client.engine.entity.Entity;
+import se.tdfpro.elements.client.engine.entity.Player;
 import se.tdfpro.elements.server.command.client.Handshake;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameClient extends BasicGameState {
 
     public Camera camera = new Camera();
-    private Player player = new Player(camera);
-    private List<Entity> entities = new ArrayList<>();
+    private Map<Integer, Entity> entities = new HashMap<>();
     private Network net;
 
     @Override
@@ -42,13 +42,12 @@ public class GameClient extends BasicGameState {
         g.pushTransform();
         camera.project(g);
 
-        player.render(gc, game, g);
 
-        entities.forEach(ent -> ent.render(gc, game, g));
+        entities.values().forEach(ent -> ent.render(gc, this, g));
 
         g.popTransform();
 
-        player.renderInterface(gc, game, g);
+        entities.values().forEach(ent -> ent.renderInterface(gc, this, g));
     }
 
     @Override
@@ -58,8 +57,7 @@ public class GameClient extends BasicGameState {
             gc.exit();
         }
         net.getCommands().forEach(cmd -> cmd.execute(this));
-        player.update(gc, game, delta);
-        entities.forEach(ent -> ent.update(gc, game, delta));
+        entities.values().forEach(ent -> ent.update(gc, this, delta));
     }
 
     @Override
@@ -68,6 +66,6 @@ public class GameClient extends BasicGameState {
     }
 
     public void addEntity(Entity ent) {
-        entities.add(ent);
+        entities.put(ent.getID(), ent);
     }
 }

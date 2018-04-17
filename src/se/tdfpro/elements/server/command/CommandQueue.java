@@ -9,7 +9,6 @@ public class CommandQueue<T extends Command> {
     private ConcurrentLinkedDeque<T> queue = new ConcurrentLinkedDeque<>();
 
     public void onReceive(T command) {
-        System.out.println("recieved command");
         queue.add(command);
     }
 

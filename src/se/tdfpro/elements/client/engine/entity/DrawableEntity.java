@@ -1,17 +1,29 @@
-package se.tdfpro.elements.client.engine;
+package se.tdfpro.elements.client.engine.entity;
 
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
+import se.tdfpro.elements.client.GameClient;
 
 public abstract class DrawableEntity implements Entity {
 
+    private final int id;
     public Vector2f position = new Vector2f(0,0);
+    public Vector2f velocity = new Vector2f(0,0);
     public float facing = 0;
 
+    public DrawableEntity(int id){
+        this.id = id;
+    }
+
     @Override
-    public void render(GameContainer gc, StateBasedGame game, Graphics g) {
+    public int getID() {
+        return id;
+    }
+
+    @Override
+    public void render(GameContainer gc, GameClient game, Graphics g) {
         g.pushTransform();
 
         g.translate(position.x, position.y);
@@ -23,7 +35,7 @@ public abstract class DrawableEntity implements Entity {
     }
 
     @Override
-    public void renderInterface(GameContainer gc, StateBasedGame game, Graphics g) {
+    public void renderInterface(GameContainer gc, GameClient game, Graphics g) {
         drawInterface(g);
     }
 

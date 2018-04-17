@@ -15,10 +15,14 @@ public class Handshake extends ClientCommand {
     public void execute(GameServer game) {
         System.out.println(username + " has connected (id " + pid + ")");
 
-        var reply = new HandshakeReply();
-        reply.playerid = pid;
-        game.send(pid, reply);
 
-        game.spawnEntity(new PhysicsEntity(new Vec2(200, 200), new Vec2(0,0), 40f));
+
+        var ent = new PhysicsEntity(new Vec2(200, 200), new Vec2(0,0), 40f);
+        game.spawnEntity(ent);
+
+        var reply = new HandshakeReply();
+        reply.name = username;
+        reply.id = ent.id;
+        game.send(pid, reply);
     }
 }

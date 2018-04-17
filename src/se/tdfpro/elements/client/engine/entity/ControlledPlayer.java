@@ -1,35 +1,22 @@
-package se.tdfpro.elements.client;
+package se.tdfpro.elements.client.engine.entity;
 
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.*;
-import org.newdawn.slick.state.StateBasedGame;
+import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.client.engine.Camera;
-import se.tdfpro.elements.client.engine.DrawableEntity;
 
-public class Player extends DrawableEntity {
-    public static final int RADIUS = 30;
-    public static final int DIAMETER = 2 * RADIUS;
+public class ControlledPlayer extends Player{
 
     private Camera camera;
 
-    public Player(Camera camera) {
+    public ControlledPlayer(int id, String name, Camera camera) {
+        super(id, name);
         this.camera = camera;
     }
 
     @Override
-    public void draw(Graphics g) {
-        g.setColor(Color.white);
-        g.setLineWidth(3);
-        g.drawOval(-RADIUS, -RADIUS, DIAMETER, DIAMETER);
-        g.drawLine(0,0, RADIUS,0);
-    }
-
-    public void drawInterface(Graphics g) {
-        g.drawString("Hello interface", 800, 800);
-    }
-
-    @Override
-    public boolean update(GameContainer gc, StateBasedGame game, int delta) {
+    public boolean update(GameContainer gc, GameClient game, int delta) {
         Input input = gc.getInput();
         var movement = new Vector2f();
         if (input.isKeyDown(Input.KEY_W)) {
