@@ -15,19 +15,28 @@ public class CreateCircle extends ServerCommand {
     public Vec2 position;
     @Send
     public Vec2 velocity;
+    @Send
+    public float invMass;
+    @Send
+    public int material;
+    @Send
+    public float radius;
 
     public CreateCircle() {}
 
-    public CreateCircle(PhysicsEntity ent) {
+    public CreateCircle(Circle ent) {
         eid = ent.getEid();
         position = ent.getPosition();
         velocity = ent.getVelocity();
+        invMass = ent.getInvMass();
+        material = ((Materials)ent.getMaterial()).ordinal();
+        radius = ent.radius;
     }
 
     @Override
     public void execute(GameClient game) {
         System.out.println("CreateCircle("+ eid + ")");
-        var player = new Circle(position, velocity, 0.5f, Materials.PLAYER, 30f);
+        var player = new Circle(position, velocity, invMass, Materials.values()[material], radius);
         player.setEid(eid);
         game.addEntity(player);
     }

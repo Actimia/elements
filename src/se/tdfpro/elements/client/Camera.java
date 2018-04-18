@@ -12,7 +12,7 @@ public class Camera {
     private float rotation = 0;
 
     public static final float TO_DEGREES = (float) (360 / (2*Math.PI));
-    public static final float TO_RADIANS = (float) 1/TO_DEGREES;
+    public static final float TO_RADIANS = 1f/TO_DEGREES;
 
     public void project(Graphics g) {
         g.translate(translate.x, translate.y);

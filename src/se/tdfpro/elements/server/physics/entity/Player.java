@@ -7,6 +7,7 @@ import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.command.ServerCommand;
+import se.tdfpro.elements.server.command.client.CastSpell;
 import se.tdfpro.elements.server.command.client.MoveCommand;
 import se.tdfpro.elements.server.command.server.CreatePlayer;
 import se.tdfpro.elements.server.physics.Materials;
@@ -18,6 +19,7 @@ public class Player extends Circle {
     private static final List<Color> playerColors = List.of(Color.green, Color.cyan, Color.pink, Color.blue);
     private Vec2 impulse = Vec2.ZERO;
     private int controller;
+    private float fireballCD = 0f;
 
     public Player(Vec2 position, Vec2 velocity, int controller) {
         super(position, velocity, 0.5f, Materials.PLAYER, 30f);
@@ -60,7 +62,13 @@ public class Player extends Circle {
                 movement = movement.norm();
                 game.send(new MoveCommand(getID(), movement));
             }
-            var mouse = game.camera.unproject(new Vec2(input.getMouseX(), input.getMouseY())).sub(position);
+
+            if (input.isMouseButtonDown(0) && fireballCD <= 0) {
+                fireballCD = 1.5f;
+                var lookdir = game.camera.unproject(new Vec2(input.getMouseX(), input.getMouseY())).sub(position).norm();
+                game.send(new CastSpell(lookdir, getEid()));
+            }
+            fireballCD -= delta;
         }
         //facing = (float) mouse.theta();
     }
