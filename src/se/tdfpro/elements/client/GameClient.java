@@ -16,24 +16,19 @@ import java.util.Map;
 import java.util.Random;
 
 public class GameClient extends BasicGameState {
+    public static final int ID = 1;
 
     public Camera camera = new Camera();
     private Map<Integer, ClientEntity> entities = new HashMap<>();
     private Network net;
     private int pid;
 
+    public GameClient(Network net) {
+        this.net = net;
+    }
+
     @Override
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-        try {
-            net = new Network("localhost", 7777);
-            var hs = new Handshake();
-            String[] usernames = {"Actimia", "Eaan", "Stalin", "Voldemort", "Arthas"};
-            hs.username = usernames[new Random().nextInt(usernames.length)];
-            net.send(hs);
-        } catch (IOException e) {
-            e.printStackTrace();
-            gc.exit();
-        }
     }
 
     @Override
@@ -61,7 +56,7 @@ public class GameClient extends BasicGameState {
 
     @Override
     public int getID() {
-        return 0;
+        return ID;
     }
 
     public void addEntity(ClientEntity ent) {
