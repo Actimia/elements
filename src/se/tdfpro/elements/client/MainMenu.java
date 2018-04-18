@@ -2,6 +2,7 @@ package se.tdfpro.elements.client;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import se.tdfpro.elements.server.command.client.Handshake;
@@ -69,12 +70,11 @@ public class MainMenu extends BasicGameState {
 
     @Override
     public void keyPressed(int key, char c) {
-        System.out.println(key);
-        if (key == 28) { // Enter
+        if (key == Input.KEY_ENTER) {
             if (usernameText.length() > 2) {
                 handshake();
             }
-        } else if (key == 14) { // Backspace
+        } else if (key == Input.KEY_BACK && usernameText.length() > 0) {
            usernameText = usernameText.substring(0, usernameText.length() - 1) ;
         } else if (usernameText.length() < 16 && acceptedCharacters.matcher(String.valueOf(c)).matches()){
             usernameText += c;
