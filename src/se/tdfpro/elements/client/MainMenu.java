@@ -4,12 +4,14 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import se.tdfpro.elements.server.command.client.Handshake;
 
 import java.util.regex.Pattern;
 
 public class MainMenu extends BasicGameState {
     public static final int ID = 0;
 
+    private Network net;
     private StateBasedGame game;
 
     private int caretBlinkStateCounter = 0;
@@ -21,6 +23,18 @@ public class MainMenu extends BasicGameState {
 
     private static final Pattern acceptedCharacters = Pattern.compile("\\w");
     private String usernameText = "";
+
+    public MainMenu(Network net) {
+       this.net = net;
+    }
+
+    private void handshake() {
+        var hs = new Handshake();
+        hs.username = usernameText;
+        net.send(hs);
+
+        game.enterState(1);
+    }
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) {
@@ -58,7 +72,7 @@ public class MainMenu extends BasicGameState {
         System.out.println(key);
         if (key == 28) { // Enter
             if (usernameText.length() > 2) {
-                game.enterState(1);
+                handshake();
             }
         } else if (key == 14) { // Backspace
            usernameText = usernameText.substring(0, usernameText.length() - 1) ;

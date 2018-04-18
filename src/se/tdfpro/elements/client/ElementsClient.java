@@ -5,7 +5,11 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.io.IOException;
+
 public class ElementsClient extends StateBasedGame {
+
+    private Network net;
 
     public static void main(String[] args) {
         try {
@@ -21,11 +25,17 @@ public class ElementsClient extends StateBasedGame {
 
     public ElementsClient() {
         super("Elements");
+
+        try {
+            net = new Network("localhost", 7777);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void initStatesList(GameContainer gc) {
-        addState(new MainMenu());
-        addState(new GameClient());
+        addState(new MainMenu(net));
+        addState(new GameClient(net));
     }
 }
