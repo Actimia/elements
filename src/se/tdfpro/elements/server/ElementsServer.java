@@ -1,6 +1,5 @@
 package se.tdfpro.elements.server;
 
-import se.tdfpro.elements.server.engine.GameServer;
 import java.io.IOException;
 
 public class ElementsServer {

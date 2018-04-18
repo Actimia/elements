@@ -1,4 +1,4 @@
-package se.tdfpro.elements.server.engine;
+package se.tdfpro.elements.server.physics;
 
 
 import org.newdawn.slick.geom.Vector2f;
@@ -7,6 +7,10 @@ import static se.tdfpro.elements.client.engine.Camera.TO_DEGREES;
 
 public class Vec2  {
     public static final Vec2 ZERO = new Vec2(0,0);
+    public static final Vec2 UP = new Vec2(0,1);
+    public static final Vec2 DOWN = new Vec2(0,-1);
+    public static final Vec2 LEFT = new Vec2(-1,0);
+    public static final Vec2 RIGHT = new Vec2(1,0);
     public final float x;
     public final float y;
 
@@ -32,6 +36,14 @@ public class Vec2  {
         return new Vec2(x / len, y / len);
     }
 
+    public Vec2 scale(float delta) {
+        return new Vec2(x * delta, y * delta);
+    }
+
+    public Vec2 invert() {
+        return new Vec2(-x, -y);
+    }
+
     public float length() {
         return (float) Math.sqrt(length2());
     }
@@ -46,10 +58,6 @@ public class Vec2  {
 
     public float theta() {
         return (float) Math.atan2(y,x) * TO_DEGREES;
-    }
-
-    public Vec2 scale(float delta) {
-        return new Vec2(x * delta, y * delta);
     }
 
     @Override

@@ -4,10 +4,9 @@ import se.tdfpro.elements.server.command.ClientCommand;
 import se.tdfpro.elements.server.command.Send;
 import se.tdfpro.elements.server.command.server.CreateEntity;
 import se.tdfpro.elements.server.command.server.CreatePlayer;
-import se.tdfpro.elements.server.command.server.TakeControl;
-import se.tdfpro.elements.server.engine.GameServer;
-import se.tdfpro.elements.server.engine.PhysicsEntity;
-import se.tdfpro.elements.server.engine.Vec2;
+import se.tdfpro.elements.server.GameServer;
+import se.tdfpro.elements.server.physics.PhysicsEntity;
+import se.tdfpro.elements.server.physics.Vec2;
 
 public class Handshake extends ClientCommand {
     public Handshake(){};

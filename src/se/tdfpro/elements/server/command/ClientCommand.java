@@ -1,6 +1,6 @@
 package se.tdfpro.elements.server.command;
 
-import se.tdfpro.elements.server.engine.GameServer;
+import se.tdfpro.elements.server.GameServer;
 
 public abstract class ClientCommand implements Command { // from client
 

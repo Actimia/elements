@@ -3,8 +3,8 @@ package se.tdfpro.elements.server.command.client;
 import org.newdawn.slick.geom.Vector2f;
 import se.tdfpro.elements.server.command.ClientCommand;
 import se.tdfpro.elements.server.command.Send;
-import se.tdfpro.elements.server.engine.GameServer;
-import se.tdfpro.elements.server.engine.Vec2;
+import se.tdfpro.elements.server.GameServer;
+import se.tdfpro.elements.server.physics.Vec2;
 
 public class MoveCommand extends ClientCommand {
 

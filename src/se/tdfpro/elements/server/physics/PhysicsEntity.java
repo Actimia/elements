@@ -1,5 +1,6 @@
-package se.tdfpro.elements.server.engine;
+package se.tdfpro.elements.server.physics;
 
+import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.command.server.UpdateEntity;
 
 public class PhysicsEntity {
@@ -9,9 +10,8 @@ public class PhysicsEntity {
     public Vec2 impulse = Vec2.ZERO;
     private float radius;
     private float restitution = 0.4f;
-    private float mass = 70f;
+    private float invMass = 1/10f;
     public final int id = nextid++;
-    private int ticks = 0;
 
     public PhysicsEntity(Vec2 pos, Vec2 velo, float radius) {
         position = pos;
@@ -19,7 +19,7 @@ public class PhysicsEntity {
         this.radius = radius;
     }
 
-    void update(GameServer game, float delta){
+    public void update(GameServer game, float delta){
         velocity = velocity.add(impulse);
         impulse = Vec2.ZERO;
         position = position.add(velocity.scale(delta));
@@ -41,25 +41,23 @@ public class PhysicsEntity {
         normal = normal.norm();
         var velocity_along_normal = (other.velocity.sub(velocity)).dot(normal);
 
-        var invMass = 1/mass;
-        var invMassOther = 1/other.mass;
 
         if(velocity_along_normal >= 0) {
             var e = Math.min(restitution, other.restitution);
             var j = -(1+e) * velocity_along_normal;
-            j /= invMass + invMassOther;
+            j /= invMass + other.invMass;
 
             var impulse = normal.scale(j);
             velocity = velocity.sub(impulse.scale(invMass));
-            other.velocity = other.velocity.add(impulse.scale(invMassOther));
+            other.velocity = other.velocity.add(impulse.scale(other.invMass));
         }
 
         var slop = 0f;
         var depth = position.sub(other.position).length() - (radius + other.radius);
         if(depth > slop) {
-            var pos_correction = normal.scale(0.5f * depth / (invMass + invMassOther));
+            var pos_correction = normal.scale(0.8f * depth / (invMass + other.invMass));
             position = position.sub(pos_correction.scale(invMass));
-            other.position = other.position.sub(pos_correction.scale(invMassOther));
+            other.position = other.position.sub(pos_correction.scale(other.invMass));
         }
 
     }

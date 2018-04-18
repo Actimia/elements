@@ -4,8 +4,8 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.client.engine.entity.DrawableEntity;
 import se.tdfpro.elements.server.command.Send;
 import se.tdfpro.elements.server.command.ServerCommand;
-import se.tdfpro.elements.server.engine.PhysicsEntity;
-import se.tdfpro.elements.server.engine.Vec2;
+import se.tdfpro.elements.server.physics.PhysicsEntity;
+import se.tdfpro.elements.server.physics.Vec2;
 
 public class UpdateEntity extends ServerCommand {
 

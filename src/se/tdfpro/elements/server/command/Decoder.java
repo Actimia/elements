@@ -1,7 +1,7 @@
 package se.tdfpro.elements.server.command;
 
 import se.tdfpro.elements.client.engine.entity.Entity;
-import se.tdfpro.elements.server.engine.Vec2;
+import se.tdfpro.elements.server.physics.Vec2;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

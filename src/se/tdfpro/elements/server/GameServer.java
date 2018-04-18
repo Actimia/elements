@@ -1,8 +1,9 @@
-package se.tdfpro.elements.server.engine;
+package se.tdfpro.elements.server;
 
 import se.tdfpro.elements.server.Network;
 import se.tdfpro.elements.server.command.ServerCommand;
-import se.tdfpro.elements.server.command.server.CreateEntity;
+import se.tdfpro.elements.server.physics.PhysicsEntity;
+import se.tdfpro.elements.server.physics.PhysicsEntity2;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -64,5 +65,9 @@ public class GameServer {
 
     public void broadcast(ServerCommand command) {
         networking.broadcast(command);
+    }
+
+    public Map<Integer, PhysicsEntity2> getEntities2() {
+        return Map.of();
     }
 }

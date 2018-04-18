@@ -5,8 +5,8 @@ import se.tdfpro.elements.client.engine.entity.ControlledPlayer;
 import se.tdfpro.elements.client.engine.entity.Player;
 import se.tdfpro.elements.server.command.Send;
 import se.tdfpro.elements.server.command.ServerCommand;
-import se.tdfpro.elements.server.engine.PhysicsEntity;
-import se.tdfpro.elements.server.engine.Vec2;
+import se.tdfpro.elements.server.physics.PhysicsEntity;
+import se.tdfpro.elements.server.physics.Vec2;
 
 public class CreatePlayer extends ServerCommand {
     @Send
