@@ -32,7 +32,7 @@ public class CreatePlayer extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        System.out.println("CreatePlayer");
+        System.out.println("CreatePlayer("+ eid + ")");
         Player player;
         if(game.getPid() != controller){
             player = new Player(eid, username);

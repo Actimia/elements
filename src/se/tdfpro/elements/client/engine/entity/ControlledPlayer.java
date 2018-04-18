@@ -4,7 +4,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 import se.tdfpro.elements.client.GameClient;
-import se.tdfpro.elements.client.engine.Camera;
 import se.tdfpro.elements.server.command.client.MoveCommand;
 
 public class ControlledPlayer extends Player{

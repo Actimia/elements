@@ -23,19 +23,20 @@ public class Network {
     private ConcurrentHashMap<Integer, ServerClient> clients = new ConcurrentHashMap<>();
     private CommandQueue<ClientCommand> commands = new CommandQueue<>();
 
-    private Executor senders = Executors.newCachedThreadPool();
+    private Executor threads = Executors.newCachedThreadPool();
 
     public Network(int port) throws IOException {
         server = new ServerSocket(port);
-        new Thread(this::listen).start();
+        threads.execute(this::listen);
+        System.out.println("Listening on " + port);
     }
 
     public void broadcast(ServerCommand command) {
-        clients.values().forEach(client -> senders.execute(() -> client.send(command)));
+        clients.values().forEach(client -> threads.execute(() -> client.send(command)));
     }
 
     public void send(int pid, ServerCommand command) {
-        senders.execute(() -> clients.get(pid).send(command));
+        threads.execute(() -> clients.get(pid).send(command));
     }
 
     public List<ClientCommand> getCommands() {
@@ -54,19 +55,21 @@ public class Network {
     }
 
     private void listen() {
-        System.out.println("Listening on 7777");
         while (true) {
             try {
                 Socket sock = server.accept();
                 sock.setTcpNoDelay(true);
 
-                // TODO: handle dropped connections
                 int pid = nextpid++;
-                ServerClient client = new ServerClient(this, sock, commands, pid);
+                ServerClient client = new ServerClient(this, sock, commands::onReceive, pid);
                 clients.put(pid, client);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public Executor getExecutor() {
+        return threads;
     }
 }

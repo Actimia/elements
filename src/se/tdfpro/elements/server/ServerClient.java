@@ -6,26 +6,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Consumer;
 
 public class ServerClient {
     private Network network;
-    private Thread listenThread;
     private Socket socket;
     private final OutputStream out;
-    private CommandQueue<ClientCommand> commands;
+    private Consumer<ClientCommand> onCommand;
     private boolean isConnected = true;
     private int id;
+    private BlockingQueue<ServerCommand> sendQueue = new LinkedBlockingQueue<>();
 
-    public ServerClient(Network network, Socket socket, CommandQueue<ClientCommand> commands, int id) throws IOException {
+    private static final int HEADER_LENGTH = 8;
+
+    public ServerClient(Network network, Socket socket, Consumer<ClientCommand> onCommand, int id) throws IOException {
         this.network = network;
         this.socket = socket;
-        this.commands = commands;
+        this.onCommand = onCommand;
         this.id = id;
 
         out = socket.getOutputStream();
 
-        this.listenThread = new Thread(this::listen);
-        this.listenThread.start();
+        network.getExecutor().execute(this::listen);
+        network.getExecutor().execute(this::doSend);
     }
 
     public void disconnect() {
@@ -41,28 +46,33 @@ public class ServerClient {
     }
 
     public void send(ServerCommand com) {
-        var encoded = Encoder.encodeCommand(com);
-        int len = encoded.length;
-        byte[] headerLengthVal = {
-                (byte) (len >> 24),
-                (byte) (len >> 16),
-                (byte) (len >> 8),
-                (byte) len
-        };
-        try {
+        sendQueue.add(com);
+    }
 
-            synchronized (out) {
+    public void doSend() {
+        while(isConnected) {
+            try {
+                ServerCommand com = sendQueue.take();
+                var encoded = Encoder.encodeCommand(com);
+                int len = encoded.length;
+                byte[] headerLength = {
+                        (byte) (len >> 24),
+                        (byte) (len >> 16),
+                        (byte) (len >> 8),
+                        (byte) len
+                };
+
                 out.write(Network.MAGIC_SEQUENCE);
-                out.write(headerLengthVal);
+                out.write(headerLength);
                 out.write(encoded);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+                network.disconnectClient(id);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     public void listen() {
-        int HEADER_LENGTH = 8;
 
         try {
             InputStream in = this.socket.getInputStream();
@@ -96,7 +106,7 @@ public class ServerClient {
 
                 ClientCommand comm = Decoder.decode(commandBuffer);
                 comm.pid = id;
-                commands.onReceive(comm);
+                onCommand.accept(comm);
             }
         } catch (IOException e) {
             network.disconnectClient(id);

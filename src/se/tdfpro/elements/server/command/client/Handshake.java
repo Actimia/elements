@@ -16,7 +16,7 @@ public class Handshake extends ClientCommand {
 
     @Override
     public void execute(GameServer game) {
-        System.out.println(username + " has connected (id " + pid + ")");
+        System.out.println(username + " has connected (pid " + pid + ")");
 
         game.send(pid, new HandshakeReply(pid));
 
@@ -29,15 +29,18 @@ public class Handshake extends ClientCommand {
 
         var ent = new PhysicsEntity(new Vec2(100, 195), new Vec2(-15,0), 30f);
         game.spawnEntity(ent);
+        System.out.println(ent.id);
         game.broadcast(new CreateEntity(ent));
 
         var ent2 = new PhysicsEntity(new Vec2(-200, 205), new Vec2(40,1), 30f);
         game.spawnEntity(ent2);
-        game.broadcast(new CreateEntity(ent));
+        System.out.println(ent2.id);
+        game.broadcast(new CreateEntity(ent2));
 
         var ent3 = new PhysicsEntity(new Vec2(0, 0), new Vec2(0,0), 30f);
         game.spawnEntity(ent3);
-        game.broadcast(new CreatePlayer(ent, pid, username));
+        System.out.println(ent3.id);
+        game.broadcast(new CreatePlayer(ent3, pid, username));
 
     }
 }
