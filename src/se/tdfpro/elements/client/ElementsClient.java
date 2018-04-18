@@ -4,12 +4,15 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import se.tdfpro.elements.net.Client;
+import se.tdfpro.elements.net.LocalServer;
+import se.tdfpro.elements.server.GameServer;
 
-import java.io.IOException;
+import java.util.concurrent.Executors;
 
 public class ElementsClient extends StateBasedGame {
 
-    private Network net;
+    private Client net;
 
     public static void main(String[] args) {
         try {
@@ -26,16 +29,21 @@ public class ElementsClient extends StateBasedGame {
     public ElementsClient() {
         super("Elements");
 
-        try {
-            net = new Network("localhost", 7777);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            net = new InternetClient("localhost", 7777);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        var thread = Executors.newSingleThreadExecutor();
+        var localServer = new LocalServer();
+        var server = new GameServer(localServer);
+        thread.execute(server::run);
+        net = localServer.createClient();
     }
 
     @Override
     public void initStatesList(GameContainer gc) {
-        addState(new MainMenu(net));
+//        addState(new MainMenu(net));
         addState(new GameClient(net));
     }
 }

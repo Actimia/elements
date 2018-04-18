@@ -1,8 +1,8 @@
-package se.tdfpro.elements.server.command.client;
+package se.tdfpro.elements.net.command.client;
 
 import se.tdfpro.elements.client.GameClient;
-import se.tdfpro.elements.server.command.Send;
-import se.tdfpro.elements.server.command.ServerCommand;
+import se.tdfpro.elements.net.command.Send;
+import se.tdfpro.elements.net.command.ServerCommand;
 
 public class HandshakeReply extends ServerCommand {
 

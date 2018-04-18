@@ -1,30 +1,26 @@
-package se.tdfpro.elements.server;
+package se.tdfpro.elements.net;
 
-import se.tdfpro.elements.server.command.ClientCommand;
-import se.tdfpro.elements.server.command.Decoder;
-import se.tdfpro.elements.server.command.Encoder;
-import se.tdfpro.elements.server.command.ServerCommand;
+import se.tdfpro.elements.net.command.ClientCommand;
+import se.tdfpro.elements.net.command.Decoder;
+import se.tdfpro.elements.net.command.Encoder;
+import se.tdfpro.elements.net.command.ServerCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
-public class ServerClient {
-    private Network network;
+public class InternetServerClient implements ServerClient {
+    private InternetServer network;
     private Socket socket;
     private final OutputStream out;
     private Consumer<ClientCommand> onCommand;
+    private CommandQueue<ServerCommand> outbox = new CommandQueue<>();
     private boolean isConnected = true;
     private int id;
-    private BlockingQueue<ServerCommand> sendQueue = new LinkedBlockingQueue<>();
 
-    private static final int HEADER_LENGTH = 8;
-
-    public ServerClient(Network network, Socket socket, Consumer<ClientCommand> onCommand, int id) throws IOException {
+    public InternetServerClient(InternetServer network, Socket socket, Consumer<ClientCommand> onCommand, int id) throws IOException {
         this.network = network;
         this.socket = socket;
         this.onCommand = onCommand;
@@ -48,14 +44,19 @@ public class ServerClient {
         }
     }
 
+    @Override
+    public void accept(ClientCommand com) {
+        onCommand.accept(com);
+    }
+
     public void send(ServerCommand com) {
-        sendQueue.add(com);
+        outbox.accept(com);
     }
 
     public void doSend() {
         while (isConnected) {
             try {
-                ServerCommand com = sendQueue.take();
+                ServerCommand com = outbox.getCommand();
                 var encoded = Encoder.encodeCommand(com);
                 int len = encoded.length;
                 byte[] headerLength = {
@@ -65,7 +66,7 @@ public class ServerClient {
                         (byte) len
                 };
 
-                out.write(Network.MAGIC_SEQUENCE);
+                out.write(InternetServer.MAGIC_SEQUENCE);
                 out.write(headerLength);
                 out.write(encoded);
             } catch (IOException | InterruptedException e) {
@@ -89,7 +90,7 @@ public class ServerClient {
 
                 if (header_read != HEADER_LENGTH) throw new RuntimeException("Incomplete header");
                 for (int i = 0; i < 4; i++) {
-                    if (headerBuffer[i] != Network.MAGIC_SEQUENCE[i]) {
+                    if (headerBuffer[i] != MAGIC_SEQUENCE[i]) {
                         throw new RuntimeException("Bad magic sequence");
                     }
                 }

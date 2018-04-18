@@ -1,9 +1,8 @@
-package se.tdfpro.elements.server;
+package se.tdfpro.elements.net;
 
-import se.tdfpro.elements.server.command.ClientCommand;
-import se.tdfpro.elements.server.command.CommandQueue;
-import se.tdfpro.elements.server.command.ServerCommand;
-import se.tdfpro.elements.server.command.server.PlayerDisconnect;
+import se.tdfpro.elements.net.command.ClientCommand;
+import se.tdfpro.elements.net.command.ServerCommand;
+import se.tdfpro.elements.net.command.server.PlayerDisconnect;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,34 +12,35 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class Network {
-    public static final byte[] MAGIC_SEQUENCE = {1, 3, 3, 7};
-
-    private static int nextpid = 0;
+public class InternetServer implements Server {
+    private static int nextPid = 0;
 
     private ServerSocket server;
 
     private ConcurrentHashMap<Integer, ServerClient> clients = new ConcurrentHashMap<>();
-    private CommandQueue<ClientCommand> commands = new CommandQueue<>();
 
     private Executor threads = Executors.newCachedThreadPool();
+    private final CommandQueue<ClientCommand> inbox = new CommandQueue<>();
 
-    public Network(int port) throws IOException {
+    public InternetServer(int port) throws IOException {
         server = new ServerSocket(port);
         threads.execute(this::listen);
         System.out.println("Listening on " + port);
     }
 
+    @Override
     public void broadcast(ServerCommand command) {
         clients.values().forEach(client -> threads.execute(() -> client.send(command)));
     }
 
+    @Override
     public void send(int pid, ServerCommand command) {
         threads.execute(() -> clients.get(pid).send(command));
     }
 
+    @Override
     public List<ClientCommand> getCommands() {
-        return commands.getAll();
+        return inbox.getCommands();
     }
 
     public void disconnectClient(int pid) {
@@ -60,8 +60,8 @@ public class Network {
                 Socket sock = server.accept();
                 sock.setTcpNoDelay(true);
 
-                int pid = nextpid++;
-                ServerClient client = new ServerClient(this, sock, commands::onReceive, pid);
+                int pid = nextPid++;
+                var client = new InternetServerClient(this, sock, inbox::accept, pid);
                 clients.put(pid, client);
             } catch (IOException e) {
                 e.printStackTrace();

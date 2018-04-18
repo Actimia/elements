@@ -5,11 +5,11 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.GameClient;
+import se.tdfpro.elements.net.command.ServerCommand;
+import se.tdfpro.elements.net.command.client.CastSpell;
+import se.tdfpro.elements.net.command.client.MoveCommand;
+import se.tdfpro.elements.net.command.server.CreatePlayer;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.command.ServerCommand;
-import se.tdfpro.elements.server.command.client.CastSpell;
-import se.tdfpro.elements.server.command.client.MoveCommand;
-import se.tdfpro.elements.server.command.server.CreatePlayer;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
 

@@ -1,31 +1,29 @@
-package se.tdfpro.elements.client;
+package se.tdfpro.elements.net;
 
 import org.newdawn.slick.util.Log;
-import se.tdfpro.elements.server.command.*;
+import se.tdfpro.elements.net.command.ClientCommand;
+import se.tdfpro.elements.net.command.Decoder;
+import se.tdfpro.elements.net.command.Encoder;
+import se.tdfpro.elements.net.command.ServerCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 
-public class Network {
-    public static final byte[] MAGIC_SEQUENCE = {1, 3, 3, 7};
-    public static final int HEADER_LENGTH = 8;
-
+public class InternetClient implements Client {
     private final Socket socket;
     private final OutputStream out;
     private final InputStream in;
-    private final CommandQueue<ServerCommand> commands = new CommandQueue<>();
     private final Executor threads = Executors.newCachedThreadPool();
-    private final BlockingQueue<ClientCommand> sendQueue = new LinkedBlockingQueue<>();
+    private final CommandQueue<ClientCommand> outbox = new CommandQueue<>();
+    private final CommandQueue<ServerCommand> inbox = new CommandQueue<>();
     private boolean isConnected = true;
 
-    public Network(String host, int port) throws IOException {
+    public InternetClient(String host, int port) throws IOException {
         Log.info("Connecting to " + host + "@" + port + "...");
         socket = new Socket(host, port);
         socket.setTcpNoDelay(true);
@@ -49,10 +47,25 @@ public class Network {
         }
     }
 
+    @Override
+    public void send(ClientCommand com) {
+        outbox.accept(com);
+    }
+
+    @Override
+    public void accept(ServerCommand com) {
+        inbox.accept(com);
+    }
+
+    @Override
+    public List<ServerCommand> getCommands() {
+        return inbox.getCommands();
+    }
+
     private void doSend() {
         while (isConnected) {
             try {
-                ClientCommand com = sendQueue.take();
+                ClientCommand com = outbox.getCommand();
                 var encoded = Encoder.encodeCommand(com);
                 int len = encoded.length;
                 byte[] headerLengthVal = {
@@ -72,11 +85,7 @@ public class Network {
         }
     }
 
-    public void send(ClientCommand com) {
-        sendQueue.add(com);
-    }
-
-    public void listen() {
+    private void listen() {
         while (isConnected) {
             try {
                 byte[] headerBuffer = new byte[HEADER_LENGTH];
@@ -102,14 +111,10 @@ public class Network {
                 }
 
                 if (cmd_read < length) throw new RuntimeException("Read less than indicated # of bytes");
-                commands.onReceive(Decoder.decode(commandBuffer));
+                accept(Decoder.decode(commandBuffer));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    public List<ServerCommand> getCommands() {
-        return commands.getAll();
     }
 }

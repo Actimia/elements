@@ -1,19 +1,15 @@
 package se.tdfpro.elements.server;
 
+import se.tdfpro.elements.net.InternetServer;
+
 import java.io.IOException;
 
 public class ElementsServer {
 
-    private GameServer game;
-
-    public ElementsServer(int port) throws IOException {
-        game = new GameServer(port);
-        game.run();
-    }
-
     public static void main(String[] args) {
         try {
-            new ElementsServer(7777);
+            var game = new GameServer(new InternetServer(7777));
+            game.run();
         } catch (IOException e) {
             e.printStackTrace();
         }

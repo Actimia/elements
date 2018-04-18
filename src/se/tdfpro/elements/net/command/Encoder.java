@@ -1,4 +1,4 @@
-package se.tdfpro.elements.server.command;
+package se.tdfpro.elements.net.command;
 
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.ClientEntity;

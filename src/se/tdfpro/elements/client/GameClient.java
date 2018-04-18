@@ -6,7 +6,9 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import se.tdfpro.elements.server.command.ClientCommand;
+import se.tdfpro.elements.net.Client;
+import se.tdfpro.elements.net.command.ClientCommand;
+import se.tdfpro.elements.net.command.client.Handshake;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
 import java.util.HashMap;
@@ -17,11 +19,16 @@ public class GameClient extends BasicGameState {
 
     public Camera camera = new Camera();
     private Map<Integer, PhysicsEntity> entities = new HashMap<>();
-    private Network net;
+    private Client net;
     private int pid;
 
-    public GameClient(Network net) {
+    public GameClient(Client net) {
         this.net = net;
+
+        // clear the command cache before handshake
+        net.getCommands();
+
+        net.send(new Handshake("Actimia"));
     }
 
     @Override

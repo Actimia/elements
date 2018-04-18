@@ -1,15 +1,15 @@
 package se.tdfpro.elements.server;
 
-import se.tdfpro.elements.server.command.ServerCommand;
-import se.tdfpro.elements.server.command.server.DeleteEntity;
-import se.tdfpro.elements.server.command.server.UpdateEntity;
+import se.tdfpro.elements.net.Server;
+import se.tdfpro.elements.net.command.ServerCommand;
+import se.tdfpro.elements.net.command.server.DeleteEntity;
+import se.tdfpro.elements.net.command.server.UpdateEntity;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Circle;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 import se.tdfpro.elements.server.physics.entity.Ray;
 
-import java.io.IOException;
 import java.util.*;
 
 import static java.lang.Thread.sleep;
@@ -21,11 +21,11 @@ public class GameServer {
 
     private long lastTickStart = System.currentTimeMillis();
 
-    private Network networking;
+    private Server networking;
     private Map<Integer, PhysicsEntity> entities = new HashMap<>();
 
-    public GameServer(int port) throws IOException {
-        this.networking = new Network(port);
+    public GameServer(Server net) {
+        this.networking = net;
 
         var origin = new Vec2(0, 0);
         var area = new Vec2(1600, 1000);
@@ -51,16 +51,16 @@ public class GameServer {
 
             executeCommands();
             updatePhysics(delta);
-            var frametime = System.currentTimeMillis() - lastTickStart;
-            if (frametime > TICK_TIME) {
-                System.out.println("Very long frame warning: " + frametime + "ms");
-            } else if (frametime > TICK_TIME / 2) {
-                System.out.println("Long frame warning: " + frametime + "ms");
+            var frameTime = System.currentTimeMillis() - lastTickStart;
+            if (frameTime > TICK_TIME) {
+                System.out.println("Very long frame warning: " + frameTime + "ms");
+            } else if (frameTime > TICK_TIME / 2) {
+                System.out.println("Long frame warning: " + frameTime + "ms");
             }
-            var idletime = TICK_TIME - frametime;
-            if (idletime > 0) {
+            var idleTime = TICK_TIME - frameTime;
+            if (idleTime > 0) {
                 try {
-                    sleep(idletime);
+                    sleep(idleTime);
                 } catch (InterruptedException ignored) {
                 }
             }

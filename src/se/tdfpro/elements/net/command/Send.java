@@ -1,4 +1,4 @@
-package se.tdfpro.elements.server.command;
+package se.tdfpro.elements.net.command;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

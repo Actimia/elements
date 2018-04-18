@@ -5,14 +5,15 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import se.tdfpro.elements.server.command.client.Handshake;
+import se.tdfpro.elements.net.Client;
+import se.tdfpro.elements.net.command.client.Handshake;
 
 import java.util.regex.Pattern;
 
 public class MainMenu extends BasicGameState {
     public static final int ID = 0;
 
-    private Network net;
+    private Client net;
     private StateBasedGame game;
 
     private int caretBlinkStateCounter = 0;
@@ -25,7 +26,7 @@ public class MainMenu extends BasicGameState {
     private static final Pattern acceptedCharacters = Pattern.compile("\\w");
     private String usernameText = "";
 
-    public MainMenu(Network net) {
+    public MainMenu(Client net) {
         this.net = net;
     }
 

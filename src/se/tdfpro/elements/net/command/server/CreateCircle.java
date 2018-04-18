@@ -1,8 +1,8 @@
-package se.tdfpro.elements.server.command.server;
+package se.tdfpro.elements.net.command.server;
 
 import se.tdfpro.elements.client.GameClient;
-import se.tdfpro.elements.server.command.Send;
-import se.tdfpro.elements.server.command.ServerCommand;
+import se.tdfpro.elements.net.command.Send;
+import se.tdfpro.elements.net.command.ServerCommand;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Circle;
@@ -35,7 +35,6 @@ public class CreateCircle extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        System.out.println("CreateCircle(" + eid + ")");
         var player = new Circle(position, velocity, invMass, Materials.values()[material], radius);
         player.setEid(eid);
         game.addEntity(player);

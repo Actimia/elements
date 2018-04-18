@@ -1,9 +1,9 @@
 package se.tdfpro.elements.server.physics.entity;
 
 import org.newdawn.slick.Graphics;
+import se.tdfpro.elements.net.command.ServerCommand;
+import se.tdfpro.elements.net.command.server.CreateProjectile;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.command.ServerCommand;
-import se.tdfpro.elements.server.command.server.CreateProjectile;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
 
