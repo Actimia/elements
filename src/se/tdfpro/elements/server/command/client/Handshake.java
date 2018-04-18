@@ -22,13 +22,13 @@ public class Handshake extends ClientCommand {
         game.send(pid, new HandshakeReply(pid));
 
         // send current state
-        var ents = game.getEntities().values();
+        var ents = game.getEntities();
         ents.forEach(e -> {
             var cmd = new CreateEntity(e);
             game.send(pid, cmd);
         });
 
-        var ent = new Circle(new Vec2(100, 0), new Vec2(-15,0), .5f, Materials.PLAYER, 30f);
+        var ent = new Circle(new Vec2(100, 1), new Vec2(-15,0), .5f, Materials.PLAYER, 30f);
         game.spawnEntity(ent);
         game.broadcast(new CreateEntity(ent));
 

@@ -8,9 +8,7 @@ import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.shapes.Ray;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static java.lang.Thread.sleep;
 import static se.tdfpro.elements.server.physics.CollisionManifold.checkCollision;
@@ -27,8 +25,17 @@ public class GameServer {
     public GameServer(int port) throws IOException {
         this.networking = new Network(port);
 
-        var edge = new Ray(new Vec2(-500,-300), Vec2.UP);
-        entities.put(edge.eid, edge);
+        var area = new Vec2(1600, 1000);
+
+        var top = new Ray(new Vec2(0, 0), Vec2.RIGHT);
+        var bottom = new Ray(new Vec2(0, area.y), Vec2.RIGHT);
+        var left = new Ray(new Vec2(0, 0), Vec2.DOWN);
+        var right = new Ray(new Vec2(area.x, 0), Vec2.DOWN);
+
+        addEntity(top);
+        addEntity(bottom);
+        addEntity(left);
+        addEntity(right);
     }
 
     public void run() {
@@ -39,14 +46,20 @@ public class GameServer {
 
             executeCommands();
             updatePhysics(delta);
-
             var frametime = System.currentTimeMillis() - lastTickStart;
-            var idletime = TICK_TIME - frametime;
-            if (idletime < 0) idletime = 0;
-            try {
-                sleep(idletime);
-            } catch (InterruptedException ignored) {
+            if (frametime > TICK_TIME) {
+                System.out.println("Very long frame warning: " + frametime + "ms");
+            } else if(frametime > TICK_TIME / 2) {
+                System.out.println("Long frame warning: " + frametime + "ms");
             }
+            var idletime = TICK_TIME - frametime;
+            if (idletime > 0) {
+                try {
+                    sleep(idletime);
+                } catch (InterruptedException ignored) {
+                }
+            }
+
         }
     }
 
@@ -74,8 +87,20 @@ public class GameServer {
         ents.forEach(ent -> broadcast(new UpdateEntity(ent)));
     }
 
-    public Map<Integer, PhysicsEntity> getEntities() {
-        return entities;
+    public PhysicsEntity getEntity(int eid) {
+        return entities.get(eid);
+    }
+
+    public void addEntity(PhysicsEntity ent) {
+        entities.put(ent.eid, ent);
+    }
+
+    public void deleteEntity(int eid) {
+        entities.remove(eid);
+    }
+
+    public Collection<PhysicsEntity> getEntities() {
+        return entities.values();
     }
 
     public void send(int pid, ServerCommand command) {

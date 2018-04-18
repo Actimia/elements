@@ -6,7 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class Camera {
     private static final Vector2f viewport = new Vector2f(1600, 1000);
 
-    private Vector2f translate = viewport.copy().scale(0.5f);
+    private Vector2f translate = new Vector2f(0,0);
     private float scale = 1;
     private float rotation = 0;
 

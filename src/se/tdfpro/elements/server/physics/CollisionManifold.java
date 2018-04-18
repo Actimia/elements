@@ -16,6 +16,7 @@ public class CollisionManifold {
     public CollisionManifold(PhysicsEntity a, PhysicsEntity b, Vec2 normal, float depth) {
         this.a = a;
         this.b = b;
+        if (normal.equals(Vec2.ZERO)) normal = Vec2.RIGHT;
         this.normal = normal.norm();
         this.depth = depth;
     }
@@ -29,7 +30,6 @@ public class CollisionManifold {
             j /= a.invMass + b.invMass;
 
             var impulse = normal.scale(j);
-            System.out.println(impulse);
             a.velocity = a.velocity.sub(impulse.scale(a.invMass));
             b.velocity = b.velocity.add(impulse.scale(b.invMass));
         }
@@ -46,6 +46,10 @@ public class CollisionManifold {
         var normal = b.position.sub(a.position);
         if (normal.length2() <= limit * limit) {
             var depth = normal.length() - limit;
+
+            if (normal.equals(Vec2.ZERO)) {
+                normal = Vec2.RIGHT;
+            }
             return Optional.of(new CollisionManifold(a, b, normal, depth));
         }
         return Optional.empty();
@@ -56,10 +60,13 @@ public class CollisionManifold {
         var closest = b.position.add(b.direction.scale(t));
 
         var limit = a.radius;
-//        var normal = closest.sub(a.position);
         var normal = a.position.sub(closest);
         if (normal.length2() <= limit * limit) {
             var depth = normal.length() - limit;
+
+            if (normal.equals(Vec2.ZERO)) {
+                normal = b.direction.perpendicular();
+            }
             return Optional.of(new CollisionManifold(a, b, normal, depth));
         }
 
@@ -79,10 +86,10 @@ public class CollisionManifold {
     }
 
     public static Optional<CollisionManifold> checkCollision(PhysicsEntity a, PhysicsEntity b) {
-        if(a instanceof Circle && b instanceof Circle) return checkCollision((Circle) a, (Circle) b);
-        if(a instanceof Ray && b instanceof Circle) return checkCollision((Ray) a, (Circle) b);
-        if(a instanceof Circle && b instanceof Ray) return checkCollision((Circle) a, (Ray) b);
-        if(a instanceof Ray && b instanceof Ray) return checkCollision((Ray) a, (Ray) b);
+        if (a instanceof Circle && b instanceof Circle) return checkCollision((Circle) a, (Circle) b);
+        if (a instanceof Ray && b instanceof Circle) return checkCollision((Ray) a, (Circle) b);
+        if (a instanceof Circle && b instanceof Ray) return checkCollision((Circle) a, (Ray) b);
+        if (a instanceof Ray && b instanceof Ray) return checkCollision((Ray) a, (Ray) b);
 
 
         throw new RuntimeException("Unknown entity collision type: "

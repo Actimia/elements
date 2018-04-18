@@ -6,6 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 import static se.tdfpro.elements.client.engine.Camera.TO_DEGREES;
 
 public class Vec2  {
+    private static final float TOLERANCE = 1e-4f;
     public static final Vec2 ZERO = new Vec2(0,0);
     public static final Vec2 UP = new Vec2(0,1);
     public static final Vec2 DOWN = new Vec2(0,-1);
@@ -61,11 +62,23 @@ public class Vec2  {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(!(obj instanceof Vec2)) return false;
+        var o = (Vec2) obj;
+        return (Math.abs(x - o.x) < TOLERANCE) && (Math.abs(y-o.y) < TOLERANCE);
+    }
+
+    @Override
     public String toString() {
         return String.format("(%f, %f)", x, y);
     }
 
     public Vector2f toVector2f() {
         return new Vector2f(x,y);
+    }
+
+    public Vec2 perpendicular() {
+        return new Vec2(-y, x);
     }
 }
