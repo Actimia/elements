@@ -1,6 +1,6 @@
 package se.tdfpro.elements.server.command;
 
-import se.tdfpro.elements.client.engine.entity.Entity;
+import se.tdfpro.elements.server.physics.entity.ClientEntity;
 import se.tdfpro.elements.server.physics.Vec2;
 
 import java.lang.reflect.Field;
@@ -57,7 +57,7 @@ public class Encoder {
         encode(vec.y);
     }
 
-    private void encode(Class<? extends Entity> cls, Object... params) {
+    private void encode(Class<? extends ClientEntity> cls, Object... params) {
         try {
             encode(cls.getName());
             var ptypes = cls.getDeclaredConstructor().getParameterTypes();

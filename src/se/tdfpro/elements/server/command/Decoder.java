@@ -1,6 +1,6 @@
 package se.tdfpro.elements.server.command;
 
-import se.tdfpro.elements.client.engine.entity.Entity;
+import se.tdfpro.elements.server.physics.entity.ClientEntity;
 import se.tdfpro.elements.server.physics.Vec2;
 
 import java.lang.reflect.Field;
@@ -44,7 +44,7 @@ public class Decoder <T extends Command> {
                 f.set(obj, decodeString());
             } else if(type.equals(Vec2.class)) {
                 f.set(obj, decodeVec2());
-            } else if(type.equals(Entity.class)){
+            } else if(type.equals(ClientEntity.class)){
                 f.set(obj, decodeEntity());
             }
         } catch (IllegalAccessException e) {
@@ -64,11 +64,11 @@ public class Decoder <T extends Command> {
         return new Vec2(decodeFloat(), decodeFloat());
     }
 
-    private Entity decodeEntity() {
+    private ClientEntity decodeEntity() {
 
         try {
             var name = decodeString();
-            Class<? extends Entity> cls = (Class<? extends Entity>) Class.forName(name);
+            Class<? extends ClientEntity> cls = (Class<? extends ClientEntity>) Class.forName(name);
             var constructor = cls.getDeclaredConstructor();
             var ptypes = constructor.getParameterTypes();
             var params = new Object[constructor.getParameterCount()];
@@ -83,7 +83,7 @@ public class Decoder <T extends Command> {
                     params[i] = decodeString();
                 } else if(type.equals(Vec2.class)) {
                     params[i] = decodeVec2();
-                } else if(type.equals(Entity.class)){
+                } else if(type.equals(ClientEntity.class)){
                     params[i] = decodeEntity();
                 }
             }

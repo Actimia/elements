@@ -6,12 +6,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.Log;
-import se.tdfpro.elements.client.engine.Camera;
-import se.tdfpro.elements.client.engine.entity.Entity;
-import se.tdfpro.elements.client.engine.entity.Player;
+import se.tdfpro.elements.server.physics.entity.ClientEntity;
 import se.tdfpro.elements.server.command.ClientCommand;
-import se.tdfpro.elements.server.command.ServerCommand;
 import se.tdfpro.elements.server.command.client.Handshake;
 
 import java.io.IOException;
@@ -23,7 +19,7 @@ public class GameClient extends BasicGameState {
     public static final int ID = 1;
 
     public Camera camera = new Camera();
-    private Map<Integer, Entity> entities = new HashMap<>();
+    private Map<Integer, ClientEntity> entities = new HashMap<>();
     private Network net;
     private int pid;
 
@@ -51,18 +47,17 @@ public class GameClient extends BasicGameState {
         entities.values().forEach(ent -> ent.render(gc, this, g));
 
         g.popTransform();
-
-        entities.values().forEach(ent -> ent.renderInterface(gc, this, g));
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+        var fdelta = delta / 1000f;
         Input input = gc.getInput();
         if (input.isKeyDown(Input.KEY_ESCAPE)) {
             gc.exit();
         }
         net.getCommands().forEach(cmd -> cmd.execute(this));
-        entities.values().forEach(ent -> ent.update(gc, this, delta));
+        entities.values().forEach(ent -> ent.updateClient(gc, this, fdelta));
     }
 
     @Override
@@ -70,15 +65,15 @@ public class GameClient extends BasicGameState {
         return ID;
     }
 
-    public void addEntity(Entity ent) {
+    public void addEntity(ClientEntity ent) {
         entities.put(ent.getID(), ent);
     }
 
-    public Entity getEntity(int eid) {
+    public ClientEntity getEntity(int eid) {
         return entities.get(eid);
     }
 
-    public Map<Integer, Entity> getEntities() {
+    public Map<Integer, ClientEntity> getEntities() {
         return entities;
     }
 

@@ -1,12 +1,13 @@
-package se.tdfpro.elements.client.engine;
+package se.tdfpro.elements.client;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
+import se.tdfpro.elements.server.physics.Vec2;
 
 public class Camera {
-    private static final Vector2f viewport = new Vector2f(1600, 1000);
+    private static final Vec2 viewport = new Vec2(1600, 1000);
 
-    private Vector2f translate = new Vector2f(0,0);
+    private Vec2 translate = Vec2.ZERO;
     private float scale = 1;
     private float rotation = 0;
 
@@ -19,36 +20,29 @@ public class Camera {
         g.scale(scale, scale);
     }
 
-    public Vector2f project(Vector2f world) {
-        var res = world.copy();
-        res.add(translate);
-        res.add(rotation);
-        res.scale(scale);
-        return res;
+    public Vec2 project(Vec2 world) {
+
+        return world.add(translate).rotate(rotation).scale(scale);
     }
 
-    public Vector2f unproject(Vector2f camera) {
-        var res = camera.copy();
-        res.scale(1/scale);
-        res.add(-rotation);
-        res.add(translate.negate());
-        return res;
+    public Vec2 unproject(Vec2 camera) {
+        return camera.scale(1/scale).rotate(-rotation).add(translate.invert());
     }
 
 
     public void translate(float x, float y) {
-        translate(new Vector2f(x,y));
+        translate(new Vec2(x,y));
     }
 
-    private void translate(Vector2f offset) {
+    private void translate(Vec2 offset) {
         translate.add(offset);
     }
 
-    public Vector2f getTranslation() {
+    public Vec2 getTranslation() {
         return translate;
     }
 
-    public void setTranslation(Vector2f translate) {
+    public void setTranslation(Vec2 translate) {
         this.translate = translate;
     }
 

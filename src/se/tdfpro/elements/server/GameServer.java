@@ -3,9 +3,11 @@ package se.tdfpro.elements.server;
 import se.tdfpro.elements.server.command.ServerCommand;
 import se.tdfpro.elements.server.command.server.UpdateEntity;
 import se.tdfpro.elements.server.physics.CollisionManifold;
-import se.tdfpro.elements.server.physics.PhysicsEntity;
+import se.tdfpro.elements.server.physics.Materials;
+import se.tdfpro.elements.server.physics.entity.Circle;
+import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.shapes.Ray;
+import se.tdfpro.elements.server.physics.entity.Ray;
 
 import java.io.IOException;
 import java.util.*;
@@ -17,7 +19,7 @@ public class GameServer {
     public static final int TICKS = 20;
     public static final int TICK_TIME = 1000 / TICKS;
 
-    private long lastTickStart = 0;
+    private long lastTickStart = System.currentTimeMillis();
 
     private Network networking;
     private Map<Integer, PhysicsEntity> entities = new HashMap<>();
@@ -36,11 +38,14 @@ public class GameServer {
         addEntity(bottom);
         addEntity(left);
         addEntity(right);
+
+
+        addEntity(new Circle(new Vec2(800, 600), Vec2.ZERO, 2, Materials.PLAYER, 30f));
+        addEntity(new Circle(new Vec2(400, 600), new Vec2(20, 0), 2, Materials.PLAYER, 30f));
     }
 
     public void run() {
         while (true) {
-
             var delta = (System.currentTimeMillis() - lastTickStart) / 1000f;
             lastTickStart = System.currentTimeMillis();
 
@@ -64,7 +69,8 @@ public class GameServer {
     }
 
     public void spawnEntity(PhysicsEntity ent) {
-        entities.put(ent.eid, ent);
+        entities.put(ent.getEid(), ent);
+        broadcast(ent.makeCreateCommand());
     }
 
     public void executeCommands() {
@@ -74,17 +80,22 @@ public class GameServer {
 
     public void updatePhysics(float delta) {
         var ents = entities.values();
-        ents.forEach(ent -> ent.update(this, delta));
+        ents.forEach(ent -> ent.updateServer(this, delta));
 
+        // Collision detection and resolving
         ents.stream()
                 .flatMap(a ->
                         ents.stream()
-                                .filter(b -> a.eid < b.eid)
+                                .filter(b -> a.getEid() < b.getEid())
                                 .map(b -> checkCollision(a, b))
                 )
                 .flatMap(Optional::stream)
                 .forEach(CollisionManifold::resolve);
-        ents.forEach(ent -> broadcast(new UpdateEntity(ent)));
+
+        // Update clients
+        ents.stream()
+                .filter(PhysicsEntity::isDynamic)
+                .forEach(ent -> broadcast(new UpdateEntity(ent)));
     }
 
     public PhysicsEntity getEntity(int eid) {
@@ -92,7 +103,7 @@ public class GameServer {
     }
 
     public void addEntity(PhysicsEntity ent) {
-        entities.put(ent.eid, ent);
+        entities.put(ent.getEid(), ent);
     }
 
     public void deleteEntity(int eid) {
