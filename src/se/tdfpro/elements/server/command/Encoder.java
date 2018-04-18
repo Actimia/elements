@@ -1,7 +1,7 @@
 package se.tdfpro.elements.server.command;
 
-import se.tdfpro.elements.server.physics.entity.ClientEntity;
 import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.server.physics.entity.ClientEntity;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
@@ -15,7 +15,7 @@ public class Encoder {
     private byte[] getBytes() {
         var res = new byte[buf.position()];
         buf.rewind();
-        buf.get(res,0, res.length);
+        buf.get(res, 0, res.length);
         return res;
     }
 
@@ -32,12 +32,12 @@ public class Encoder {
         try {
             if (type.equals(Integer.TYPE)) {
                 encode(f.getInt(obj));
-            } else if(type.equals(Float.TYPE)) {
+            } else if (type.equals(Float.TYPE)) {
                 encode(f.getFloat(obj));
-            } else if(type.equals(String.class)) {
-                encode((String)f.get(obj));
-            } else if(type.equals(Vec2.class)) {
-                encode((Vec2)f.get(obj));
+            } else if (type.equals(String.class)) {
+                encode((String) f.get(obj));
+            } else if (type.equals(Vec2.class)) {
+                encode((Vec2) f.get(obj));
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -64,20 +64,20 @@ public class Encoder {
             if (ptypes.length != params.length) {
                 throw new RuntimeException("Mismatch in constructor args length");
             }
-            for(int i = 0; i < ptypes.length; i++) {
+            for (int i = 0; i < ptypes.length; i++) {
                 var type = ptypes[i];
                 var param = params[i];
 
-                if(!type.isAssignableFrom(param.getClass())){
+                if (!type.isAssignableFrom(param.getClass())) {
                     throw new RuntimeException("Mismatch in constructor types");
                 }
                 if (type.equals(Integer.TYPE)) {
                     encode((int) param);
-                } else if(type.equals(Float.TYPE)) {
+                } else if (type.equals(Float.TYPE)) {
                     encode((float) param);
-                } else if(type.equals(String.class)) {
+                } else if (type.equals(String.class)) {
                     encode((String) param);
-                } else if(type.equals(Vec2.class)) {
+                } else if (type.equals(Vec2.class)) {
                     encode((Vec2) param);
                 }
             }

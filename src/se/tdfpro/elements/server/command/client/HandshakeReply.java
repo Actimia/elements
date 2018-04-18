@@ -9,7 +9,8 @@ public class HandshakeReply extends ServerCommand {
     @Send
     public int pid;
 
-    public HandshakeReply(){}
+    public HandshakeReply() {
+    }
 
     public HandshakeReply(int pid) {
         this.pid = pid;

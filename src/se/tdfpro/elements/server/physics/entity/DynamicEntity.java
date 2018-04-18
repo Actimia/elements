@@ -27,7 +27,7 @@ public abstract class DynamicEntity extends PhysicsEntity {
     }
 
     @Override
-    public void updateServer(GameServer game, float delta){
+    public void updateServer(GameServer game, float delta) {
         doEulerStep(delta);
     }
 

@@ -6,20 +6,17 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import se.tdfpro.elements.server.physics.entity.ClientEntity;
 import se.tdfpro.elements.server.command.ClientCommand;
-import se.tdfpro.elements.server.command.client.Handshake;
+import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class GameClient extends BasicGameState {
     public static final int ID = 1;
 
     public Camera camera = new Camera();
-    private Map<Integer, ClientEntity> entities = new HashMap<>();
+    private Map<Integer, PhysicsEntity> entities = new HashMap<>();
     private Network net;
     private int pid;
 
@@ -59,15 +56,19 @@ public class GameClient extends BasicGameState {
         return ID;
     }
 
-    public void addEntity(ClientEntity ent) {
+    public void addEntity(PhysicsEntity ent) {
         entities.put(ent.getID(), ent);
     }
 
-    public ClientEntity getEntity(int eid) {
+    public void deleteEntity(int eid) {
+        entities.remove(eid);
+    }
+
+    public PhysicsEntity getEntity(int eid) {
         return entities.get(eid);
     }
 
-    public Map<Integer, ClientEntity> getEntities() {
+    public Map<Integer, PhysicsEntity> getEntities() {
         return entities;
     }
 
@@ -82,4 +83,5 @@ public class GameClient extends BasicGameState {
     public void send(ClientCommand command) {
         net.send(command);
     }
+
 }

@@ -3,12 +3,13 @@ package se.tdfpro.elements.server.physics.entity;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
+import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Material;
 import se.tdfpro.elements.server.physics.Vec2;
 
-public abstract class PhysicsEntity implements ServerEntity, ClientEntity{
+public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
     private static int nextEid;
-    private int eid = nextEid++;
+    protected int eid = nextEid++;
     protected Vec2 position;
 
     protected final Material material;
@@ -25,13 +26,17 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity{
 
         var pos = getPosition();
         g.translate(pos.x, pos.y);
-        g.rotate(0,0, getVelocity().theta());
+        g.rotate(0, 0, getVelocity().theta());
 
         g.setColor(material.getColor());
 
         draw(g);
 
         g.popTransform();
+    }
+
+    public void onCollide(GameServer game, PhysicsEntity other) {
+
     }
 
     public Vec2 getPosition() {

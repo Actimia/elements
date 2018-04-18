@@ -1,6 +1,9 @@
 package se.tdfpro.elements.server;
 
-import se.tdfpro.elements.server.command.*;
+import se.tdfpro.elements.server.command.ClientCommand;
+import se.tdfpro.elements.server.command.Decoder;
+import se.tdfpro.elements.server.command.Encoder;
+import se.tdfpro.elements.server.command.ServerCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,7 +53,7 @@ public class ServerClient {
     }
 
     public void doSend() {
-        while(isConnected) {
+        while (isConnected) {
             try {
                 ServerCommand com = sendQueue.take();
                 var encoded = Encoder.encodeCommand(com);
@@ -80,13 +83,13 @@ public class ServerClient {
 
             while (isConnected) {
                 int header_read = 0;
-                while(header_read < HEADER_LENGTH) {
+                while (header_read < HEADER_LENGTH) {
                     header_read += in.read(headerBuffer, header_read, HEADER_LENGTH - header_read);
                 }
 
                 if (header_read != HEADER_LENGTH) throw new RuntimeException("Incomplete header");
-                for (int i = 0; i<4; i++) {
-                    if (headerBuffer[i] != Network.MAGIC_SEQUENCE[i]){
+                for (int i = 0; i < 4; i++) {
+                    if (headerBuffer[i] != Network.MAGIC_SEQUENCE[i]) {
                         throw new RuntimeException("Bad magic sequence");
                     }
                 }
@@ -98,7 +101,7 @@ public class ServerClient {
 
                 byte[] commandBuffer = new byte[length];
                 int cmd_read = 0;
-                while(cmd_read < length) {
+                while (cmd_read < length) {
                     cmd_read += in.read(commandBuffer, cmd_read, length - cmd_read);
                 }
 

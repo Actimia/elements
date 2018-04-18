@@ -1,6 +1,5 @@
 package se.tdfpro.elements.server.physics.entity;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.server.command.ServerCommand;
 import se.tdfpro.elements.server.command.server.CreateCircle;

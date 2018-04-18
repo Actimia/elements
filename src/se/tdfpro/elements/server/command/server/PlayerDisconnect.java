@@ -6,7 +6,10 @@ import se.tdfpro.elements.server.command.ServerCommand;
 
 public class PlayerDisconnect extends ServerCommand {
 
-    public PlayerDisconnect(){};
+    public PlayerDisconnect() {
+    }
+
+    ;
 
     @Send
     public int playerid;

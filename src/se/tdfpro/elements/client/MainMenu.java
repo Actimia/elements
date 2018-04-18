@@ -26,7 +26,7 @@ public class MainMenu extends BasicGameState {
     private String usernameText = "";
 
     public MainMenu(Network net) {
-       this.net = net;
+        this.net = net;
     }
 
     private void handshake() {
@@ -75,14 +75,14 @@ public class MainMenu extends BasicGameState {
                 handshake();
             }
         } else if (key == Input.KEY_BACK && usernameText.length() > 0) {
-           usernameText = usernameText.substring(0, usernameText.length() - 1) ;
-        } else if (usernameText.length() < 16 && acceptedCharacters.matcher(String.valueOf(c)).matches()){
+            usernameText = usernameText.substring(0, usernameText.length() - 1);
+        } else if (usernameText.length() < 16 && acceptedCharacters.matcher(String.valueOf(c)).matches()) {
             usernameText += c;
         }
     }
 
     @Override
     public int getID() {
-       return ID;
+        return ID;
     }
 }

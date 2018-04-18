@@ -2,7 +2,7 @@ package se.tdfpro.elements.server.physics;
 
 import org.newdawn.slick.Color;
 
-public enum Materials implements Material{
+public enum Materials implements Material {
     PLAYER(0.4f, 0.2f, Color.white),
     PROJECTILE(1f, 1f, Color.red),
     WALL(0.2f, 1.0f, Color.orange);

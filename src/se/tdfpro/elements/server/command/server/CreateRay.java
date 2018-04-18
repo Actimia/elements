@@ -16,7 +16,8 @@ public class CreateRay extends ServerCommand {
     @Send
     public Vec2 direction;
 
-    public CreateRay() {}
+    public CreateRay() {
+    }
 
     public CreateRay(Ray ray) {
         this.eid = ray.getEid();

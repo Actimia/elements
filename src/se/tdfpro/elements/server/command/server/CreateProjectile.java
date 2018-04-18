@@ -9,24 +9,23 @@ import se.tdfpro.elements.server.physics.entity.Projectile;
 public class CreateProjectile extends ServerCommand {
     @Send
     public int eid;
+
+    @Send
+    public int sourceid;
+
     @Send
     public Vec2 position;
 
     @Send
     public Vec2 velocity;
 
-    public CreateProjectile() {}
-
-    public CreateProjectile(Projectile projectile) {
-        this.eid = projectile.getEid();
-        this.position = projectile.getPosition();
-        this.velocity = projectile.getVelocity();
+    public CreateProjectile() {
     }
 
     @Override
     public void execute(GameClient game) {
         System.out.println("CreateProjectile(" + eid + ")");
-        var proj = new Projectile(position, velocity);
+        var proj = new Projectile(position, velocity, game.getEntity(sourceid));
         proj.setEid(eid);
         game.addEntity(proj);
     }

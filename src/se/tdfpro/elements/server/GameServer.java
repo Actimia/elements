@@ -1,12 +1,12 @@
 package se.tdfpro.elements.server;
 
 import se.tdfpro.elements.server.command.ServerCommand;
+import se.tdfpro.elements.server.command.server.DeleteEntity;
 import se.tdfpro.elements.server.command.server.UpdateEntity;
-import se.tdfpro.elements.server.physics.CollisionManifold;
 import se.tdfpro.elements.server.physics.Materials;
+import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Circle;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
-import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Ray;
 
 import java.io.IOException;
@@ -27,21 +27,21 @@ public class GameServer {
     public GameServer(int port) throws IOException {
         this.networking = new Network(port);
 
+        var origin = new Vec2(0, 0);
         var area = new Vec2(1600, 1000);
 
-        var top = new Ray(new Vec2(0, 0), Vec2.RIGHT);
-        var bottom = new Ray(new Vec2(0, area.y), Vec2.RIGHT);
-        var left = new Ray(new Vec2(0, 0), Vec2.DOWN);
-        var right = new Ray(new Vec2(area.x, 0), Vec2.DOWN);
+        var top = new Ray(new Vec2(origin.x, origin.y), Vec2.RIGHT);
+        var bottom = new Ray(new Vec2(origin.x + area.x, origin.y + area.y), Vec2.LEFT);
+        var left = new Ray(new Vec2(origin.x, origin.y + area.y), Vec2.UP);
+        var right = new Ray(new Vec2(origin.x + area.x, origin.y), Vec2.DOWN);
 
-        addEntity(top);
-        addEntity(bottom);
-        addEntity(left);
-        addEntity(right);
+        spawnEntity(top);
+        spawnEntity(bottom);
+        spawnEntity(left);
+        spawnEntity(right);
 
-
-        addEntity(new Circle(new Vec2(800, 600), Vec2.ZERO, 2, Materials.PLAYER, 30f));
-        addEntity(new Circle(new Vec2(400, 600), new Vec2(20, 0), 2, Materials.PLAYER, 30f));
+        spawnEntity(new Circle(new Vec2(800, 600), Vec2.ZERO, 2, Materials.PLAYER, 30f));
+        spawnEntity(new Circle(new Vec2(400, 600), new Vec2(20, 0), 2, Materials.PLAYER, 30f));
     }
 
     public void run() {
@@ -54,7 +54,7 @@ public class GameServer {
             var frametime = System.currentTimeMillis() - lastTickStart;
             if (frametime > TICK_TIME) {
                 System.out.println("Very long frame warning: " + frametime + "ms");
-            } else if(frametime > TICK_TIME / 2) {
+            } else if (frametime > TICK_TIME / 2) {
                 System.out.println("Long frame warning: " + frametime + "ms");
             }
             var idletime = TICK_TIME - frametime;
@@ -79,7 +79,7 @@ public class GameServer {
     }
 
     public void updatePhysics(float delta) {
-        var ents = entities.values();
+        var ents = new ArrayList<>(entities.values());
         ents.forEach(ent -> ent.updateServer(this, delta));
 
         // Collision detection and resolving
@@ -90,7 +90,7 @@ public class GameServer {
                                 .map(b -> checkCollision(a, b))
                 )
                 .flatMap(Optional::stream)
-                .forEach(CollisionManifold::resolve);
+                .forEach(mani -> mani.resolve(this));
 
         // Update clients
         ents.stream()
@@ -102,12 +102,9 @@ public class GameServer {
         return entities.get(eid);
     }
 
-    public void addEntity(PhysicsEntity ent) {
-        entities.put(ent.getEid(), ent);
-    }
-
     public void deleteEntity(int eid) {
         entities.remove(eid);
+        broadcast(new DeleteEntity(eid));
     }
 
     public Collection<PhysicsEntity> getEntities() {

@@ -4,21 +4,19 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.server.command.Send;
 import se.tdfpro.elements.server.command.ServerCommand;
 
-public class PlayerJoined extends ServerCommand {
+public class DeleteEntity extends ServerCommand {
+    @Send
+    public int eid;
 
-    public PlayerJoined() {
+    public DeleteEntity() {
     }
 
-    ;
-
-    @Send
-    public int playerid;
-
-    @Send
-    public String username;
+    public DeleteEntity(int eid) {
+        this.eid = eid;
+    }
 
     @Override
     public void execute(GameClient game) {
-
+        game.deleteEntity(eid);
     }
 }

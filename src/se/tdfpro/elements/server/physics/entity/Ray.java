@@ -21,12 +21,11 @@ public class Ray extends PhysicsEntity {
 
     @Override
     public void draw(Graphics g) {
-        g.setLineWidth(6);
+        g.setLineWidth(3);
         g.setColor(Color.white);
-        var target = direction.scale(2000f);
-        var from = position.sub(target);
-        var to = position.add(target);
-        g.drawLine(from.x, from.y, to.x, to.y);
+        var dst = direction.scale(2000f);
+        var src = dst.invert();
+        g.drawLine(src.x, src.y, dst.x, dst.y);
     }
 
     @Override
@@ -46,6 +45,14 @@ public class Ray extends PhysicsEntity {
     @Override
     public void updateServer(GameServer game, float delta) {
 
+    }
+
+    public boolean isRHS(Vec2 point) {
+        return point.sub(position).dot(direction.perpendicular()) > 0;
+    }
+
+    public float closestDistance(Vec2 point) {
+        return point.sub(position).dot(direction.perpendicular());
     }
 
     @Override

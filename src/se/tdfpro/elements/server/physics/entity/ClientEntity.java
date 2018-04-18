@@ -6,6 +6,7 @@ import se.tdfpro.elements.client.GameClient;
 
 public interface ClientEntity {
     void render(GameContainer gc, GameClient game, Graphics g);
+
     void draw(Graphics g);
 
     void updateClient(GameContainer gc, GameClient game, float delta);

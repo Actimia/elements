@@ -1,5 +1,6 @@
 package se.tdfpro.elements.server.physics;
 
+import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.entity.Circle;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 import se.tdfpro.elements.server.physics.entity.Ray;
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public class CollisionManifold {
     private static final float slop = -1f;
-    private static final float corrFactor = 1f;
+    private static final float corrFactor = 0.8f;
     public PhysicsEntity a;
     public PhysicsEntity b;
     public Vec2 normal;
@@ -22,11 +23,11 @@ public class CollisionManifold {
         this.depth = depth;
     }
 
-    public void resolve() {
+    public void resolve(GameServer game) {
         var velocity_along_normal = b.getVelocity().sub(a.getVelocity()).dot(normal);
 
         if (velocity_along_normal <= 0) {
-            var e = Math.min(a.getMaterial().getRestitution(), b.getMaterial().getRestitution());
+            var e = Math.max(a.getMaterial().getRestitution(), b.getMaterial().getRestitution());
             var j = -(1 + e) * velocity_along_normal;
             j /= a.getInvMass() + b.getInvMass();
 
@@ -39,9 +40,9 @@ public class CollisionManifold {
             var pos_correction = normal.scale(corrFactor * depth / (a.getInvMass() + b.getInvMass()));
             a.changePosition(pos_correction.scale(a.getInvMass()));
             b.changePosition(pos_correction.scale(-b.getInvMass()));
-//            a.position = a.position.add(pos_correction.scale(a.getInvMass()));
-//            b.position = b.position.sub(pos_correction.scale(b.getInvMass()));
         }
+        a.onCollide(game, b);
+        b.onCollide(game, a);
     }
 
     public static Optional<CollisionManifold> checkCollision(Circle a, Circle b) {
@@ -59,18 +60,13 @@ public class CollisionManifold {
     }
 
     public static Optional<CollisionManifold> checkCollision(Circle a, Ray b) {
-        var t = a.getPosition().sub(b.getPosition()).dot(b.getDirection());
-        var closest = b.getPosition().add(b.getDirection().scale(t));
 
         var limit = a.radius;
-        var normal = a.getPosition().sub(closest);
-        if (normal.length2() <= limit * limit) {
+        var perp = b.getDirection().perpendicular();
+        var normal = perp.scale(b.closestDistance(a.getPosition()));
+        if (normal.length2() < limit * limit) {
             var depth = normal.length() - limit;
-
-            if (normal.equals(Vec2.ZERO)) {
-                normal = b.getDirection().perpendicular();
-            }
-            return Optional.of(new CollisionManifold(a, b, normal, depth));
+            return Optional.of(new CollisionManifold(a, b, normal.project(perp), depth));
         }
 
         return Optional.empty();

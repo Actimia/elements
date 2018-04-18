@@ -14,7 +14,7 @@ public class CommandQueue<T extends Command> {
 
     public List<T> getAll() {
         var res = new ArrayList<T>();
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             res.add(queue.pop());
         }
         return res;

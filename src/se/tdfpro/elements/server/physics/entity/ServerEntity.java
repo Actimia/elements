@@ -5,7 +5,7 @@ import se.tdfpro.elements.server.command.ServerCommand;
 
 public interface ServerEntity {
 
-    void updateServer(GameServer game, float delta) ;
+    void updateServer(GameServer game, float delta);
 
     ServerCommand makeCreateCommand();
 }

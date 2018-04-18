@@ -1,7 +1,6 @@
 package se.tdfpro.elements.client;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Vector2f;
 import se.tdfpro.elements.server.physics.Vec2;
 
 public class Camera {
@@ -11,8 +10,8 @@ public class Camera {
     private float scale = 1;
     private float rotation = 0;
 
-    public static final float TO_DEGREES = (float) (360 / (2*Math.PI));
-    public static final float TO_RADIANS = 1f/TO_DEGREES;
+    public static final float TO_DEGREES = (float) (360 / (2 * Math.PI));
+    public static final float TO_RADIANS = 1f / TO_DEGREES;
 
     public void project(Graphics g) {
         g.translate(translate.x, translate.y);
@@ -26,12 +25,12 @@ public class Camera {
     }
 
     public Vec2 unproject(Vec2 camera) {
-        return camera.scale(1/scale).rotate(-rotation).add(translate.invert());
+        return camera.scale(1 / scale).rotate(-rotation).add(translate.invert());
     }
 
 
     public void translate(float x, float y) {
-        translate(new Vec2(x,y));
+        translate(new Vec2(x, y));
     }
 
     private void translate(Vec2 offset) {
