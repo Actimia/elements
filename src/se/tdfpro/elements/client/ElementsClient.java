@@ -25,6 +25,7 @@ public class ElementsClient extends StateBasedGame {
 
     @Override
     public void initStatesList(GameContainer gc) {
+        addState(new MainMenu());
         addState(new GameClient());
     }
 }

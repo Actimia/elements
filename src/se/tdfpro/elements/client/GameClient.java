@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class GameClient extends BasicGameState {
+    public static final int ID = 1;
 
     public Camera camera = new Camera();
     private Map<Integer, Entity> entities = new HashMap<>();
@@ -66,7 +67,7 @@ public class GameClient extends BasicGameState {
 
     @Override
     public int getID() {
-        return 0;
+        return ID;
     }
 
     public void addEntity(Entity ent) {
