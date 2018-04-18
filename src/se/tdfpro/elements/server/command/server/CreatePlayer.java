@@ -23,7 +23,7 @@ public class CreatePlayer extends ServerCommand {
     public CreatePlayer() {}
 
     public CreatePlayer(PhysicsEntity ent, int controllerpid, String name) {
-        eid = ent.id;
+        eid = ent.eid;
         controller = controllerpid;
         username = name;
         position = ent.position;

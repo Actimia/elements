@@ -28,7 +28,7 @@ public class Player extends DrawableEntity {
     }
 
     public void drawInterface(Graphics g) {
-        g.drawString("Hello interface", 800, 800);
+
     }
 
     @Override

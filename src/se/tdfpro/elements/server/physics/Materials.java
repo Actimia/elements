@@ -1,7 +1,8 @@
 package se.tdfpro.elements.server.physics;
 
 public enum Materials implements Material{
-    PLAYER(0.4f, 0.8f),
+    PLAYER(0.4f, 0.2f),
+    PROJECTILE(1f, 1f),
     WALL(0.2f, 1.0f);
 
     private final float restitution;
@@ -11,6 +12,7 @@ public enum Materials implements Material{
         restitution = rest;
         friction = fric;
     }
+
     @Override
     public float getRestitution() {
         return restitution;

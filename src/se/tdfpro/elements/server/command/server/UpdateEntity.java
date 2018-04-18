@@ -21,7 +21,7 @@ public class UpdateEntity extends ServerCommand {
     }
 
     public UpdateEntity(PhysicsEntity ent) {
-        eid = ent.id;
+        eid = ent.eid;
         position = ent.position;
         velocity = ent.velocity;
     }

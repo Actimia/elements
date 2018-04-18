@@ -1,10 +1,10 @@
 package se.tdfpro.elements.server.physics.shapes;
 
 import se.tdfpro.elements.server.physics.Material;
-import se.tdfpro.elements.server.physics.PhysicsEntity2;
+import se.tdfpro.elements.server.physics.PhysicsEntity;
 import se.tdfpro.elements.server.physics.Vec2;
 
-public class Circle extends PhysicsEntity2 {
+public class Circle extends PhysicsEntity {
 
     public final float radius;
 
@@ -14,4 +14,8 @@ public class Circle extends PhysicsEntity2 {
         this.radius = radius;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Circle [%s]", position);
+    }
 }

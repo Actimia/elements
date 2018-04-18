@@ -18,7 +18,7 @@ public class CreateEntity extends ServerCommand {
     public CreateEntity() {}
 
     public CreateEntity(PhysicsEntity ent) {
-        eid = ent.id;
+        eid = ent.eid;
         position = ent.position;
         velocity = ent.velocity;
     }

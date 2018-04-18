@@ -5,8 +5,10 @@ import se.tdfpro.elements.server.command.Send;
 import se.tdfpro.elements.server.command.server.CreateEntity;
 import se.tdfpro.elements.server.command.server.CreatePlayer;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.PhysicsEntity;
+import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.server.physics.shapes.Circle;
+import se.tdfpro.elements.server.physics.shapes.Player;
 
 public class Handshake extends ClientCommand {
     public Handshake(){};
@@ -26,19 +28,16 @@ public class Handshake extends ClientCommand {
             game.send(pid, cmd);
         });
 
-        var ent = new PhysicsEntity(new Vec2(100, 195), new Vec2(-15,0), 30f);
+        var ent = new Circle(new Vec2(100, 0), new Vec2(-15,0), .5f, Materials.PLAYER, 30f);
         game.spawnEntity(ent);
-        System.out.println(ent.id);
         game.broadcast(new CreateEntity(ent));
 
-        var ent2 = new PhysicsEntity(new Vec2(-200, 205), new Vec2(40,1), 30f);
+        var ent2 = new Circle(new Vec2(300, 195), new Vec2(-15,0), .5f, Materials.PLAYER, 30f);
         game.spawnEntity(ent2);
-        System.out.println(ent2.id);
         game.broadcast(new CreateEntity(ent2));
 
-        var ent3 = new PhysicsEntity(new Vec2(0, 0), new Vec2(0,0), 30f);
+        var ent3 = new Player(new Vec2(100, 195), new Vec2(-15,0));
         game.spawnEntity(ent3);
-        System.out.println(ent3.id);
         game.broadcast(new CreatePlayer(ent3, pid, username));
 
     }

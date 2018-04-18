@@ -6,35 +6,37 @@ import se.tdfpro.elements.server.physics.shapes.Ray;
 import java.util.Optional;
 
 public class CollisionManifold {
-    public PhysicsEntity2 a;
-    public PhysicsEntity2 b;
+    private static final float slop = -1f;
+    private static final float corrFactor = 1f;
+    public PhysicsEntity a;
+    public PhysicsEntity b;
     public Vec2 normal;
     public float depth;
 
-    public CollisionManifold(PhysicsEntity2 a, PhysicsEntity2 b, Vec2 normal, float depth) {
+    public CollisionManifold(PhysicsEntity a, PhysicsEntity b, Vec2 normal, float depth) {
         this.a = a;
         this.b = b;
         this.normal = normal.norm();
         this.depth = depth;
     }
 
-    private void resolve() {
-        var velocity_along_normal = (b.velocity.sub(a.velocity)).dot(normal);
+    public void resolve() {
+        var velocity_along_normal = b.velocity.sub(a.velocity).dot(normal);
 
-        if (velocity_along_normal >= 0) {
+        if (velocity_along_normal <= 0) {
             var e = Math.min(a.material.getRestitution(), b.material.getRestitution());
             var j = -(1 + e) * velocity_along_normal;
             j /= a.invMass + b.invMass;
 
             var impulse = normal.scale(j);
+            System.out.println(impulse);
             a.velocity = a.velocity.sub(impulse.scale(a.invMass));
             b.velocity = b.velocity.add(impulse.scale(b.invMass));
         }
 
-        var slop = 0f;
-        if (depth > slop) {
-            var pos_correction = normal.scale(0.8f * depth / (a.invMass + b.invMass));
-            a.position = a.position.sub(pos_correction.scale(a.invMass));
+        if (depth < slop) {
+            var pos_correction = normal.scale(corrFactor * depth / (a.invMass + b.invMass));
+            a.position = a.position.add(pos_correction.scale(a.invMass));
             b.position = b.position.sub(pos_correction.scale(b.invMass));
         }
     }
@@ -54,7 +56,8 @@ public class CollisionManifold {
         var closest = b.position.add(b.direction.scale(t));
 
         var limit = a.radius;
-        var normal = closest.sub(a.position);
+//        var normal = closest.sub(a.position);
+        var normal = a.position.sub(closest);
         if (normal.length2() <= limit * limit) {
             var depth = normal.length() - limit;
             return Optional.of(new CollisionManifold(a, b, normal, depth));
@@ -75,7 +78,15 @@ public class CollisionManifold {
         return Optional.empty();
     }
 
-    public static Optional<CollisionManifold> checkCollision(PhysicsEntity2 a, PhysicsEntity2 b) {
-        throw new RuntimeException("Unknown entity collision type: " + a.getClass().getSimpleName() + " and " + b.getClass().getSimpleName());
+    public static Optional<CollisionManifold> checkCollision(PhysicsEntity a, PhysicsEntity b) {
+        if(a instanceof Circle && b instanceof Circle) return checkCollision((Circle) a, (Circle) b);
+        if(a instanceof Ray && b instanceof Circle) return checkCollision((Ray) a, (Circle) b);
+        if(a instanceof Circle && b instanceof Ray) return checkCollision((Circle) a, (Ray) b);
+        if(a instanceof Ray && b instanceof Ray) return checkCollision((Ray) a, (Ray) b);
+
+
+        throw new RuntimeException("Unknown entity collision type: "
+                + a.getClass().getSimpleName() + " and "
+                + b.getClass().getSimpleName());
     }
 }
