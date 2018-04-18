@@ -3,11 +3,12 @@ package se.tdfpro.elements.server.command.server;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.server.command.Send;
 import se.tdfpro.elements.server.command.ServerCommand;
+import se.tdfpro.elements.server.physics.Materials;
+import se.tdfpro.elements.server.physics.entity.Circle;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 import se.tdfpro.elements.server.physics.Vec2;
 
-public class UpdateEntity extends ServerCommand {
-
+public class CreateCircle extends ServerCommand {
     @Send
     public int eid;
     @Send
@@ -15,9 +16,9 @@ public class UpdateEntity extends ServerCommand {
     @Send
     public Vec2 velocity;
 
-    public UpdateEntity() {}
+    public CreateCircle() {}
 
-    public UpdateEntity(PhysicsEntity ent) {
+    public CreateCircle(PhysicsEntity ent) {
         eid = ent.getEid();
         position = ent.getPosition();
         velocity = ent.getVelocity();
@@ -25,9 +26,9 @@ public class UpdateEntity extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        var ent = (PhysicsEntity) game.getEntity(eid);
-        if(ent == null) return;
-        ent.setPosition(position);
-        ent.setVelocity(velocity);
+        System.out.println("CreateCircle("+ eid + ")");
+        var player = new Circle(position, velocity, 0.5f, Materials.PLAYER, 30f);
+        player.setEid(eid);
+        game.addEntity(player);
     }
 }

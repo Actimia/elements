@@ -5,7 +5,7 @@ import se.tdfpro.elements.server.command.ClientCommand;
 import se.tdfpro.elements.server.command.Send;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.shapes.Player;
+import se.tdfpro.elements.server.physics.entity.Player;
 
 public class MoveCommand extends ClientCommand {
 
@@ -16,15 +16,15 @@ public class MoveCommand extends ClientCommand {
     @Send
     public Vec2 direction;
 
-    public MoveCommand(int id, Vector2f movement) {
+    public MoveCommand(int id, Vec2 movement) {
         eid = id;
-        direction = new Vec2(movement);
+        direction = movement;
     }
 
 
     @Override
     public void execute(GameServer game) {
         var player = (Player) game.getEntity(eid);
-        player.impulse = direction.scale(50f);
+        player.setImpulse(direction.scale(50f));
     }
 }
