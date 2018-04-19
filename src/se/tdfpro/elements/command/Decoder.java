@@ -1,9 +1,9 @@
 package se.tdfpro.elements.command;
 
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.ClientEntity;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -45,7 +45,7 @@ public class Decoder<T extends Command> {
                 f.set(obj, decodeString());
             } else if (type.equals(Vec2.class)) {
                 f.set(obj, decodeVec2());
-            } else if (type.equals(ClientEntity.class)) {
+            } else if (type.equals(PhysicsEntity.class)) {
                 f.set(obj, decodeEntity());
             }
         } catch (IllegalAccessException e) {
@@ -74,7 +74,8 @@ public class Decoder<T extends Command> {
             // hic sunt dracones
             @SuppressWarnings("unchecked")
             Class<? extends PhysicsEntity> cls = (Class<? extends PhysicsEntity>) Class.forName(name);
-            var constructor = cls.getDeclaredConstructor();
+            var constructor = Arrays.stream(cls.getDeclaredConstructors())
+                    .filter(c -> c.getAnnotation(DecodeConstructor.class) != null).findFirst().get();
             var pTypes = constructor.getParameterTypes();
             var params = new Object[constructor.getParameterCount()];
 
@@ -91,13 +92,12 @@ public class Decoder<T extends Command> {
                 }
             }
             @SuppressWarnings("JavaReflectionInvocation")
-            var entity = constructor.newInstance(params);
+            PhysicsEntity entity = (PhysicsEntity) constructor.newInstance(params);
 
             // terra firma
             entity.setEid(eid);
             return entity;
         } catch (ClassNotFoundException |
-                NoSuchMethodException |
                 InstantiationException |
                 IllegalAccessException |
                 InvocationTargetException e) {

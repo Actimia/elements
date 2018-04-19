@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -99,10 +100,10 @@ public class InternetClient implements Client {
                         throw new RuntimeException("Bad magic sequence");
                     }
                 }
-                int length = headerBuffer[4] << 24
-                        | headerBuffer[5] << 16
-                        | headerBuffer[6] << 8
-                        | headerBuffer[7];
+                int length = (headerBuffer[4] & 0xff) << 24
+                        | (headerBuffer[5] & 0xff)  << 16
+                        | (headerBuffer[6] & 0xff) << 8
+                        | headerBuffer[7] & 0xff;
 
                 byte[] commandBuffer = new byte[length];
                 int cmd_read = 0;

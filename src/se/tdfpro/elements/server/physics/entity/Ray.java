@@ -3,6 +3,7 @@ package se.tdfpro.elements.server.physics.entity;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
+import se.tdfpro.elements.command.DecodeConstructor;
 import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.CreateRay;
@@ -14,6 +15,7 @@ public class Ray extends PhysicsEntity {
 
     private final Vec2 direction;
 
+    @DecodeConstructor
     public Ray(Vec2 position, Vec2 dir) {
         super(position, Materials.WALL);
         this.direction = dir.norm();

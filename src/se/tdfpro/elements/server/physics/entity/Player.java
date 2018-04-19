@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.GameClient;
+import se.tdfpro.elements.command.DecodeConstructor;
 import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.command.client.PlayerMove;
 import se.tdfpro.elements.server.GameServer;
@@ -20,6 +21,7 @@ public class Player extends Circle {
     private final String username;
     private final Color color;
 
+    @DecodeConstructor
     public Player(Vec2 position, Vec2 velocity, int controller, String username) {
         super(position, velocity, 0.5f, Materials.PLAYER, 30f);
         this.controller = controller;

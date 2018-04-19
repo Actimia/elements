@@ -15,10 +15,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Ability implements ClientEntity {
-    private static final Map<String, SpawnAbility> abilities = new HashMap<>();
+    private static final Map<String, SpawnAbility> abilities = registerAbilities();
 
-    public static void registerAbility(Class<? extends Ability> cls, SpawnAbility effect) {
-        abilities.put(cls.getSimpleName(), effect);
+    public static Map<String, SpawnAbility> registerAbilities() {
+        var res = new HashMap<String, SpawnAbility>();
+
+        // registering them in the actual classes made them not load on the server.
+        res.put("Fireball", Fireball.onSpawn);
+        res.put("Blink", Blink.onSpawn);
+
+        return res;
     }
 
     public static SpawnAbility getAbility(String ref) {
