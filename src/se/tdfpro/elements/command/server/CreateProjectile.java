@@ -24,7 +24,7 @@ public class CreateProjectile extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        var projectile = new Projectile(position, velocity, game.getEntity(sourceId));
+        var projectile = new Projectile(position, velocity, sourceId);
         projectile.setEid(eid);
         game.addEntity(projectile);
     }

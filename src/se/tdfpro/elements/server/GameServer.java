@@ -9,6 +9,7 @@ import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Circle;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
+import se.tdfpro.elements.server.physics.entity.Player;
 import se.tdfpro.elements.server.physics.entity.Ray;
 
 import java.util.*;
@@ -42,8 +43,8 @@ public class GameServer {
         spawnEntity(left);
         spawnEntity(right);
 
-        spawnEntity(new Circle(new Vec2(800, 600), Vec2.ZERO, 2, Materials.PLAYER, 30f));
-        spawnEntity(new Circle(new Vec2(400, 600), new Vec2(20, 0), 2, Materials.PLAYER, 30f));
+        spawnEntity(new Player(new Vec2(800, 600), Vec2.ZERO, -1, ""));
+        spawnEntity(new Player(new Vec2(400, 600), new Vec2(20, 0), -1, ""));
     }
 
     public void run() {

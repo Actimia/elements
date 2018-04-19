@@ -1,12 +1,13 @@
 package se.tdfpro.elements.server.physics.entity;
 
 import org.newdawn.slick.Graphics;
+import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.CreateCircle;
 import se.tdfpro.elements.server.physics.Material;
 import se.tdfpro.elements.server.physics.Vec2;
 
-public class Circle extends DynamicEntity {
+public abstract class Circle extends DynamicEntity {
 
     public final float radius;
 

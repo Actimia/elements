@@ -2,6 +2,7 @@ package se.tdfpro.elements.command;
 
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.ClientEntity;
+import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
@@ -38,55 +39,34 @@ public class Encoder {
                 encode((String) f.get(obj));
             } else if (type.equals(Vec2.class)) {
                 encode((Vec2) f.get(obj));
+            } else if (type.equals(PhysicsEntity.class)){
+                encode((PhysicsEntity) f.get(obj));
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
 
-    private void encode(int i) {
+    public void encode(int i) {
         buf.putInt(i);
     }
 
-    private void encode(float f) {
+    public void encode(float f) {
         encode(Float.floatToIntBits(f));
     }
 
-    private void encode(Vec2 vec) {
+    public void encode(Vec2 vec) {
         encode(vec.x);
         encode(vec.y);
     }
 
-    private void encode(Class<? extends ClientEntity> cls, Object... params) {
-        try {
-            encode(cls.getName());
-            var pTypes = cls.getDeclaredConstructor().getParameterTypes();
-            if (pTypes.length != params.length) {
-                throw new RuntimeException("Mismatch in constructor args length");
-            }
-            for (int i = 0; i < pTypes.length; i++) {
-                var type = pTypes[i];
-                var param = params[i];
-
-                if (!type.isAssignableFrom(param.getClass())) {
-                    throw new RuntimeException("Mismatch in constructor types");
-                }
-                if (type.equals(Integer.TYPE)) {
-                    encode((int) param);
-                } else if (type.equals(Float.TYPE)) {
-                    encode((float) param);
-                } else if (type.equals(String.class)) {
-                    encode((String) param);
-                } else if (type.equals(Vec2.class)) {
-                    encode((Vec2) param);
-                }
-            }
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("No constructor found");
-        }
+    public void encode(PhysicsEntity ent) {
+        encode(ent.getClass().getName());
+        encode(ent.getEid());
+        ent.encodeConstructorParams(this);
     }
 
-    private void encode(String s) {
+    public void encode(String s) {
         byte[] bytes = s.getBytes(Charset.forName("utf-8"));
 
         encode(bytes.length);

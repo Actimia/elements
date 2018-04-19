@@ -8,11 +8,8 @@ import java.io.IOException;
 public class Assets {
 
     void createGradientImage() {
-
         var size = 100;
-
         var max = size / 2;
-
         var img = new BufferedImage(size, size, BufferedImage.TYPE_4BYTE_ABGR);
 
         for (int i = 0; i < size; i++) {

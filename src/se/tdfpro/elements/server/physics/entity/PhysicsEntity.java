@@ -3,6 +3,7 @@ package se.tdfpro.elements.server.physics.entity;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
+import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Material;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -85,4 +86,6 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
     public void setEid(int eid) {
         this.eid = eid;
     }
+
+    public abstract void encodeConstructorParams(Encoder encoder);
 }

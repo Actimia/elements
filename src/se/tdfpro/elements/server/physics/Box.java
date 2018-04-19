@@ -8,7 +8,6 @@ public class Box {
     private final Vec2 size;
 
     public Box(Vec2 topLeft, Vec2 size) {
-
         this.topLeft = topLeft;
         this.size = size;
     }

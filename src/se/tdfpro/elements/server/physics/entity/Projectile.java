@@ -3,6 +3,7 @@ package se.tdfpro.elements.server.physics.entity;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
+import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.CreateProjectile;
 import se.tdfpro.elements.server.GameServer;
@@ -11,11 +12,18 @@ import se.tdfpro.elements.server.physics.Vec2;
 
 public class Projectile extends Circle {
     private int bounces = 5;
-    private final PhysicsEntity source;
+    private final int sourceEid;
 
-    public Projectile(Vec2 position, Vec2 velocity, PhysicsEntity source) {
+    public Projectile(Vec2 position, Vec2 velocity, int sourceEid) {
         super(position, velocity, 1f, Materials.PROJECTILE, 10f);
-        this.source = source;
+        this.sourceEid = sourceEid;
+    }
+
+    @Override
+    public void encodeConstructorParams(Encoder encoder) {
+        encoder.encode(position);
+        encoder.encode(velocity);
+        encoder.encode(sourceEid);
     }
 
     @Override
@@ -24,7 +32,7 @@ public class Projectile extends Circle {
         res.position = position;
         res.velocity = velocity;
         res.eid = getEid();
-        res.sourceId = source.getEid();
+        res.sourceId = sourceEid;
         return res;
     }
 

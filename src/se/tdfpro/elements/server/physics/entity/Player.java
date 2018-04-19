@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.GameClient;
+import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.client.MoveCommand;
 import se.tdfpro.elements.command.server.CreatePlayer;
@@ -24,6 +25,14 @@ public class Player extends Circle {
         super(position, velocity, 0.5f, Materials.PLAYER, 30f);
         this.controller = controller;
         this.username = username;
+    }
+
+    @Override
+    public void encodeConstructorParams(Encoder encoder) {
+        encoder.encode(position);
+        encoder.encode(velocity);
+        encoder.encode(controller);
+        encoder.encode(username);
     }
 
     @Override

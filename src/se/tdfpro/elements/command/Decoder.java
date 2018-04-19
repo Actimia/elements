@@ -2,6 +2,7 @@ package se.tdfpro.elements.command;
 
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.ClientEntity;
+import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -64,11 +65,15 @@ public class Decoder<T extends Command> {
         return new Vec2(decodeFloat(), decodeFloat());
     }
 
-    private ClientEntity decodeEntity() {
+    private PhysicsEntity decodeEntity() {
 
         try {
             var name = decodeString();
-            Class<? extends ClientEntity> cls = (Class<? extends ClientEntity>) Class.forName(name);
+            var eid = decodeInt();
+
+            // hic sunt dracones
+            @SuppressWarnings("unchecked")
+            Class<? extends PhysicsEntity> cls = (Class<? extends PhysicsEntity>) Class.forName(name);
             var constructor = cls.getDeclaredConstructor();
             var pTypes = constructor.getParameterTypes();
             var params = new Object[constructor.getParameterCount()];
@@ -83,12 +88,14 @@ public class Decoder<T extends Command> {
                     params[i] = decodeString();
                 } else if (type.equals(Vec2.class)) {
                     params[i] = decodeVec2();
-                } else if (type.equals(ClientEntity.class)) {
-                    params[i] = decodeEntity();
                 }
             }
-
-            return constructor.newInstance(params);
+            @SuppressWarnings("JavaReflectionInvocation")
+            var entity = constructor.newInstance(params);
+            
+            // terra firma
+            entity.setEid(eid);
+            return entity;
         } catch (ClassNotFoundException |
                 NoSuchMethodException |
                 InstantiationException |

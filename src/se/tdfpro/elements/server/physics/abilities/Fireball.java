@@ -9,7 +9,7 @@ public class Fireball extends Ability {
     private static final SpawnAbility onSpawn = ((game, cast) -> {
         var source = game.getEntity(cast.sourceEid);
         var direction = cast.target.sub(source.getPosition()).norm();
-        var ball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source);
+        var ball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source.getEid());
         game.spawnEntity(ball);
     });
 
