@@ -22,8 +22,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="natives-windows" level="project" />
-    <orderEntry type="library" name="natives-linux" level="project" />
-    <orderEntry type="library" name="natives-mac" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

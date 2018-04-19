@@ -54,7 +54,7 @@ public class Ability implements ClientEntity {
         var font = g.getFont();
         if (cooldown > 0) {
             var cd = 1 - cooldown / type.getMaxCooldown();
-            g.setColor(new Color(0f, 0f, 0f, 0.45f));
+            g.setColor(new Color(0f, 0f, 0f, 0.5f));
             g.fillRect(0, cd * size, size, (1f - cd) * size);
 
             g.setColor(Color.red);
