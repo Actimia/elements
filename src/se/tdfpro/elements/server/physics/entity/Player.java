@@ -63,8 +63,11 @@ public class Player extends Circle {
                 movement = movement.norm();
                 game.send(new MoveCommand(getEid(), movement));
             }
+
+            game.camera.centerOn(this.position);
         }
         //facing = (float) mouse.theta();
+
     }
 
     public Vec2 getImpulse() {

@@ -5,6 +5,7 @@ import se.tdfpro.elements.server.physics.Vec2;
 
 public class Camera {
     private static final Vec2 viewport = new Vec2(1600, 1000);
+    private static final Vec2 cameraOffset = new Vec2(-800, -500);
 
     private Vec2 translate = Vec2.ZERO;
     private float scale = 1;
@@ -28,6 +29,9 @@ public class Camera {
         return camera.scale(1 / scale).rotate(-rotation).add(translate.invert());
     }
 
+    public void centerOn(Vec2 target) {
+        translate = target.invert().sub(cameraOffset);
+    }
 
     public void translate(float x, float y) {
         translate(new Vec2(x, y));
