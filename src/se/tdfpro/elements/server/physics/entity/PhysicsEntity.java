@@ -28,11 +28,15 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
         g.translate(pos.x, pos.y);
         g.rotate(0, 0, getVelocity().theta());
 
-        g.setColor(material.getColor());
+        setupGraphics(g);
 
         draw(g);
 
         g.popTransform();
+    }
+
+    void setupGraphics(Graphics g){
+        g.setColor(material.getColor());
     }
 
     public void onCollide(GameServer game, PhysicsEntity other) {

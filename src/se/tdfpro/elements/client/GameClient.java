@@ -75,8 +75,8 @@ public class GameClient extends BasicGameState {
     }
 
     public void createAbilities(Player player) {
-        abilities.add(new Fireball(player, new Vec2(800, 800), input -> input.isMouseButtonDown(0)));
-        abilities.add(new Blink(player, new Vec2(850, 800), input -> input.isKeyDown(Input.KEY_LSHIFT)));
+        abilities.add(new Fireball(player, new Vec2(800, 800), Keybind.mouse(Input.MOUSE_LEFT_BUTTON)));
+        abilities.add(new Blink(player, new Vec2(850, 800), Keybind.key(Input.KEY_LSHIFT)));
     }
 
     public void addEntity(PhysicsEntity ent) {

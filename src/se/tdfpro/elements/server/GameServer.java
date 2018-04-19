@@ -4,6 +4,7 @@ import se.tdfpro.elements.net.Server;
 import se.tdfpro.elements.net.command.ServerCommand;
 import se.tdfpro.elements.net.command.server.DeleteEntity;
 import se.tdfpro.elements.net.command.server.UpdateEntity;
+import se.tdfpro.elements.server.physics.Box;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Circle;
@@ -29,11 +30,12 @@ public class GameServer {
 
         var origin = new Vec2(0, 0);
         var area = new Vec2(1600, 1000);
+        var playarea = new Box(origin, area);
 
-        var top = new Ray(new Vec2(origin.x, origin.y), Vec2.RIGHT);
-        var bottom = new Ray(new Vec2(origin.x + area.x, origin.y + area.y), Vec2.LEFT);
-        var left = new Ray(new Vec2(origin.x, origin.y + area.y), Vec2.UP);
-        var right = new Ray(new Vec2(origin.x + area.x, origin.y), Vec2.DOWN);
+        var top = new Ray(playarea.topLeft(), Vec2.RIGHT);
+        var right = new Ray(playarea.topRight(), Vec2.DOWN);
+        var bottom = new Ray(playarea.bottomRight(), Vec2.LEFT);
+        var left = new Ray(playarea.bottomLeft(), Vec2.UP);
 
         spawnEntity(top);
         spawnEntity(bottom);

@@ -1,6 +1,7 @@
 package se.tdfpro.elements.server.physics.abilities;
 
 import org.newdawn.slick.Input;
+import se.tdfpro.elements.client.Keybind;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Player;
 import se.tdfpro.elements.server.physics.entity.Projectile;
@@ -21,7 +22,7 @@ public class Fireball extends Ability {
 
     private static final float MAX_COOLDOWN = 1.5f;
 
-    public Fireball(Player player, Vec2 position, Predicate<Input> keybind) {
+    public Fireball(Player player, Vec2 position, Keybind keybind) {
         super(player, position, keybind, MAX_COOLDOWN);
     }
 }

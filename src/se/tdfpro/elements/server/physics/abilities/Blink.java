@@ -1,10 +1,8 @@
 package se.tdfpro.elements.server.physics.abilities;
 
-import org.newdawn.slick.Input;
+import se.tdfpro.elements.client.Keybind;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Player;
-
-import java.util.function.Predicate;
 
 public class Blink extends Ability {
 
@@ -26,7 +24,7 @@ public class Blink extends Ability {
     }
 
     private static final float MAX_COOLDOWN = 3f;
-    public Blink(Player player, Vec2 position, Predicate<Input> keybind) {
+    public Blink(Player player, Vec2 position, Keybind keybind) {
         super(player, position, keybind, MAX_COOLDOWN);
     }
 }

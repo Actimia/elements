@@ -28,9 +28,14 @@ public class Player extends Circle {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(playerColors.get(controller % playerColors.size()));
         super.draw(g);
-        g.drawString(username, 0, -50);
+        g.rotate(0,0,-getVelocity().theta());
+        g.drawString(username, -g.getFont().getWidth(username)/2, 55);
+    }
+
+    @Override
+    void setupGraphics(Graphics g) {
+        g.setColor(playerColors.get(controller % playerColors.size()));
     }
 
     @Override

@@ -3,8 +3,8 @@ package se.tdfpro.elements.server.physics.abilities;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.GameClient;
+import se.tdfpro.elements.client.Keybind;
 import se.tdfpro.elements.net.command.client.CastAbility;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.ClientEntity;
@@ -12,7 +12,6 @@ import se.tdfpro.elements.server.physics.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
 
 public abstract class Ability implements ClientEntity {
     private static final Map<String, SpawnAbility> abilities = new HashMap<>();
@@ -29,9 +28,9 @@ public abstract class Ability implements ClientEntity {
     private Vec2 position;
     private float cooldown;
     private float maxCooldown;
-    private Predicate<Input> keybind;
+    private Keybind keybind;
 
-    public Ability(Player player, Vec2 position, Predicate<Input> keybind, float maxCooldown) {
+    public Ability(Player player, Vec2 position, Keybind keybind, float maxCooldown) {
         this.source = player;
         this.position = position;
         this.maxCooldown = maxCooldown;
@@ -54,6 +53,9 @@ public abstract class Ability implements ClientEntity {
         var cd = 1 - Math.max(cooldown/maxCooldown, 0);
         g.setColor(new Color(1f, 1f,1f,0.3f));
         g.fillRect(0, cd * size, size, (1f-cd) * size);
+
+        g.setColor(Color.white);
+        g.drawString(keybind.getMnemonic(), 5, 5);
     }
 
     @Override

@@ -62,7 +62,12 @@ public class CollisionManifold {
     public static Optional<CollisionManifold> checkCollision(Circle a, Ray b) {
         var limit = a.radius;
         var perp = b.getDirection().perpendicular();
-        var normal = perp.scale(b.closestDistance(a.getPosition()));
+        var dist = b.closestDistance(a.getPosition());
+        if (dist < 0 ) {
+            // beyond the wall
+            return Optional.of(new CollisionManifold(a, b, perp.scale(-dist), dist - limit));
+        }
+        var normal = perp.scale(dist);
         if (normal.length2() < limit * limit) {
             var depth = normal.length() - limit;
             return Optional.of(new CollisionManifold(a, b, normal.project(perp), depth));
