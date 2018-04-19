@@ -6,8 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.Encoder;
-import se.tdfpro.elements.command.ServerCommand;
-import se.tdfpro.elements.command.client.MoveCommand;
+import se.tdfpro.elements.command.client.PlayerMove;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -83,7 +82,7 @@ public class Player extends Circle {
 
             if (movement.length2() != 0) {
                 movement = movement.norm();
-                game.send(new MoveCommand(getEid(), movement));
+                game.send(new PlayerMove(getEid(), movement));
             }
 
             game.camera.centerOn(this.position);

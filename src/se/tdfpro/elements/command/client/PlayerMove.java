@@ -6,9 +6,9 @@ import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Player;
 
-public class MoveCommand extends ClientCommand {
+public class PlayerMove extends ClientCommand {
 
-    public MoveCommand() {
+    public PlayerMove() {
     }
 
     @Send
@@ -16,7 +16,7 @@ public class MoveCommand extends ClientCommand {
     @Send
     public Vec2 direction;
 
-    public MoveCommand(int id, Vec2 movement) {
+    public PlayerMove(int id, Vec2 movement) {
         eid = id;
         direction = movement;
     }
