@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: lib/natives-linux.jar lib/natives-mac.jar lib/natives-wind
+ ows.jar
+Main-Class: se.tdfpro.elements.client.ElementsClient
+

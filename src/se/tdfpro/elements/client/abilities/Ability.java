@@ -1,4 +1,4 @@
-package se.tdfpro.elements.server.physics.abilities;
+package se.tdfpro.elements.client.abilities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -11,43 +11,26 @@ import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.ClientEntity;
 import se.tdfpro.elements.server.physics.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public abstract class Ability implements ClientEntity {
-    private static final Map<String, SpawnAbility> abilities = registerAbilities();
-
-    public static Map<String, SpawnAbility> registerAbilities() {
-        var res = new HashMap<String, SpawnAbility>();
-
-        // registering them in the actual classes made them not load on the server.
-        res.put("Fireball", Fireball.onSpawn);
-        res.put("Blink", Blink.onSpawn);
-
-        return res;
-    }
-
-    public static SpawnAbility getAbility(String ref) {
-        return abilities.get(ref);
-    }
+public class Ability implements ClientEntity {
 
     private static final float size = 56f;
 
+    private final Abilities type;
     private final Player source;
     private final Vec2 position;
     private float cooldown;
-    private final float maxCooldown;
     private final Keybind keybind;
     private final Image image;
 
-    public Ability(Player player, Vec2 position, Keybind keybind, float maxCooldown) {
+    // package access is intentional
+    Ability(Abilities type, Player player, Vec2 position, Keybind keybind) {
+        this.type = type;
         this.source = player;
         this.position = position;
-        this.maxCooldown = maxCooldown;
         this.keybind = keybind;
 
         // will get the dynamic class, not just Ability
-        var imageRef = "ability-" + getClass().getSimpleName().toLowerCase();
+        var imageRef = "ability-" + type.toString().toLowerCase();
         this.image = GameClient.textures.get(imageRef);
     }
 
@@ -70,7 +53,7 @@ public abstract class Ability implements ClientEntity {
 
         var font = g.getFont();
         if (cooldown > 0) {
-            var cd = 1 - cooldown / maxCooldown;
+            var cd = 1 - cooldown / type.getMaxCooldown();
             g.setColor(new Color(0f, 0f, 0f, 0.45f));
             g.fillRect(0, cd * size, size, (1f - cd) * size);
 
@@ -94,10 +77,10 @@ public abstract class Ability implements ClientEntity {
         var input = gc.getInput();
         if (keybind.test(input)) {
             if (cooldown <= 0) {
-                cooldown = maxCooldown;
+                cooldown = type.getMaxCooldown();
 
                 var cmd = new CastAbility();
-                cmd.spellRef = getClass().getSimpleName();
+                cmd.spellRef = type.toString();
                 cmd.sourceEid = source.getEid();
 
                 cmd.target = game.camera.unproject(new Vec2(input.getMouseX(), input.getMouseY()));
