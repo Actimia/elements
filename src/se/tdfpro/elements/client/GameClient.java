@@ -47,14 +47,14 @@ public class GameClient extends BasicGameState {
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) {
         g.setAntiAlias(true);
-
         g.pushTransform();
-        camera.project(g);
 
+        camera.project(g);
         entities.values().forEach(ent -> ent.render(gc, this, g));
-        abilities.forEach(a -> a.render(gc, this, g));
 
         g.popTransform();
+
+        abilities.forEach(a -> a.render(gc, this, g));
     }
 
     @Override
