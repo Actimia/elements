@@ -1,6 +1,8 @@
 package se.tdfpro.elements.server.physics.entity;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.net.command.ServerCommand;
 import se.tdfpro.elements.net.command.server.CreateProjectile;
 import se.tdfpro.elements.server.GameServer;
@@ -28,6 +30,9 @@ public class Projectile extends Circle {
 
     @Override
     public void draw(Graphics g) {
+
+        var img = GameClient.textures.get("gradient");
+        g.drawImage(img, -50, -50, Color.red);
         g.fillOval(-radius, -radius, 2 * radius, 2 * radius);
     }
 

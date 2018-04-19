@@ -60,7 +60,6 @@ public class CollisionManifold {
     }
 
     public static Optional<CollisionManifold> checkCollision(Circle a, Ray b) {
-
         var limit = a.radius;
         var perp = b.getDirection().perpendicular();
         var normal = perp.scale(b.closestDistance(a.getPosition()));

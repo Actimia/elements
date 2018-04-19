@@ -1,24 +1,29 @@
 package se.tdfpro.elements.client;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 import se.tdfpro.elements.net.Client;
 import se.tdfpro.elements.net.command.ClientCommand;
 import se.tdfpro.elements.net.command.client.Handshake;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GameClient extends BasicGameState {
     public static final int ID = 1;
+    private static final Path ASSET_FOLDER = Paths.get("assets");
 
     public final Camera camera = new Camera();
     private final Map<Integer, PhysicsEntity> entities = new HashMap<>();
-    private Client net;
+    public static final Map<String, Image> textures = loadTextures();
+
+    private final Client net;
     private int pid;
 
     public GameClient(Client net) {
@@ -88,6 +93,26 @@ public class GameClient extends BasicGameState {
 
     public void send(ClientCommand command) {
         net.send(command);
+    }
+
+
+    private static Map<String, Image> loadTextures() {
+        var res = new HashMap<String, Image>();
+        Arrays.stream(ASSET_FOLDER.toFile().listFiles()).forEach(file -> {
+            if (file.getName().endsWith(".png")){
+                var name = file.getName().substring(0, file.getName().length() - 4);
+
+                try {
+                    var image = new Image(file.toString());
+                    Log.info("Texture '" + name + "' loaded.");
+                    res.put(name, image);
+                } catch (SlickException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        return res;
     }
 
 }
