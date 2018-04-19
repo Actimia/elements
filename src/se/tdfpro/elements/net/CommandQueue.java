@@ -8,7 +8,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class CommandQueue<T extends Command> {
-    private BlockingQueue<T> queue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<T> queue = new LinkedBlockingQueue<>();
 
     public void accept(T command) {
         queue.add(command);

@@ -12,13 +12,13 @@ import java.net.Socket;
 import java.util.function.Consumer;
 
 public class InternetServerClient implements ServerClient {
-    private InternetServer network;
-    private Socket socket;
+    private final InternetServer network;
+    private final Socket socket;
     private final OutputStream out;
-    private Consumer<ClientCommand> onCommand;
-    private CommandQueue<ServerCommand> outbox = new CommandQueue<>();
+    private final Consumer<ClientCommand> onCommand;
+    private final CommandQueue<ServerCommand> outbox = new CommandQueue<>();
     private boolean isConnected = true;
-    private int id;
+    private final int id;
 
     public InternetServerClient(InternetServer network, Socket socket, Consumer<ClientCommand> onCommand, int id) throws IOException {
         this.network = network;

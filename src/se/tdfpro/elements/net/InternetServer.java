@@ -15,11 +15,11 @@ import java.util.concurrent.Executors;
 public class InternetServer implements Server {
     private static int nextPid = 0;
 
-    private ServerSocket server;
+    private final ServerSocket server;
 
-    private ConcurrentHashMap<Integer, ServerClient> clients = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, ServerClient> clients = new ConcurrentHashMap<>();
 
-    private Executor threads = Executors.newCachedThreadPool();
+    private final Executor threads = Executors.newCachedThreadPool();
     private final CommandQueue<ClientCommand> inbox = new CommandQueue<>();
 
     public InternetServer(int port) throws IOException {

@@ -10,10 +10,10 @@ import java.util.Optional;
 public class CollisionManifold {
     private static final float slop = -1f;
     private static final float corrFactor = 0.8f;
-    public PhysicsEntity a;
-    public PhysicsEntity b;
-    public Vec2 normal;
-    public float depth;
+    public final PhysicsEntity a;
+    public final PhysicsEntity b;
+    public final Vec2 normal;
+    public final float depth;
 
     public CollisionManifold(PhysicsEntity a, PhysicsEntity b, Vec2 normal, float depth) {
         this.a = a;
@@ -73,10 +73,7 @@ public class CollisionManifold {
     }
 
     public static Optional<CollisionManifold> checkCollision(Ray a, Circle b) {
-        return checkCollision(b, a).map(m -> {
-            m.normal = m.normal.invert();
-            return m;
-        });
+        return checkCollision(b, a).map(cmf -> new CollisionManifold(cmf.a, cmf.b, cmf.normal.invert(), cmf.depth));
     }
 
     public static Optional<CollisionManifold> checkCollision(Ray a, Ray b) {
