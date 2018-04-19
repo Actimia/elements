@@ -16,24 +16,12 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ElementsClient extends StateBasedGame {
     private static final Path configFile = Paths.get("assets", "config.cfg");
 
     private final Client net;
     private final Map<String, String> config;
-
-//    static {
-//        var path = Paths.get("lib", "native").toAbsolutePath();
-//        Stream.of("lwjgl64", "liblwjgl64", "jinput-dx8_64", "jinput-raw_64", "libjinput64")
-//            .map(System::mapLibraryName)
-//            .map(path::resolve)
-//            .filter(p -> p.toFile().exists())
-//            .map(Path::toString)
-//            .forEach(System::load);
-//        System.load(System.mapLibraryName("lwjgl64"));
-//    }
 
     public static void main(String[] args) {
         try {
@@ -43,7 +31,6 @@ public class ElementsClient extends StateBasedGame {
             gc.setDisplayMode(1600, 1000, false);
             gc.setTargetFrameRate(60);
             gc.setAlwaysRender(true);
-//            System.out.println(Arrays.toString(ClassScope.getLoadedLibraries(ClassLoader.getSystemClassLoader())));
             gc.start();
         } catch (SlickException | IOException e) {
             e.printStackTrace();
@@ -85,25 +72,4 @@ public class ElementsClient extends StateBasedGame {
         addState(new GameClient(net, config));
     }
 
-}
-class ClassScope {
-    private static final java.lang.reflect.Field LIBRARIES;
-    static {
-        try {
-            LIBRARIES = ClassLoader.class.getDeclaredField("loadedLibraryNames");
-            LIBRARIES.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public static String[] getLoadedLibraries(final ClassLoader loader) {
-
-        try {
-            final Set<String> libraries = (Set<String>) LIBRARIES.get(loader);
-            return libraries.toArray(new String[] {});
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
 }
