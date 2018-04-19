@@ -9,23 +9,23 @@ public interface Keybind {
 
     static Keybind mouse(int btn) {
         return new Keybind() {
-            private int button = btn;
+            private final int button = btn;
 
             @Override
             public String getMnemonic() {
-                return "M" + btn;
+                return "M" + button;
             }
 
             @Override
             public boolean test(Input input) {
-                return input.isMouseButtonDown(btn);
+                return input.isMouseButtonDown(button);
             }
         };
     }
 
     static Keybind key(int code) {
         return new Keybind() {
-            private int key = code;
+            private final int key = code;
 
             @Override
             public String getMnemonic() {
@@ -34,7 +34,7 @@ public interface Keybind {
 
             @Override
             public boolean test(Input input) {
-                return input.isKeyDown(code);
+                return input.isKeyDown(key);
             }
         };
     }

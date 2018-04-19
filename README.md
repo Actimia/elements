@@ -3,14 +3,15 @@ This document outlines the current design plan. This is very much a living docum
 
 ## Combat
 Diablo-style but with more WoW-style rotations.
-Top down view, abilities are cast towards the mousepointer. No auto attacks.
+Top down view, abilities are cast towards the mouse pointer. No auto attacks.
 Most attacks have a small area of effect.
 Real time rotation abilities with a GCD (1s).
 4-6 core combat skills per class, ~5-10 situational skills.
-Talent trees are independant of each other, ie the choice is between the talents in the trees and not the trees themselves.
+Talent trees are independent of each other, ie the choice is between the talents in the trees and not the trees 
+themselves.
 
 ### Current class concepts
-Even if classes are marked tank or heal it doesnt mean they completely lack offensive capabilities, but their offense is bound to their tanking/healing abilities. An example might be "x% of effective healing done is inflicted on a random nearby enemy".
+Even if classes are marked tank or heal it doesn't mean they completely lack offensive capabilities, but their offense is bound to their tanking/healing abilities. An example might be "x% of effective healing done is inflicted on a random nearby enemy".
 #### Martial Artist (dps)
  - Mastery (opportunity attacks) // Acrobatics (movement/defense)
  - Wields a quarterstaff and wears light armor.
@@ -101,7 +102,7 @@ The recipe is the same, but the materials depend on your progression
     - Wool is better
     - Kevlar is the strongest
  - Handle
-    - More/harder to get materials can be used for sights/balancers/etc.
+    - More/harder to get materials can be used for slots for sight/balancer/etc.
  - Arrows are similar, but focuses on different tips. Probably not expendable.
     - Tips
          - Iron tips are cheap
@@ -109,9 +110,10 @@ The recipe is the same, but the materials depend on your progression
          - Meteorite tips give some fire damage
          - Icicle tips for frost damage
      - Shaft
-         - Different woods/composites give different combinations of weight (affects range/accuracy) and elemental boni.
+         - Different woods/composites give different combinations of weight (affects range/accuracy) and elemental 
+         bonuses.
      - Fletching
-         - Different types of feathers might give some elemental boni.
+         - Different types of feathers might give some elemental bonuses.
 
 
 ### Items

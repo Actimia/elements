@@ -11,9 +11,9 @@ public class Blink extends Ability {
 
         var target = cast.target;
         var direction = target.sub(source.getPosition());
-        var maxrange = 300f;
-        if (direction.length2() > maxrange * maxrange) {
-            target = source.getPosition().add(direction.norm().scale(maxrange));
+        var maxRange = 300f;
+        if (direction.length2() > maxRange * maxRange) {
+            target = source.getPosition().add(direction.norm().scale(maxRange));
         }
 
         source.setPosition(target);

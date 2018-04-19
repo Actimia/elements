@@ -27,12 +27,12 @@ public abstract class Ability implements ClientEntity {
 
     private static final float size = 56f;
 
-    private Player source;
-    private Vec2 position;
+    private final Player source;
+    private final Vec2 position;
     private float cooldown;
-    private float maxCooldown;
-    private Keybind keybind;
-    private Image image;
+    private final float maxCooldown;
+    private final Keybind keybind;
+    private final Image image;
 
     public Ability(Player player, Vec2 position, Keybind keybind, float maxCooldown) {
         this.source = player;

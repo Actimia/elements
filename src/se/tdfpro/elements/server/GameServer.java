@@ -30,12 +30,12 @@ public class GameServer {
 
         var origin = new Vec2(0, 0);
         var area = new Vec2(1600, 1000);
-        var playarea = new Box(origin, area);
+        var playArea = new Box(origin, area);
 
-        var top = new Ray(playarea.topLeft(), Vec2.RIGHT);
-        var right = new Ray(playarea.topRight(), Vec2.DOWN);
-        var bottom = new Ray(playarea.bottomRight(), Vec2.LEFT);
-        var left = new Ray(playarea.bottomLeft(), Vec2.UP);
+        var top = new Ray(playArea.topLeft(), Vec2.RIGHT);
+        var right = new Ray(playArea.topRight(), Vec2.DOWN);
+        var bottom = new Ray(playArea.bottomRight(), Vec2.LEFT);
+        var left = new Ray(playArea.bottomLeft(), Vec2.UP);
 
         spawnEntity(top);
         spawnEntity(bottom);
