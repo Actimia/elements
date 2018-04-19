@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class Encoder {
-    private ByteBuffer buf = ByteBuffer.allocate(1024);
+    private final ByteBuffer buf = ByteBuffer.allocate(1024);
 
     private byte[] getBytes() {
         var res = new byte[buf.position()];
@@ -60,12 +60,12 @@ public class Encoder {
     private void encode(Class<? extends ClientEntity> cls, Object... params) {
         try {
             encode(cls.getName());
-            var ptypes = cls.getDeclaredConstructor().getParameterTypes();
-            if (ptypes.length != params.length) {
+            var pTypes = cls.getDeclaredConstructor().getParameterTypes();
+            if (pTypes.length != params.length) {
                 throw new RuntimeException("Mismatch in constructor args length");
             }
-            for (int i = 0; i < ptypes.length; i++) {
-                var type = ptypes[i];
+            for (int i = 0; i < pTypes.length; i++) {
+                var type = pTypes[i];
                 var param = params[i];
 
                 if (!type.isAssignableFrom(param.getClass())) {

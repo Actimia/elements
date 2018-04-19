@@ -9,7 +9,7 @@ import se.tdfpro.elements.server.physics.Vec2;
 
 public class Projectile extends Circle {
     private int bounces = 5;
-    private PhysicsEntity source;
+    private final PhysicsEntity source;
 
     public Projectile(Vec2 position, Vec2 velocity, PhysicsEntity source) {
         super(position, velocity, 1f, Materials.PROJECTILE, 10f);
@@ -22,7 +22,7 @@ public class Projectile extends Circle {
         res.position = position;
         res.velocity = velocity;
         res.eid = getEid();
-        res.sourceid = source.getEid();
+        res.sourceId = source.getEid();
         return res;
     }
 

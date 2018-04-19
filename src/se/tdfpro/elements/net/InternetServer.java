@@ -49,7 +49,7 @@ public class InternetServer implements Server {
         clients.remove(pid);
 
         PlayerDisconnect playerDisconnect = new PlayerDisconnect();
-        playerDisconnect.playerid = pid;
+        playerDisconnect.pid = pid;
         System.out.println(pid + " disconnected.");
         broadcast(playerDisconnect);
     }

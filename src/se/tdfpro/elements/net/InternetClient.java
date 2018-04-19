@@ -18,7 +18,6 @@ public class InternetClient implements Client {
     private final Socket socket;
     private final OutputStream out;
     private final InputStream in;
-    private final Executor threads = Executors.newCachedThreadPool();
     private final CommandQueue<ClientCommand> outbox = new CommandQueue<>();
     private final CommandQueue<ServerCommand> inbox = new CommandQueue<>();
     private boolean isConnected = true;
@@ -32,6 +31,7 @@ public class InternetClient implements Client {
 
         Log.info("Connected");
 
+        Executor threads = Executors.newCachedThreadPool();
         threads.execute(this::listen);
         threads.execute(this::doSend);
     }

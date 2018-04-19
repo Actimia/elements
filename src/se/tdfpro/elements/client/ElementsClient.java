@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 
 public class ElementsClient extends StateBasedGame {
 
-    private Client net;
+    private final Client net;
 
     public static void main(String[] args) {
         try {

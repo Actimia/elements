@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class Decoder<T extends Command> {
-    private ByteBuffer buf;
+    private final ByteBuffer buf;
 
     private Decoder(ByteBuffer buf) {
         this.buf = buf;
@@ -70,11 +70,11 @@ public class Decoder<T extends Command> {
             var name = decodeString();
             Class<? extends ClientEntity> cls = (Class<? extends ClientEntity>) Class.forName(name);
             var constructor = cls.getDeclaredConstructor();
-            var ptypes = constructor.getParameterTypes();
+            var pTypes = constructor.getParameterTypes();
             var params = new Object[constructor.getParameterCount()];
 
             for (int i = 0; i < params.length; i++) {
-                var type = ptypes[i];
+                var type = pTypes[i];
                 if (type.equals(Integer.TYPE)) {
                     params[i] = decodeInt();
                 } else if (type.equals(Float.TYPE)) {
@@ -88,8 +88,7 @@ public class Decoder<T extends Command> {
                 }
             }
 
-            var res = constructor.newInstance(params);
-            return res;
+            return constructor.newInstance(params);
         } catch (ClassNotFoundException |
                 NoSuchMethodException |
                 InstantiationException |
@@ -101,9 +100,9 @@ public class Decoder<T extends Command> {
 
     private String decodeString() {
         var len = decodeInt();
-        byte[] strbuf = new byte[len];
-        buf.get(strbuf, 0, len);
-        return Charset.forName("UTF-8").decode(ByteBuffer.wrap(strbuf)).toString();
+        byte[] strBuffer = new byte[len];
+        buf.get(strBuffer, 0, len);
+        return Charset.forName("UTF-8").decode(ByteBuffer.wrap(strBuffer)).toString();
     }
 
     public static <T extends Command> T decode(byte[] buffer) {

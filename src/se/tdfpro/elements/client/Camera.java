@@ -57,16 +57,16 @@ public class Camera {
         this.scale = scale;
     }
 
-    public float modRotation(float degs) {
-        return this.rotation += degs;
+    public float modRotation(float degrees) {
+        return this.rotation += degrees;
     }
 
     public float getRotation() {
         return rotation;
     }
 
-    public void setRotation(float degs) {
-        this.rotation = degs;
+    public void setRotation(float degrees) {
+        this.rotation = degrees;
     }
 
 }

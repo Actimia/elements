@@ -21,8 +21,8 @@ public class GameServer {
 
     private long lastTickStart = System.currentTimeMillis();
 
-    private Server networking;
-    private Map<Integer, PhysicsEntity> entities = new HashMap<>();
+    private final Server networking;
+    private final Map<Integer, PhysicsEntity> entities = new HashMap<>();
 
     public GameServer(Server net) {
         this.networking = net;
@@ -79,13 +79,13 @@ public class GameServer {
     }
 
     public void updatePhysics(float delta) {
-        var ents = new ArrayList<>(entities.values());
-        ents.forEach(ent -> ent.updateServer(this, delta));
+        var entities = new ArrayList<>(this.entities.values());
+        entities.forEach(ent -> ent.updateServer(this, delta));
 
         // Collision detection and resolving
-        ents.stream()
+        entities.stream()
                 .flatMap(a ->
-                        ents.stream()
+                        entities.stream()
                                 .filter(b -> a.getEid() < b.getEid())
                                 .map(b -> checkCollision(a, b))
                 )
@@ -93,7 +93,7 @@ public class GameServer {
                 .forEach(mani -> mani.resolve(this));
 
         // Update clients
-        ents.stream()
+        entities.stream()
                 .filter(PhysicsEntity::isDynamic)
                 .forEach(ent -> broadcast(new UpdateEntity(ent)));
     }

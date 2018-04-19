@@ -11,9 +11,9 @@ public enum Materials implements Material {
     private final float friction;
     private final Color color;
 
-    Materials(float rest, float fric, Color color) {
-        restitution = rest;
-        friction = fric;
+    Materials(float restitution, float friction, Color color) {
+        this.restitution = restitution;
+        this.friction = friction;
         this.color = color;
     }
 

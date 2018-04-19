@@ -6,13 +6,10 @@ import se.tdfpro.elements.net.command.ServerCommand;
 
 public class PlayerJoined extends ServerCommand {
 
-    public PlayerJoined() {
-    }
-
-    ;
-
+    public PlayerJoined() {}
+    
     @Send
-    public int playerid;
+    public int pid;
 
     @Send
     public String username;

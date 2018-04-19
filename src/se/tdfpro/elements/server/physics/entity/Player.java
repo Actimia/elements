@@ -18,7 +18,7 @@ import java.util.List;
 public class Player extends Circle {
     private static final List<Color> playerColors = List.of(Color.green, Color.cyan, Color.pink, Color.blue);
     private Vec2 impulse = Vec2.ZERO;
-    private int controller;
+    private final int controller;
     private float fireballCD = 0f;
 
     public Player(Vec2 position, Vec2 velocity, int controller) {
@@ -65,8 +65,8 @@ public class Player extends Circle {
 
             if (input.isMouseButtonDown(0) && fireballCD <= 0) {
                 fireballCD = 1.5f;
-                var lookdir = game.camera.unproject(new Vec2(input.getMouseX(), input.getMouseY())).sub(position).norm();
-                game.send(new CastSpell(lookdir, getEid()));
+                var lookDirection = game.camera.unproject(new Vec2(input.getMouseX(), input.getMouseY())).sub(position).norm();
+                game.send(new CastSpell(lookDirection, getEid()));
             }
             fireballCD -= delta;
         }

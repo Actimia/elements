@@ -1,6 +1,5 @@
 package se.tdfpro.elements.server.physics.entity;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
@@ -21,8 +20,8 @@ public class Ray extends PhysicsEntity {
 
     @Override
     public void draw(Graphics g) {
-        g.setLineWidth(3);
-        g.setColor(Color.white);
+        g.setLineWidth(4);
+        g.setColor(getMaterial().getColor());
         var dst = direction.scale(2000f);
         var src = dst.invert();
         g.drawLine(src.x, src.y, dst.x, dst.y);

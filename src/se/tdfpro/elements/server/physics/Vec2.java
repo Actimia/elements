@@ -90,6 +90,7 @@ public class Vec2 {
     }
 
     public Vec2 perpendicular() {
+        //noinspection SuspiciousNameCombination
         return new Vec2(-y, x);
     }
 }

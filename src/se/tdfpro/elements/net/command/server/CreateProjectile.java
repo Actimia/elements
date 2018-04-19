@@ -11,7 +11,7 @@ public class CreateProjectile extends ServerCommand {
     public int eid;
 
     @Send
-    public int sourceid;
+    public int sourceId;
 
     @Send
     public Vec2 position;
@@ -24,9 +24,9 @@ public class CreateProjectile extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        var proj = new Projectile(position, velocity, game.getEntity(sourceid));
-        proj.setEid(eid);
-        game.addEntity(proj);
+        var projectile = new Projectile(position, velocity, game.getEntity(sourceId));
+        projectile.setEid(eid);
+        game.addEntity(projectile);
     }
 
 }

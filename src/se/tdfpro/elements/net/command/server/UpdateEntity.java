@@ -15,8 +15,7 @@ public class UpdateEntity extends ServerCommand {
     @Send
     public Vec2 velocity;
 
-    public UpdateEntity() {
-    }
+    public UpdateEntity() {}
 
     public UpdateEntity(PhysicsEntity ent) {
         eid = ent.getEid();
@@ -26,7 +25,7 @@ public class UpdateEntity extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        var ent = (PhysicsEntity) game.getEntity(eid);
+        var ent = game.getEntity(eid);
         if (ent == null) return;
         ent.setPosition(position);
         ent.setVelocity(velocity);

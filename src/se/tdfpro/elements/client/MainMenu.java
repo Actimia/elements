@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class MainMenu extends BasicGameState {
     public static final int ID = 0;
 
-    private Client net;
+    private final Client net;
     private StateBasedGame game;
 
     private int caretBlinkStateCounter = 0;
