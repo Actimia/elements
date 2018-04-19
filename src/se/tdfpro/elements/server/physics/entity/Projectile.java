@@ -1,11 +1,9 @@
 package se.tdfpro.elements.server.physics.entity;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.Encoder;
-import se.tdfpro.elements.command.ServerCommand;
-import se.tdfpro.elements.command.server.CreateProjectile;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -13,6 +11,7 @@ import se.tdfpro.elements.server.physics.Vec2;
 public class Projectile extends Circle {
     private int bounces = 5;
     private final int sourceEid;
+    private final Image gradient = GameClient.textures.get("gradient").getScaledCopy(0.5f);
 
     public Projectile(Vec2 position, Vec2 velocity, int sourceEid) {
         super(position, velocity, 1f, Materials.PROJECTILE, 10f);
@@ -27,20 +26,11 @@ public class Projectile extends Circle {
     }
 
     @Override
-    public ServerCommand makeCreateCommand() {
-        var res = new CreateProjectile();
-        res.position = position;
-        res.velocity = velocity;
-        res.eid = getEid();
-        res.sourceId = sourceEid;
-        return res;
-    }
+    public void draw(GameClient game, Graphics g) {
+        var source = (Player) game.getEntity(sourceEid);
+        var color = source.getColor();
 
-    @Override
-    public void draw(Graphics g) {
-
-        var img = GameClient.textures.get("gradient");
-        g.drawImage(img, -50, -50, Color.red);
+        g.drawImage(gradient, -gradient.getWidth() / 2, -gradient.getHeight() / 2, color);
         g.fillOval(-radius, -radius, 2 * radius, 2 * radius);
     }
 

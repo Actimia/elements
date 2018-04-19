@@ -49,12 +49,17 @@ public abstract class Ability implements ClientEntity {
     public void render(GameContainer gc, GameClient game, Graphics g) {
         g.pushTransform();
         g.translate(position.x, position.y);
-        draw(g);
+        draw(game, g);
         g.popTransform();
     }
 
     @Override
-    public void draw(Graphics g) {
+    public final void init(GameClient game) {
+        // not called for abilities
+    }
+
+    @Override
+    public void draw(GameClient game, Graphics g) {
         g.drawImage(image, 0, 0);
 
         var font = g.getFont();

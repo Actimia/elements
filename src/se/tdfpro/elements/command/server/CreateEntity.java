@@ -9,8 +9,15 @@ public class CreateEntity extends ServerCommand {
     @Send
     public PhysicsEntity entity;
 
+    public CreateEntity() {}
+
+    public CreateEntity(PhysicsEntity entity) {
+        this.entity = entity;
+    }
+
     @Override
     public void execute(GameClient game) {
         game.addEntity(entity);
+        entity.init(game);
     }
 }

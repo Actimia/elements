@@ -1,6 +1,7 @@
 package se.tdfpro.elements.server;
 
 import se.tdfpro.elements.command.ServerCommand;
+import se.tdfpro.elements.command.server.CreateEntity;
 import se.tdfpro.elements.command.server.DeleteEntity;
 import se.tdfpro.elements.command.server.UpdateEntity;
 import se.tdfpro.elements.net.Server;
@@ -72,7 +73,7 @@ public class GameServer {
 
     public void spawnEntity(PhysicsEntity ent) {
         entities.put(ent.getEid(), ent);
-        broadcast(ent.makeCreateCommand());
+        broadcast(new CreateEntity(ent));
     }
 
     public void executeCommands() {

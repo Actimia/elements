@@ -8,7 +8,6 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.client.MoveCommand;
-import se.tdfpro.elements.command.server.CreatePlayer;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -20,11 +19,20 @@ public class Player extends Circle {
     private Vec2 impulse = Vec2.ZERO;
     private final int controller;
     private final String username;
+    private final Color color;
 
     public Player(Vec2 position, Vec2 velocity, int controller, String username) {
         super(position, velocity, 0.5f, Materials.PLAYER, 30f);
         this.controller = controller;
         this.username = username;
+        color = controller == -1 ? Color.white : playerColors.get(controller % playerColors.size());
+    }
+
+    @Override
+    public void init(GameClient game) {
+        if(controller == game.getPid()) {
+            game.createAbilities(this);
+        }
     }
 
     @Override
@@ -36,15 +44,15 @@ public class Player extends Circle {
     }
 
     @Override
-    public void draw(Graphics g) {
-        super.draw(g);
+    public void draw(GameClient game, Graphics g) {
+        super.draw(game, g);
         g.rotate(0, 0, -getVelocity().theta());
         g.drawString(username, -g.getFont().getWidth(username) / 2, radius + 10);
     }
 
     @Override
     void setupGraphics(Graphics g) {
-        g.setColor(playerColors.get(controller % playerColors.size()));
+        g.setColor(this.getColor());
     }
 
     @Override
@@ -84,6 +92,11 @@ public class Player extends Circle {
 
     }
 
+
+    public Color getColor() {
+        return color;
+    }
+
     public Vec2 getImpulse() {
         return impulse;
     }
@@ -96,12 +109,9 @@ public class Player extends Circle {
         return controller;
     }
 
-    @Override
-    public ServerCommand makeCreateCommand() {
-        return new CreatePlayer(this);
-    }
 
     public String getUsername() {
         return username;
     }
+
 }

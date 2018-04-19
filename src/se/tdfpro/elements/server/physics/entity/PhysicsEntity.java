@@ -30,7 +30,7 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
 
         setupGraphics(g);
 
-        draw(g);
+        draw(game, g);
 
         g.popTransform();
     }
@@ -40,6 +40,11 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
     }
 
     public void onCollide(GameServer game, PhysicsEntity other) {
+
+    }
+
+    @Override
+    public void init(GameClient game) {
 
     }
 
@@ -87,5 +92,6 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
         this.eid = eid;
     }
 
+    @Override
     public abstract void encodeConstructorParams(Encoder encoder);
 }

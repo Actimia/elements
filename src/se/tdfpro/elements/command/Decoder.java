@@ -18,11 +18,11 @@ public class Decoder<T extends Command> {
         this.buf = buf;
     }
 
+    @SuppressWarnings("unchecked")
     private T decode() {
         try {
             String clsName = decodeString();
             Class<?> cls = Class.forName(clsName);
-            //noinspection unchecked
             T comm = (T) cls.getDeclaredConstructor().newInstance();
             Arrays.stream(cls.getFields())
                     .filter(f -> f.getAnnotation(Send.class) != null)
@@ -92,7 +92,7 @@ public class Decoder<T extends Command> {
             }
             @SuppressWarnings("JavaReflectionInvocation")
             var entity = constructor.newInstance(params);
-            
+
             // terra firma
             entity.setEid(eid);
             return entity;

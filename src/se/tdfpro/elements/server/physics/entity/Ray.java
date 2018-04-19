@@ -28,7 +28,7 @@ public class Ray extends PhysicsEntity {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(GameClient game, Graphics g) {
         g.setLineWidth(4);
         g.setColor(getMaterial().getColor());
         var dst = direction.scale(2000f);
@@ -61,11 +61,6 @@ public class Ray extends PhysicsEntity {
 
     public float closestDistance(Vec2 point) {
         return point.sub(position).dot(direction.perpendicular());
-    }
-
-    @Override
-    public ServerCommand makeCreateCommand() {
-        return new CreateRay(this);
     }
 
 }
