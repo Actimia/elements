@@ -15,8 +15,8 @@ public class CreatePlayer extends ServerCommand {
     public Vec2 position;
     @Send
     public Vec2 velocity;
-//    @Send
-//    public String username;
+    @Send
+    public String username;
 
     public CreatePlayer() {
     }
@@ -24,17 +24,20 @@ public class CreatePlayer extends ServerCommand {
     public CreatePlayer(Player player) {
         eid = player.getEid();
         controller = player.getController();
-//        username = name;
+        username = player.getUsername();
         position = player.getPosition();
         velocity = player.getVelocity();
     }
 
     @Override
     public void execute(GameClient game) {
-        Player player = new Player(position, velocity, controller);
+        Player player = new Player(position, velocity, controller, username);
         player.setEid(eid);
 
         game.addEntity(player);
 
+        if(game.getPid() == controller) {
+            game.createAbilities(player);
+        }
     }
 }

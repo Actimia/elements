@@ -11,5 +11,4 @@ public interface ClientEntity {
 
     void updateClient(GameContainer gc, GameClient game, float delta);
 
-    int getID();
 }

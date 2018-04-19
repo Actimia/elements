@@ -30,7 +30,7 @@ public class InternetServer implements Server {
 
     @Override
     public void broadcast(ServerCommand command) {
-        clients.values().forEach(client -> threads.execute(() -> client.send(command)));
+        clients.values().forEach(client -> client.send(command));
     }
 
     @Override

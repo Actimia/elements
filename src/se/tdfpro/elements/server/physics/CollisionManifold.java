@@ -32,8 +32,8 @@ public class CollisionManifold {
             j /= a.getInvMass() + b.getInvMass();
 
             var impulse = normal.scale(j);
-            a.setVelocity(a.getVelocity().sub(impulse.scale(a.getInvMass())));
-            b.setVelocity(b.getVelocity().add(impulse.scale(b.getInvMass())));
+            a.changeVelocity(impulse.scale(-a.getInvMass()));
+            b.changeVelocity(impulse.scale(b.getInvMass()));
         }
 
         if (depth < slop) {

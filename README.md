@@ -1,7 +1,7 @@
 # Elements
 This document outlines the current design plan. This is very much a living document.
 
-##Combat
+## Combat
 Diablo-style but with more WoW-style rotations.
 Top down view, abilities are cast towards the mousepointer. No auto attacks.
 Most attacks have a small area of effect.
@@ -9,9 +9,9 @@ Real time rotation abilities with a GCD (1s).
 4-6 core combat skills per class, ~5-10 situational skills.
 Talent trees are independant of each other, ie the choice is between the talents in the trees and not the trees themselves.
 
-###Current class concepts
+### Current class concepts
 Even if classes are marked tank or heal it doesnt mean they completely lack offensive capabilities, but their offense is bound to their tanking/healing abilities. An example might be "x% of effective healing done is inflicted on a random nearby enemy".
-####Martial Artist (dps)
+#### Martial Artist (dps)
  - Mastery (opportunity attacks) // Acrobatics (movement/defense)
  - Wields a quarterstaff and wears light armor.
  - Resources: Energy and Opportunity.
@@ -22,35 +22,35 @@ Even if classes are marked tank or heal it doesnt mean they completely lack offe
  - Goal is to optimize opportunity spending to keep the spenders on cooldown as much as possible.
  - Also has a stun, a damage cooldown, a defensive cooldown etc...
 
-####Ranger (dps)
+#### Ranger (dps)
  - Marksman (attacks) // Outdoorsmanship (control & survival options)
  - Uses ranged weapons and medium armor.
  - Resource is focus.
  - Physical, Nature
  - Uses poisons and traps to slow and control enemies while giving them a barrage of deadly projectiles from far away.
 
-####Berserker (dps)
+#### Berserker (dps)
  - Weapon master (dual wield) // Commander (2h)
  - 2h weapon/dual wield and heavy armor.
  - Fury
  - Physical, fire
  - Gains defensive benefits from attacking, best strategy should almost always be to stand their ground. Very strong versus hordes of enemies.
 
-####Knight (tank/heal)
+#### Knight (tank/heal)
  - Justicar (healing) // Protector (defense)
  - 1h weapon and shield, heavy armor.
  - Stamina and Chivalry
  - Physical + light
  - Chivalry is gained from taking damage and is used to restore and buff the Knight and their allies.
 
-####Monk (heal)
+#### Monk (heal)
  - Asceticism (offense) // Balance (healing)
  - 1h weapon and light armor.
  - Mana and Serenity
  - Water, light
  - Healing-focused. Effective healing builds Serenity which unlocks abilities at higher levels.
 
-####Demonologist (dps)
+#### Demonologist (dps)
  - Ritualist // NYI
  - 1h weapon, medium armor.
  - Corruption.
@@ -58,21 +58,21 @@ Even if classes are marked tank or heal it doesnt mean they completely lack offe
  - Medium range elemental fighter.
  - Abilites build corruption on self, high corruption quickly becomes dangerous, but can also be unleashed against enemies.
 
-####Druid (dps/heal)
+#### Druid (dps/heal)
  - Loremaster // Astromancy
  - 1h weapon, medium armor.
  - Insight
  - Nature, physical.
  - Calls the forces of nature to assist them.
 
-####Wizard (dps)
+#### Wizard (dps)
  - Fire // Frost
  - Wand and light armor.
  - Mana and Synergy.
  - Fire, frost
  - Casting spells of the same element builds synergy which unlocks extra effects from spells. Casting spells from a different element reduces synergy. There are damage-dealing spells as well as control/utility spells in both elements. Maybe a way to reward keeping synergy near 0?
 
-###Elements
+### Elements
 Strength/weakness-graph for elements
 
     Elements    Weak vs         Strong vs           Keywords
@@ -85,10 +85,10 @@ Strength/weakness-graph for elements
     (possibly more, or multi-element combinations)
 
 
-##Crafting
+## Crafting
 Each item requires components made from a class of material, but different choices affect the resulting items properties. All items have elemental affinities. Making an all-fire affine bow should be something you want to do (with a separate plan for fire-resistant enemies).
 
-###Example
+### Example
 To craft a bow, you need a handle, shafts and string
 The recipe is the same, but the materials depend on your progression
  - Shaft
@@ -114,8 +114,8 @@ The recipe is the same, but the materials depend on your progression
          - Different types of feathers might give some elemental boni.
 
 
-###Items
-####Components
+### Items
+#### Components
 Components are divided into a tree (maybe even a DAG) of different classes.
 
  - Metal

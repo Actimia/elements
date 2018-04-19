@@ -7,21 +7,26 @@ import org.newdawn.slick.util.Log;
 import se.tdfpro.elements.net.Client;
 import se.tdfpro.elements.net.command.ClientCommand;
 import se.tdfpro.elements.net.command.client.Handshake;
+import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.server.physics.abilities.Ability;
+import se.tdfpro.elements.server.physics.abilities.Blink;
+import se.tdfpro.elements.server.physics.abilities.Fireball;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
+import se.tdfpro.elements.server.physics.entity.Player;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GameClient extends BasicGameState {
     public static final int ID = 1;
     private static final Path ASSET_FOLDER = Paths.get("assets");
+    public static final Map<String, Image> textures = loadTextures();
 
     public final Camera camera = new Camera();
     private final Map<Integer, PhysicsEntity> entities = new HashMap<>();
-    public static final Map<String, Image> textures = loadTextures();
+
+    private final List<Ability> abilities = new ArrayList<>();
 
     private final Client net;
     private int pid;
@@ -47,6 +52,7 @@ public class GameClient extends BasicGameState {
         camera.project(g);
 
         entities.values().forEach(ent -> ent.render(gc, this, g));
+        abilities.forEach(a -> a.render(gc, this, g));
 
         g.popTransform();
     }
@@ -60,6 +66,7 @@ public class GameClient extends BasicGameState {
         }
         net.getCommands().forEach(cmd -> cmd.execute(this));
         entities.values().forEach(ent -> ent.updateClient(gc, this, fDelta));
+        abilities.forEach(a -> a.updateClient(gc, this, fDelta));
     }
 
     @Override
@@ -67,8 +74,13 @@ public class GameClient extends BasicGameState {
         return ID;
     }
 
+    public void createAbilities(Player player) {
+        abilities.add(new Fireball(player, new Vec2(800, 800), input -> input.isMouseButtonDown(0)));
+        abilities.add(new Blink(player, new Vec2(850, 800), input -> input.isKeyDown(Input.KEY_LSHIFT)));
+    }
+
     public void addEntity(PhysicsEntity ent) {
-        entities.put(ent.getID(), ent);
+        entities.put(ent.getEid(), ent);
     }
 
     public void deleteEntity(int eid) {
@@ -79,9 +91,9 @@ public class GameClient extends BasicGameState {
         return entities.get(eid);
     }
 
-    public Map<Integer, PhysicsEntity> getEntities() {
-        return entities;
-    }
+//    public Map<Integer, PhysicsEntity> getEntities() {
+//        return entities;
+//    }
 
     public void setPid(int pid) {
         this.pid = pid;

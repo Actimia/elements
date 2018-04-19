@@ -79,10 +79,6 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
         position = position.add(delta);
     }
 
-    @Override
-    public int getID() {
-        return eid;
-    }
 
     public void setEid(int eid) {
         this.eid = eid;

@@ -6,7 +6,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.net.command.ServerCommand;
-import se.tdfpro.elements.net.command.client.CastSpell;
 import se.tdfpro.elements.net.command.client.MoveCommand;
 import se.tdfpro.elements.net.command.server.CreatePlayer;
 import se.tdfpro.elements.server.GameServer;
@@ -19,17 +18,19 @@ public class Player extends Circle {
     private static final List<Color> playerColors = List.of(Color.green, Color.cyan, Color.pink, Color.blue);
     private Vec2 impulse = Vec2.ZERO;
     private final int controller;
-    private float fireballCD = 0f;
+    private final String username;
 
-    public Player(Vec2 position, Vec2 velocity, int controller) {
+    public Player(Vec2 position, Vec2 velocity, int controller, String username) {
         super(position, velocity, 0.5f, Materials.PLAYER, 30f);
         this.controller = controller;
+        this.username = username;
     }
 
     @Override
     public void draw(Graphics g) {
         g.setColor(playerColors.get(controller % playerColors.size()));
         super.draw(g);
+        g.drawString(username, 0, -50);
     }
 
     @Override
@@ -60,15 +61,8 @@ public class Player extends Circle {
 
             if (movement.length2() != 0) {
                 movement = movement.norm();
-                game.send(new MoveCommand(getID(), movement));
+                game.send(new MoveCommand(getEid(), movement));
             }
-
-            if (input.isMouseButtonDown(0) && fireballCD <= 0) {
-                fireballCD = 1.5f;
-                var lookDirection = game.camera.unproject(new Vec2(input.getMouseX(), input.getMouseY())).sub(position).norm();
-                game.send(new CastSpell(lookDirection, getEid()));
-            }
-            fireballCD -= delta;
         }
         //facing = (float) mouse.theta();
     }
@@ -88,5 +82,9 @@ public class Player extends Circle {
     @Override
     public ServerCommand makeCreateCommand() {
         return new CreatePlayer(this);
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
