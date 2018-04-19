@@ -1,6 +1,5 @@
 package se.tdfpro.elements.server.physics;
 
-
 import org.newdawn.slick.geom.Vector2f;
 
 import static se.tdfpro.elements.client.Camera.TO_DEGREES;
@@ -67,11 +66,9 @@ public class Vec2 {
         return x * o.x + y * o.y;
     }
 
-
     public float theta() {
         return (float) Math.atan2(y, x) * TO_DEGREES;
     }
-
 
     @Override
     public boolean equals(final Object obj) {

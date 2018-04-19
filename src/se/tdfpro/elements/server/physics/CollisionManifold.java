@@ -63,7 +63,7 @@ public class CollisionManifold {
         var limit = a.radius;
         var perp = b.getDirection().perpendicular();
         var dist = b.closestDistance(a.getPosition());
-        if (dist < limit ) {
+        if (dist < limit) {
             // beyond the wall
             return Optional.of(new CollisionManifold(a, b, perp.scale(Math.abs(dist)), dist - limit));
         }
@@ -90,7 +90,6 @@ public class CollisionManifold {
         if (a instanceof Ray && b instanceof Circle) return checkCollision((Ray) a, (Circle) b);
         if (a instanceof Circle && b instanceof Ray) return checkCollision((Circle) a, (Ray) b);
         if (a instanceof Ray && b instanceof Ray) return checkCollision((Ray) a, (Ray) b);
-
 
         throw new RuntimeException("Unknown entity collision type: "
                 + a.getClass().getSimpleName() + " and "

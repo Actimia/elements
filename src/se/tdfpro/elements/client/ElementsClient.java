@@ -5,11 +5,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import se.tdfpro.elements.net.Client;
-import se.tdfpro.elements.net.InternetClient;
 import se.tdfpro.elements.net.LocalServer;
 import se.tdfpro.elements.server.GameServer;
 
-import java.io.IOException;
 import java.util.concurrent.Executors;
 
 public class ElementsClient extends StateBasedGame {

@@ -40,9 +40,9 @@ public abstract class Ability implements ClientEntity {
         this.maxCooldown = maxCooldown;
         this.keybind = keybind;
 
-        var imageref = "ability-" + getClass().getSimpleName().toLowerCase();
-        this.image = GameClient.textures.get(imageref);
-
+        // will get the dynamic class, not just Ability
+        var imageRef = "ability-" + getClass().getSimpleName().toLowerCase();
+        this.image = GameClient.textures.get(imageRef);
     }
 
     @Override
@@ -58,10 +58,10 @@ public abstract class Ability implements ClientEntity {
         g.drawImage(image, 0, 0);
 
         var font = g.getFont();
-        if(cooldown > 0) {
-            var cd = 1 - cooldown/maxCooldown;
-            g.setColor(new Color(0f, 0f,0f,0.45f));
-            g.fillRect(0, cd * size, size, (1f-cd) * size);
+        if (cooldown > 0) {
+            var cd = 1 - cooldown / maxCooldown;
+            g.setColor(new Color(0f, 0f, 0f, 0.45f));
+            g.fillRect(0, cd * size, size, (1f - cd) * size);
 
             g.setColor(Color.red);
             var text = String.format("%.1f", cooldown);
@@ -70,21 +70,18 @@ public abstract class Ability implements ClientEntity {
             g.drawString(text, x, y);
         }
 
-
-
-
         g.setColor(Color.white);
-        g.drawRect(0,0, size, size);
+        g.drawRect(0, 0, size, size);
         var text = keybind.getMnemonic();
-        var x = (size - g.getFont().getWidth(text))/2;
+        var x = (size - g.getFont().getWidth(text)) / 2;
         g.drawString(text, x, size);
     }
 
     @Override
-    public void updateClient(GameContainer gc, GameClient game, float delta){
+    public void updateClient(GameContainer gc, GameClient game, float delta) {
         this.cooldown -= delta;
         var input = gc.getInput();
-        if(keybind.test(input)) {
+        if (keybind.test(input)) {
             if (cooldown <= 0) {
                 cooldown = maxCooldown;
 

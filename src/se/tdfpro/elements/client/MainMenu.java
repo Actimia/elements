@@ -5,8 +5,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import se.tdfpro.elements.net.Client;
 import se.tdfpro.elements.command.client.Handshake;
+import se.tdfpro.elements.net.Client;
 
 import java.util.regex.Pattern;
 

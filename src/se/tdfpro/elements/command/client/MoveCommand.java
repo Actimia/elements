@@ -21,7 +21,6 @@ public class MoveCommand extends ClientCommand {
         direction = movement;
     }
 
-
     @Override
     public void execute(GameServer game) {
         var player = (Player) game.getEntity(eid);

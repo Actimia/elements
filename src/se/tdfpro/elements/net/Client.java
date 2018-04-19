@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface Client extends NetworkConstants {
     void send(ClientCommand com);
+
     void accept(ServerCommand com);
+
     List<ServerCommand> getCommands();
 }

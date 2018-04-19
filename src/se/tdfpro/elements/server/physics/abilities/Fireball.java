@@ -1,12 +1,9 @@
 package se.tdfpro.elements.server.physics.abilities;
 
-import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.Keybind;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Player;
 import se.tdfpro.elements.server.physics.entity.Projectile;
-
-import java.util.function.Predicate;
 
 public class Fireball extends Ability {
     private static final SpawnAbility onSpawn = ((game, cast) -> {

@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface Server extends NetworkConstants {
     void broadcast(ServerCommand com);
+
     void send(int pid, ServerCommand com);
 
     List<ClientCommand> getCommands();

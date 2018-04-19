@@ -10,5 +10,4 @@ public interface ClientEntity {
     void draw(Graphics g);
 
     void updateClient(GameContainer gc, GameClient game, float delta);
-
 }

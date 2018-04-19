@@ -7,7 +7,7 @@ import se.tdfpro.elements.command.ServerCommand;
 public class PlayerJoined extends ServerCommand {
 
     public PlayerJoined() {}
-    
+
     @Send
     public int pid;
 

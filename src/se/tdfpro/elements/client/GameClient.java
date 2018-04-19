@@ -4,9 +4,9 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
-import se.tdfpro.elements.net.Client;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.client.Handshake;
+import se.tdfpro.elements.net.Client;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.abilities.Ability;
 import se.tdfpro.elements.server.physics.abilities.Blink;
@@ -108,13 +108,12 @@ public class GameClient extends BasicGameState {
         net.send(command);
     }
 
-
     private static void loadTextures(Map<String, Image> res, File directory, String prefix) {
         Arrays.stream(directory.listFiles()).forEach(file -> {
             var name = file.getName();
             if (file.isDirectory()) {
                 loadTextures(res, file, name + "-");
-            } else if (name.endsWith(".png") || name.endsWith(".jpg")){
+            } else if (name.endsWith(".png") || name.endsWith(".jpg")) {
                 name = prefix + file.getName().substring(0, file.getName().length() - 4);
                 try {
                     var image = new Image(file.toString());
@@ -132,5 +131,4 @@ public class GameClient extends BasicGameState {
         loadTextures(res, ASSET_FOLDER.toFile(), "");
         return res;
     }
-
 }

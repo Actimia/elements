@@ -10,6 +10,7 @@ public interface Keybind {
     static Keybind mouse(int btn) {
         return new Keybind() {
             private int button = btn;
+
             @Override
             public String getMnemonic() {
                 return "M" + btn;
@@ -25,6 +26,7 @@ public interface Keybind {
     static Keybind key(int code) {
         return new Keybind() {
             private int key = code;
+
             @Override
             public String getMnemonic() {
                 return Input.getKeyName(key);

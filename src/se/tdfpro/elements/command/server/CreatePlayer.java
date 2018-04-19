@@ -36,7 +36,7 @@ public class CreatePlayer extends ServerCommand {
 
         game.addEntity(player);
 
-        if(game.getPid() == controller) {
+        if (game.getPid() == controller) {
             game.createAbilities(player);
         }
     }

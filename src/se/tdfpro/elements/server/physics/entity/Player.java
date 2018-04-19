@@ -29,8 +29,8 @@ public class Player extends Circle {
     @Override
     public void draw(Graphics g) {
         super.draw(g);
-        g.rotate(0,0,-getVelocity().theta());
-        g.drawString(username, -g.getFont().getWidth(username)/2, radius + 10);
+        g.rotate(0, 0, -getVelocity().theta());
+        g.drawString(username, -g.getFont().getWidth(username) / 2, radius + 10);
     }
 
     @Override

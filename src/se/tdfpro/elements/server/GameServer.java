@@ -1,9 +1,9 @@
 package se.tdfpro.elements.server;
 
-import se.tdfpro.elements.net.Server;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.DeleteEntity;
 import se.tdfpro.elements.command.server.UpdateEntity;
+import se.tdfpro.elements.net.Server;
 import se.tdfpro.elements.server.physics.Box;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -66,7 +66,6 @@ public class GameServer {
                 } catch (InterruptedException ignored) {
                 }
             }
-
         }
     }
 
@@ -120,5 +119,4 @@ public class GameServer {
     public void broadcast(ServerCommand command) {
         networking.broadcast(command);
     }
-
 }

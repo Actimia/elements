@@ -13,7 +13,7 @@ public class Handshake extends ClientCommand {
     public Handshake() {
     }
 
-    public Handshake(String name){
+    public Handshake(String name) {
         this.username = name;
     }
 
@@ -27,6 +27,5 @@ public class Handshake extends ClientCommand {
         game.getEntities().forEach(e -> game.send(pid, e.makeCreateCommand()));
 
         game.spawnEntity(new Player(new Vec2(100, 195), new Vec2(-15, 0), pid, username));
-
     }
 }

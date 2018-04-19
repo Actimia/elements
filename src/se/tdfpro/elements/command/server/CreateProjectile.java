@@ -28,5 +28,4 @@ public class CreateProjectile extends ServerCommand {
         projectile.setEid(eid);
         game.addEntity(projectile);
     }
-
 }

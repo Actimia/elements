@@ -1,8 +1,5 @@
 package se.tdfpro.elements;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.fills.GradientFill;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,11 +15,11 @@ public class Assets {
 
         var bimg = new BufferedImage(size, size, BufferedImage.TYPE_4BYTE_ABGR);
 
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                var x = i - (size/2);
-                var y = j - (size/2);
-                var dist = Math.sqrt(x*x+y*y);
+                var x = i - (size / 2);
+                var y = j - (size / 2);
+                var dist = Math.sqrt(x * x + y * y);
                 if (dist > max) dist = max;
                 var alpha = 255 - 255 * (dist / max);
                 var colorint = (int) alpha << 24 | 0xffffff;
@@ -37,7 +34,6 @@ public class Assets {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void main(String[] args) {

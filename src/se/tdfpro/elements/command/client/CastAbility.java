@@ -5,7 +5,6 @@ import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.abilities.Ability;
-import se.tdfpro.elements.server.physics.entity.Projectile;
 
 public class CastAbility extends ClientCommand {
 

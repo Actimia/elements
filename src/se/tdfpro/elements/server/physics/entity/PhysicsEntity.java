@@ -19,7 +19,6 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
         this.material = material;
     }
 
-
     @Override
     public void render(GameContainer gc, GameClient game, Graphics g) {
         g.pushTransform();
@@ -35,7 +34,7 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
         g.popTransform();
     }
 
-    void setupGraphics(Graphics g){
+    void setupGraphics(Graphics g) {
         g.setColor(material.getColor());
     }
 
@@ -82,7 +81,6 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
     public void changePosition(Vec2 delta) {
         position = position.add(delta);
     }
-
 
     public void setEid(int eid) {
         this.eid = eid;

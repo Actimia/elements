@@ -72,5 +72,4 @@ public class Camera {
     public void setRotation(float degrees) {
         this.rotation = degrees;
     }
-
 }

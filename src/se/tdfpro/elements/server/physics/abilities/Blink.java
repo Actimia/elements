@@ -12,7 +12,7 @@ public class Blink extends Ability {
         var target = cast.target;
         var direction = target.sub(source.getPosition());
         var maxrange = 300f;
-        if(direction.length2() > maxrange*maxrange) {
+        if (direction.length2() > maxrange * maxrange) {
             target = source.getPosition().add(direction.norm().scale(maxrange));
         }
 
@@ -24,6 +24,7 @@ public class Blink extends Ability {
     }
 
     private static final float MAX_COOLDOWN = 3f;
+
     public Blink(Player player, Vec2 position, Keybind keybind) {
         super(player, position, keybind, MAX_COOLDOWN);
     }
