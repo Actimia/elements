@@ -69,8 +69,11 @@ public class Player extends Circle {
                 game.send(new CastSpell(lookDirection, getEid()));
             }
             fireballCD -= delta;
+
+            game.camera.centerOn(this.position);
         }
         //facing = (float) mouse.theta();
+
     }
 
     public Vec2 getImpulse() {

@@ -72,6 +72,7 @@ public class Vec2 {
         return (float) Math.atan2(y, x) * TO_DEGREES;
     }
 
+
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) return true;
