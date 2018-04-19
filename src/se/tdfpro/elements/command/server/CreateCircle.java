@@ -1,8 +1,8 @@
-package se.tdfpro.elements.net.command.server;
+package se.tdfpro.elements.command.server;
 
 import se.tdfpro.elements.client.GameClient;
-import se.tdfpro.elements.net.command.Send;
-import se.tdfpro.elements.net.command.ServerCommand;
+import se.tdfpro.elements.command.Send;
+import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Circle;

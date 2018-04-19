@@ -1,6 +1,6 @@
 package se.tdfpro.elements.net;
 
-import se.tdfpro.elements.net.command.Command;
+import se.tdfpro.elements.command.Command;
 
 import java.util.ArrayList;
 import java.util.List;

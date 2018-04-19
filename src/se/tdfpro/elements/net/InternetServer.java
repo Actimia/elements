@@ -1,8 +1,8 @@
 package se.tdfpro.elements.net;
 
-import se.tdfpro.elements.net.command.ClientCommand;
-import se.tdfpro.elements.net.command.ServerCommand;
-import se.tdfpro.elements.net.command.server.PlayerDisconnect;
+import se.tdfpro.elements.command.ClientCommand;
+import se.tdfpro.elements.command.ServerCommand;
+import se.tdfpro.elements.command.server.PlayerDisconnect;
 
 import java.io.IOException;
 import java.net.ServerSocket;

@@ -1,9 +1,9 @@
 package se.tdfpro.elements.server;
 
 import se.tdfpro.elements.net.Server;
-import se.tdfpro.elements.net.command.ServerCommand;
-import se.tdfpro.elements.net.command.server.DeleteEntity;
-import se.tdfpro.elements.net.command.server.UpdateEntity;
+import se.tdfpro.elements.command.ServerCommand;
+import se.tdfpro.elements.command.server.DeleteEntity;
+import se.tdfpro.elements.command.server.UpdateEntity;
 import se.tdfpro.elements.server.physics.Box;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;

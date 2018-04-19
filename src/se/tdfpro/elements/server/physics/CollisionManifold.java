@@ -63,15 +63,15 @@ public class CollisionManifold {
         var limit = a.radius;
         var perp = b.getDirection().perpendicular();
         var dist = b.closestDistance(a.getPosition());
-        if (dist < 0 ) {
+        if (dist < limit ) {
             // beyond the wall
-            return Optional.of(new CollisionManifold(a, b, perp.scale(-dist), dist - limit));
+            return Optional.of(new CollisionManifold(a, b, perp.scale(Math.abs(dist)), dist - limit));
         }
-        var normal = perp.scale(dist);
-        if (normal.length2() < limit * limit) {
-            var depth = normal.length() - limit;
-            return Optional.of(new CollisionManifold(a, b, normal.project(perp), depth));
-        }
+//        var normal = perp.scale(dist);
+//        if (normal.length2() < limit * limit) {
+//            var depth = normal.length() - limit;
+//            return Optional.of(new CollisionManifold(a, b, normal.project(perp), depth));
+//        }
 
         return Optional.empty();
     }

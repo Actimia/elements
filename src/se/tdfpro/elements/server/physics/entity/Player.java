@@ -5,9 +5,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.GameClient;
-import se.tdfpro.elements.net.command.ServerCommand;
-import se.tdfpro.elements.net.command.client.MoveCommand;
-import se.tdfpro.elements.net.command.server.CreatePlayer;
+import se.tdfpro.elements.command.ServerCommand;
+import se.tdfpro.elements.command.client.MoveCommand;
+import se.tdfpro.elements.command.server.CreatePlayer;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -30,7 +30,7 @@ public class Player extends Circle {
     public void draw(Graphics g) {
         super.draw(g);
         g.rotate(0,0,-getVelocity().theta());
-        g.drawString(username, -g.getFont().getWidth(username)/2, 55);
+        g.drawString(username, -g.getFont().getWidth(username)/2, radius + 10);
     }
 
     @Override

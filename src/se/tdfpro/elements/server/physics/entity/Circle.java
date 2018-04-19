@@ -1,8 +1,8 @@
 package se.tdfpro.elements.server.physics.entity;
 
 import org.newdawn.slick.Graphics;
-import se.tdfpro.elements.net.command.ServerCommand;
-import se.tdfpro.elements.net.command.server.CreateCircle;
+import se.tdfpro.elements.command.ServerCommand;
+import se.tdfpro.elements.command.server.CreateCircle;
 import se.tdfpro.elements.server.physics.Material;
 import se.tdfpro.elements.server.physics.Vec2;
 

@@ -1,10 +1,10 @@
 package se.tdfpro.elements.net;
 
 import org.newdawn.slick.util.Log;
-import se.tdfpro.elements.net.command.ClientCommand;
-import se.tdfpro.elements.net.command.Decoder;
-import se.tdfpro.elements.net.command.Encoder;
-import se.tdfpro.elements.net.command.ServerCommand;
+import se.tdfpro.elements.command.ClientCommand;
+import se.tdfpro.elements.command.Decoder;
+import se.tdfpro.elements.command.Encoder;
+import se.tdfpro.elements.command.ServerCommand;
 
 import java.io.IOException;
 import java.io.InputStream;

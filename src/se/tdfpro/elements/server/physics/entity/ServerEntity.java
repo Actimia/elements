@@ -1,6 +1,6 @@
 package se.tdfpro.elements.server.physics.entity;
 
-import se.tdfpro.elements.net.command.ServerCommand;
+import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.server.GameServer;
 
 public interface ServerEntity {

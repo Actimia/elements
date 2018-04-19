@@ -3,9 +3,10 @@ package se.tdfpro.elements.server.physics.abilities;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.client.Keybind;
-import se.tdfpro.elements.net.command.client.CastAbility;
+import se.tdfpro.elements.command.client.CastAbility;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.ClientEntity;
 import se.tdfpro.elements.server.physics.entity.Player;
@@ -24,17 +25,24 @@ public abstract class Ability implements ClientEntity {
         return abilities.get(ref);
     }
 
+    private static final float size = 56f;
+
     private Player source;
     private Vec2 position;
     private float cooldown;
     private float maxCooldown;
     private Keybind keybind;
+    private Image image;
 
     public Ability(Player player, Vec2 position, Keybind keybind, float maxCooldown) {
         this.source = player;
         this.position = position;
         this.maxCooldown = maxCooldown;
         this.keybind = keybind;
+
+        var imageref = "ability-" + getClass().getSimpleName().toLowerCase();
+        this.image = GameClient.textures.get(imageref);
+
     }
 
     @Override
@@ -47,15 +55,29 @@ public abstract class Ability implements ClientEntity {
 
     @Override
     public void draw(Graphics g) {
-        var size = 40f;
-        g.setColor(Color.white);
-        g.drawRect(0,0, size, size);
-        var cd = 1 - Math.max(cooldown/maxCooldown, 0);
-        g.setColor(new Color(1f, 1f,1f,0.3f));
-        g.fillRect(0, cd * size, size, (1f-cd) * size);
+        g.drawImage(image, 0, 0);
+
+        var font = g.getFont();
+        if(cooldown > 0) {
+            var cd = 1 - cooldown/maxCooldown;
+            g.setColor(new Color(0f, 0f,0f,0.45f));
+            g.fillRect(0, cd * size, size, (1f-cd) * size);
+
+            g.setColor(Color.red);
+            var text = String.format("%.1f", cooldown);
+            var x = (size - font.getWidth(text)) / 2;
+            var y = (size - font.getHeight(text)) / 2;
+            g.drawString(text, x, y);
+        }
+
+
+
 
         g.setColor(Color.white);
-        g.drawString(keybind.getMnemonic(), 5, 5);
+        g.drawRect(0,0, size, size);
+        var text = keybind.getMnemonic();
+        var x = (size - g.getFont().getWidth(text))/2;
+        g.drawString(text, x, size);
     }
 
     @Override
