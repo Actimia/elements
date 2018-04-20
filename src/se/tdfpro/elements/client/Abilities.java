@@ -26,6 +26,12 @@ public enum Abilities {
         }
 
         source.setPosition(target);
+    }),
+    KICK(5f, (game, cast) -> {
+
+    }),
+    SHIELDWALL(30f, (game, cast) -> {
+
     });
 
     private final SpawnAbility onSpawn;
