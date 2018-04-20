@@ -11,11 +11,10 @@ public class Handshake extends ClientCommand {
     @Send
     public String username;
 
-    public Handshake() {
-    }
+    @Send
+    public int color;
 
-    public Handshake(String name) {
-        this.username = name;
+    public Handshake() {
     }
 
     @Override
@@ -27,6 +26,6 @@ public class Handshake extends ClientCommand {
         // broadcast current state
         game.getEntities().forEach(e -> game.send(pid, new CreateEntity(e)));
 
-        game.spawnEntity(new Player(new Vec2(100, 195), new Vec2(-15, 0), pid, username));
+        game.spawnEntity(new Player(new Vec2(100, 195), new Vec2(-15, 0), pid, username, color));
     }
 }

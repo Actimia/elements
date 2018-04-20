@@ -26,7 +26,6 @@ public class ElementsClient extends StateBasedGame {
     public static void main(String[] args) {
         try {
             Map<String, String> config = loadConfig();
-            System.out.println("Config: " + config);
             AppGameContainer gc = new AppGameContainer(new ElementsClient(config));
             gc.setDisplayMode(1600, 1000, false);
             gc.setTargetFrameRate(60);
@@ -39,6 +38,7 @@ public class ElementsClient extends StateBasedGame {
 
     private static Map<String, String> loadConfig() throws IOException {
         return Files.readAllLines(configFile).stream()
+            .filter(line -> !line.startsWith("#"))
             .map(line -> line.split(": ?"))
             .filter(split -> split.length == 2)
             .collect(Collectors.toMap(

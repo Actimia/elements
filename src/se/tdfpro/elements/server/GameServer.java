@@ -1,5 +1,6 @@
 package se.tdfpro.elements.server;
 
+import org.newdawn.slick.Color;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.CreateEntity;
 import se.tdfpro.elements.command.server.DeleteEntity;
@@ -43,8 +44,8 @@ public class GameServer {
         spawnEntity(left);
         spawnEntity(right);
 
-        spawnEntity(new Player(new Vec2(800, 600), Vec2.ZERO, -1, ""));
-        spawnEntity(new Player(new Vec2(400, 600), new Vec2(20, 0), -1, ""));
+        spawnEntity(new Player(new Vec2(800, 600), Vec2.ZERO, -1, "", 0xffffffff));
+        spawnEntity(new Player(new Vec2(400, 600), new Vec2(20, 0), -1, "", -1));
     }
 
     public void run() {

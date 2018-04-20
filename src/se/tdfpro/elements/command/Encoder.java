@@ -1,5 +1,6 @@
 package se.tdfpro.elements.command;
 
+import org.newdawn.slick.Color;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
@@ -70,6 +71,15 @@ public class Encoder {
 
         encode(bytes.length);
         buf.put(bytes);
+    }
+
+    public void encode(Color col) {
+        // 0xAARRGGBB, the format that is expected by new Color(int)
+        var color = col.getAlpha() << 24
+            | col.getRed() << 16
+            | col.getGreen() << 8
+            | col.getBlue();
+        encode(color);
     }
 
     public static byte[] encodeCommand(Command command) {

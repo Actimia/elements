@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class GameClient extends BasicGameState {
+    private static final List<String> defaultColors = List.of("#ffa69e", "#5f0ab7", "#7cffcb", "#d98324", "#ff4e00");
     public static final int ID = 1;
     public static final Map<String, Image> textures = loadTextures(Paths.get("assets", "sprites"));
 
@@ -40,7 +41,13 @@ public class GameClient extends BasicGameState {
         // clear the command cache before handshake
         net.getCommands();
 
-        net.send(new Handshake(config.getOrDefault("username", "Player")));
+        var hs = new Handshake();
+        hs.username = config.getOrDefault("username", "Player");
+        var colorstr = Optional.ofNullable(config.get("color"))
+            .orElseGet(() -> defaultColors.get((int) (defaultColors.size() * Math.random())));
+        // bit fiddling is to set max alpha so players arent invisible
+        hs.color = Integer.parseInt(colorstr.substring(1), 16) | 0xff000000;
+        net.send(hs);
     }
 
     @Override

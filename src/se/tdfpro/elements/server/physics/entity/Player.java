@@ -15,18 +15,17 @@ import se.tdfpro.elements.server.physics.Vec2;
 import java.util.List;
 
 public class Player extends Circle {
-    private static final List<Color> playerColors = List.of(Color.green, Color.cyan, Color.pink, Color.blue);
     private Vec2 impulse = Vec2.ZERO;
     private final int controller;
     private final String username;
     private final Color color;
 
     @DecodeConstructor
-    public Player(Vec2 position, Vec2 velocity, int controller, String username) {
+    public Player(Vec2 position, Vec2 velocity, int controller, String username, int color) {
         super(position, velocity, 0.5f, Materials.PLAYER, 30f);
         this.controller = controller;
         this.username = username;
-        color = controller == -1 ? Color.white : playerColors.get(controller % playerColors.size());
+        this.color = new Color(color);
     }
 
     @Override
@@ -42,6 +41,7 @@ public class Player extends Circle {
         encoder.encode(velocity);
         encoder.encode(controller);
         encoder.encode(username);
+        encoder.encode(color);
     }
 
     @Override
