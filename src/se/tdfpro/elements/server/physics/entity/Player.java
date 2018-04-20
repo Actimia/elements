@@ -19,11 +19,11 @@ public class Player extends Circle {
     private final Color color;
 
     @DecodeConstructor
-    public Player(Vec2 position, Vec2 velocity, int controller, String username, int color) {
+    public Player(Vec2 position, Vec2 velocity, int controller, String username, Color color) {
         super(position, velocity, 0.5f, Materials.PLAYER, 30f);
         this.controller = controller;
         this.username = username;
-        this.color = new Color(color);
+        this.color = color;
     }
 
     @Override

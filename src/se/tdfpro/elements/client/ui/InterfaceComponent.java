@@ -15,10 +15,6 @@ public abstract class InterfaceComponent implements ClientEntity {
     protected Color color = Color.white;
     protected final List<InterfaceComponent> children = new ArrayList<>();
 
-    public InterfaceComponent() {
-        this(Vec2.ZERO);
-    }
-
     public InterfaceComponent(Vec2 pos) {
         this.position = pos;
     }
@@ -40,7 +36,7 @@ public abstract class InterfaceComponent implements ClientEntity {
         children.forEach(comp -> comp.updateClient(gc, game, delta));
     }
 
-    protected void updateUI(GameContainer gc, GameClient game, float delta){
+    protected void updateUI(GameContainer gc, GameClient game, float delta) {
 
     }
 

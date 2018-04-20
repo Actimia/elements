@@ -1,9 +1,9 @@
 package se.tdfpro.elements.client;
 
 import se.tdfpro.elements.client.ui.AbilityIcon;
+import se.tdfpro.elements.client.ui.Cooldown;
 import se.tdfpro.elements.client.ui.MultiCooldown;
 import se.tdfpro.elements.client.ui.SingleCooldown;
-import se.tdfpro.elements.client.ui.Cooldown;
 import se.tdfpro.elements.command.client.CastAbility;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -11,7 +11,6 @@ import se.tdfpro.elements.server.physics.entity.Player;
 import se.tdfpro.elements.server.physics.entity.Projectile;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,7 +20,7 @@ public enum Abilities {
         var direction = cast.target.sub(source.getPosition()).norm();
         var ball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source.getEid());
         game.spawnEntity(ball);
-    }, 1.5f, Cooldowns.GCD),
+    }, 1.5f),
     BLINK((game, cast) -> {
         var source = game.getEntity(cast.sourceEid);
 
@@ -36,11 +35,11 @@ public enum Abilities {
     }, 5f, Cooldowns.GCD),
     KICK((game, cast) -> {
 
-    }, 10f, Cooldowns.GCD),
+    }, 10f, Cooldowns.GCD, Cooldowns.kickandsw),
     SHIELDWALL((game, cast) -> {
         var source = game.getEntity(cast.sourceEid);
 //        source.addStatusEffect();
-    }, 30f, Cooldowns.GCD);
+    }, 30f, Cooldowns.GCD, Cooldowns.kickandsw);
 
     private final SpawnAbility onSpawn;
     private final float maxCooldown;
@@ -67,18 +66,23 @@ public enum Abilities {
             Stream.of(new SingleCooldown(maxCooldown))
         ).filter(cd -> cd.getMax() > 0).collect(Collectors.toList());
 
-        switch(cooldowns.size()) {
-            case 0: throw new RuntimeException("Need at least one cooldown for " + this);
-            case 1: return cooldowns.get(0);
-            default: return new MultiCooldown(cooldowns);
+        switch (cooldowns.size()) {
+            case 0:
+                throw new RuntimeException("Need at least one cooldown for " + this);
+            case 1:
+                return cooldowns.get(0);
+            default:
+                return new MultiCooldown(cooldowns);
         }
     }
+
     public float getMaxCooldown() {
         return maxCooldown;
     }
 
     private static class Cooldowns {
         private static final Cooldown GCD = new SingleCooldown(750);
+        private static final Cooldown kickandsw = new SingleCooldown(5f);
     }
 }
 

@@ -1,5 +1,6 @@
 package se.tdfpro.elements.command;
 
+import org.newdawn.slick.Color;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
@@ -46,10 +47,16 @@ public class Decoder<T extends Command> {
                 f.set(obj, decodeVec2());
             } else if (type.equals(PhysicsEntity.class)) {
                 f.set(obj, decodeEntity());
+            } else if (type.equals(Color.class)){
+                f.set(obj, decodeColor());
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    private Color decodeColor() {
+        return new Color(decodeInt());
     }
 
     private int decodeInt() {

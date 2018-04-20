@@ -1,5 +1,6 @@
 package se.tdfpro.elements.command.client;
 
+import org.newdawn.slick.Color;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.command.server.CreateEntity;
@@ -12,7 +13,7 @@ public class Handshake extends ClientCommand {
     public String username;
 
     @Send
-    public int color;
+    public Color color;
 
     public Handshake() {
     }

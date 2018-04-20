@@ -44,7 +44,7 @@ public class AbilityIcon extends Sprite {
         var cd = cooldown.getRemainingQuotient();
         if (cd > 0) {
             g.setColor(new Color(0f, 0f, 0f, 0.5f));
-            g.fillRect(0, (1-cd) * size, size, cd * size);
+            g.fillRect(0, (1 - cd) * size, size, cd * size);
         }
 
         g.setColor(Color.white);

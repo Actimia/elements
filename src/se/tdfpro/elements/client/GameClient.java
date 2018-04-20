@@ -24,7 +24,7 @@ public class GameClient extends BasicGameState {
     public static final int ID = 1;
     public static final Map<String, Image> textures = loadTextures(Paths.get("assets", "sprites"));
 
-    // better solution needed here if two gameclients are ever run on the same jvm
+    // better solution needed here if two GameClient's are ever run on the same jvm
     private static long time = 0;
 
     public final Camera camera = new Camera();
@@ -46,16 +46,18 @@ public class GameClient extends BasicGameState {
 
         var hs = new Handshake();
         hs.username = config.getOrDefault("username", "Player");
-        var colorstr = Optional.ofNullable(config.get("color"))
-            .orElseGet(() -> defaultColors.get((int) (defaultColors.size() * Math.random())));
+        var color = Optional.ofNullable(config.get("color"))
+            .orElseGet(() -> defaultColors.get((int) (defaultColors.size() * Math.random())))
+            .replace("#", "");
         // bit fiddling is to force max alpha so players cant make themselves invisible
-        hs.color = Integer.parseInt(colorstr.substring(1), 16) | 0xff000000;
+        hs.color = new Color(Integer.parseInt(color.substring(1), 16) | 0xff000000);
         net.send(hs);
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) {
         g.setAntiAlias(true);
+        g.setClip(0, 0, gc.getWidth(), gc.getHeight());
         g.pushTransform();
 
         camera.project(g);
@@ -88,7 +90,6 @@ public class GameClient extends BasicGameState {
     public void initialiseInterface(Player player) {
         uiRoot = new PlayerInterface(player);
     }
-
 
     public void addEntity(PhysicsEntity ent) {
         entities.put(ent.getEid(), ent);
