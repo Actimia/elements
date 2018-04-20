@@ -1,7 +1,6 @@
 package se.tdfpro.elements.command;
 
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.ClientEntity;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
 import java.lang.reflect.Field;
@@ -23,9 +22,9 @@ public class Encoder {
     private void encode(Command obj) {
         encode(obj.getClass().getName());
         Arrays.stream(obj.getClass().getFields())
-                .filter(f -> f.getAnnotation(Send.class) != null)
-                .sorted(Comparator.comparing(Field::getName))
-                .forEach(f -> encode(obj, f));
+            .filter(f -> f.getAnnotation(Send.class) != null)
+            .sorted(Comparator.comparing(Field::getName))
+            .forEach(f -> encode(obj, f));
     }
 
     private void encode(Command obj, Field f) {
@@ -39,7 +38,7 @@ public class Encoder {
                 encode((String) f.get(obj));
             } else if (type.equals(Vec2.class)) {
                 encode((Vec2) f.get(obj));
-            } else if (type.equals(PhysicsEntity.class)){
+            } else if (type.equals(PhysicsEntity.class)) {
                 encode((PhysicsEntity) f.get(obj));
             }
         } catch (IllegalAccessException e) {

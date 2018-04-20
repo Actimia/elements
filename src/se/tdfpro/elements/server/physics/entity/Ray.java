@@ -5,8 +5,6 @@ import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.DecodeConstructor;
 import se.tdfpro.elements.command.Encoder;
-import se.tdfpro.elements.command.ServerCommand;
-import se.tdfpro.elements.command.server.CreateRay;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -20,7 +18,6 @@ public class Ray extends PhysicsEntity {
         super(position, Materials.WALL);
         this.direction = dir.norm();
     }
-
 
     @Override
     public void encodeConstructorParams(Encoder encoder) {
@@ -64,5 +61,4 @@ public class Ray extends PhysicsEntity {
     public float closestDistance(Vec2 point) {
         return point.sub(position).dot(direction.perpendicular());
     }
-
 }

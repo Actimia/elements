@@ -92,7 +92,7 @@ public class CollisionManifold {
         if (a instanceof Ray && b instanceof Ray) return checkCollision((Ray) a, (Ray) b);
 
         throw new RuntimeException("Unknown entity collision type: "
-                + a.getClass().getSimpleName() + " and "
-                + b.getClass().getSimpleName());
+            + a.getClass().getSimpleName() + " and "
+            + b.getClass().getSimpleName());
     }
 }

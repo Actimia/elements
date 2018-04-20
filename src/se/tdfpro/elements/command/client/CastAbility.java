@@ -1,11 +1,10 @@
 package se.tdfpro.elements.command.client;
 
-import se.tdfpro.elements.client.abilities.Abilities;
+import se.tdfpro.elements.client.Abilities;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.client.abilities.Ability;
 
 public class CastAbility extends ClientCommand {
 

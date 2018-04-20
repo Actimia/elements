@@ -10,6 +10,4 @@ public interface ClientEntity {
     void draw(GameClient game, Graphics g);
 
     void updateClient(GameContainer gc, GameClient game, float delta);
-
-    void init(GameClient game);
 }

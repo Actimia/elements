@@ -1,6 +1,6 @@
-package se.tdfpro.elements.client.abilities;
+package se.tdfpro.elements.client;
 
-import se.tdfpro.elements.client.Keybind;
+import se.tdfpro.elements.client.ui.AbilityIcon;
 import se.tdfpro.elements.command.client.CastAbility;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -16,7 +16,7 @@ public enum Abilities {
         game.spawnEntity(ball);
     }),
     BLINK(3f, (game, cast) -> {
-        var source = (Player) game.getEntity(cast.sourceEid);
+        var source = game.getEntity(cast.sourceEid);
 
         var target = cast.target;
         var direction = target.sub(source.getPosition());
@@ -40,8 +40,8 @@ public enum Abilities {
         onSpawn.execute(game, cast);
     }
 
-    public Ability create(Player source, Vec2 position, Keybind keybind) {
-        return new Ability(this, source, position, keybind);
+    public AbilityIcon createIcon(Player source, Vec2 position, Keybind keybind) {
+        return new AbilityIcon(this, source, position, keybind);
     }
 
     public float getMaxCooldown() {

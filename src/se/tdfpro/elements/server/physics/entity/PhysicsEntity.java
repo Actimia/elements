@@ -43,11 +43,6 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
 
     }
 
-    @Override
-    public void init(GameClient game) {
-
-    }
-
     public Vec2 getPosition() {
         return position;
     }

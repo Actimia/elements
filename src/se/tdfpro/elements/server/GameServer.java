@@ -6,9 +6,7 @@ import se.tdfpro.elements.command.server.DeleteEntity;
 import se.tdfpro.elements.command.server.UpdateEntity;
 import se.tdfpro.elements.net.Server;
 import se.tdfpro.elements.server.physics.Box;
-import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.Circle;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 import se.tdfpro.elements.server.physics.entity.Player;
 import se.tdfpro.elements.server.physics.entity.Ray;
@@ -87,18 +85,18 @@ public class GameServer {
 
         // Collision detection and resolving
         entities.stream()
-                .flatMap(a ->
-                        entities.stream()
-                                .filter(b -> a.getEid() < b.getEid())
-                                .map(b -> checkCollision(a, b))
-                )
-                .flatMap(Optional::stream)
-                .forEach(mani -> mani.resolve(this));
+            .flatMap(a ->
+                entities.stream()
+                    .filter(b -> a.getEid() < b.getEid())
+                    .map(b -> checkCollision(a, b))
+            )
+            .flatMap(Optional::stream)
+            .forEach(mani -> mani.resolve(this));
 
         // Update clients
         entities.stream()
-                .filter(PhysicsEntity::isDynamic)
-                .forEach(ent -> broadcast(new UpdateEntity(ent)));
+            .filter(PhysicsEntity::isDynamic)
+            .forEach(ent -> broadcast(new UpdateEntity(ent)));
     }
 
     public PhysicsEntity getEntity(int eid) {

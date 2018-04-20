@@ -69,10 +69,10 @@ public class InternetClient implements Client {
                 var encoded = Encoder.encodeCommand(com);
                 int len = encoded.length;
                 byte[] headerLengthVal = {
-                        (byte) (len >> 24),
-                        (byte) (len >> 16),
-                        (byte) (len >> 8),
-                        (byte) len
+                    (byte) (len >> 24),
+                    (byte) (len >> 16),
+                    (byte) (len >> 8),
+                    (byte) len
                 };
                 synchronized (out) {
                     out.write(MAGIC_SEQUENCE);
@@ -100,9 +100,9 @@ public class InternetClient implements Client {
                     }
                 }
                 int length = (headerBuffer[4] & 0xff) << 24
-                        | (headerBuffer[5] & 0xff)  << 16
-                        | (headerBuffer[6] & 0xff) << 8
-                        | headerBuffer[7] & 0xff;
+                    | (headerBuffer[5] & 0xff) << 16
+                    | (headerBuffer[6] & 0xff) << 8
+                    | headerBuffer[7] & 0xff;
 
                 byte[] commandBuffer = new byte[length];
                 int cmd_read = 0;

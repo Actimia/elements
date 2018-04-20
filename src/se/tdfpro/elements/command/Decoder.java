@@ -3,7 +3,6 @@ package se.tdfpro.elements.command;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -25,9 +24,9 @@ public class Decoder<T extends Command> {
             Class<?> cls = Class.forName(clsName);
             T comm = (T) cls.getDeclaredConstructor().newInstance();
             Arrays.stream(cls.getFields())
-                    .filter(f -> f.getAnnotation(Send.class) != null)
-                    .sorted(Comparator.comparing(Field::getName))
-                    .forEach(f -> decode(comm, f));
+                .filter(f -> f.getAnnotation(Send.class) != null)
+                .sorted(Comparator.comparing(Field::getName))
+                .forEach(f -> decode(comm, f));
             return comm;
         } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InstantiationException | InvocationTargetException e) {
             throw new RuntimeException(e);
@@ -75,7 +74,7 @@ public class Decoder<T extends Command> {
             @SuppressWarnings("unchecked")
             Class<? extends PhysicsEntity> cls = (Class<? extends PhysicsEntity>) Class.forName(name);
             var constructor = Arrays.stream(cls.getDeclaredConstructors())
-                    .filter(c -> c.getAnnotation(DecodeConstructor.class) != null).findFirst().get();
+                .filter(c -> c.getAnnotation(DecodeConstructor.class) != null).findFirst().get();
             var pTypes = constructor.getParameterTypes();
             var params = new Object[constructor.getParameterCount()];
 
@@ -98,9 +97,9 @@ public class Decoder<T extends Command> {
             entity.setEid(eid);
             return entity;
         } catch (ClassNotFoundException |
-                InstantiationException |
-                IllegalAccessException |
-                InvocationTargetException e) {
+            InstantiationException |
+            IllegalAccessException |
+            InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

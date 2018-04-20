@@ -4,12 +4,13 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
-import se.tdfpro.elements.client.abilities.Abilities;
+import se.tdfpro.elements.client.ui.InterfaceComponent;
+import se.tdfpro.elements.client.ui.Label;
+import se.tdfpro.elements.client.ui.PlayerInterface;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.client.Handshake;
 import se.tdfpro.elements.net.Client;
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.client.abilities.Ability;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 import se.tdfpro.elements.server.physics.entity.Player;
 
@@ -24,9 +25,7 @@ public class GameClient extends BasicGameState {
 
     public final Camera camera = new Camera();
     private final Map<Integer, PhysicsEntity> entities = new HashMap<>();
-
-    private final List<Ability> abilities = new ArrayList<>();
-
+    private InterfaceComponent uiRoot = new Label(new Vec2(800, 800), () -> "Connecting").setCenteredHorizontal(true);
     private final Client net;
     private final Map<String, String> config;
     private int pid;
@@ -54,7 +53,8 @@ public class GameClient extends BasicGameState {
 
         g.popTransform();
 
-        abilities.forEach(a -> a.render(gc, this, g));
+        g.setAntiAlias(false);
+        uiRoot.render(gc, this, g);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class GameClient extends BasicGameState {
         }
         net.getCommands().forEach(cmd -> cmd.execute(this));
         entities.values().forEach(ent -> ent.updateClient(gc, this, fDelta));
-        abilities.forEach(a -> a.updateClient(gc, this, fDelta));
+        uiRoot.updateClient(gc, this, fDelta);
     }
 
     @Override
@@ -74,9 +74,8 @@ public class GameClient extends BasicGameState {
         return ID;
     }
 
-    public void createAbilities(Player player) {
-        abilities.add(Abilities.FIREBALL.create(player, new Vec2(739, 800), Keybind.mouse(Input.MOUSE_LEFT_BUTTON)));
-        abilities.add(Abilities.BLINK.create(player, new Vec2(805, 800), Keybind.key(Input.KEY_LSHIFT)));
+    public void initialiseInterface(Player player) {
+        uiRoot = new PlayerInterface(player);
     }
 
     public void addEntity(PhysicsEntity ent) {
@@ -107,9 +106,9 @@ public class GameClient extends BasicGameState {
         Arrays.stream(directory.listFiles()).forEach(file -> {
             var name = file.getName();
             if (file.isDirectory()) {
-                loadTextures(res, file, name + "-");
+                loadTextures(res, file, prefix + name + "-");
             } else if (name.endsWith(".png") || name.endsWith(".jpg")) {
-                name = prefix + file.getName().substring(0, file.getName().length() - 4);
+                name = prefix + name.substring(0, file.getName().length() - 4);
                 try {
                     var image = new Image(file.toString());
                     Log.info("Texture '" + name + "' loaded.");

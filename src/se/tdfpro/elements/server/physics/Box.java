@@ -12,6 +12,16 @@ public class Box {
         this.size = size;
     }
 
+    public Box(float x, float y, float width, float height) {
+        this(new Vec2(x,y), new Vec2(width, height));
+    }
+
+    public Vec2 center() { return topLeft.add(size.scale(0.5f)); }
+
+    public float width() { return size.x; }
+
+    public float height() { return size.y; }
+
     public Vec2 topLeft() {return topLeft;}
 
     public Vec2 topRight() {return topLeft.add(new Vec2(size.x, 0));}
@@ -22,5 +32,9 @@ public class Box {
 
     public Stream<Vec2> corners() {
         return Stream.of(topLeft(), topRight(), bottomRight(), bottomLeft());
+    }
+
+    public Vec2 size() {
+        return size;
     }
 }

@@ -48,17 +48,17 @@ public class MainMenu extends BasicGameState {
         int textWidth = g.getFont().getWidth(usernameText);
         int textHeight = g.getFont().getHeight(usernameText);
         g.drawString(
-                usernameText,
-                HORIZONTAL_CENTER - textWidth / 2,
-                VERTICAL_CENTER - textHeight / 2
+            usernameText,
+            HORIZONTAL_CENTER - textWidth / 2,
+            VERTICAL_CENTER - textHeight / 2
         );
 
         if (caretVisible) {
             g.fillRect(
-                    HORIZONTAL_CENTER + textWidth / 2,
-                    VERTICAL_CENTER - 15,
-                    4,
-                    30
+                HORIZONTAL_CENTER + textWidth / 2,
+                VERTICAL_CENTER - 15,
+                4,
+                30
             );
         }
     }

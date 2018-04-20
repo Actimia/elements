@@ -4,6 +4,7 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
+import se.tdfpro.elements.server.physics.entity.Player;
 
 public class CreateEntity extends ServerCommand {
     @Send
@@ -18,6 +19,13 @@ public class CreateEntity extends ServerCommand {
     @Override
     public void execute(GameClient game) {
         game.addEntity(entity);
-        entity.init(game);
+
+        // ugly hack but better than having the entire entity system bend for this one block
+        if(entity instanceof Player) {
+            var player = (Player) entity;
+            if (player.getController() == game.getPid()) {
+                game.initialiseInterface(player);
+            }
+        }
     }
 }

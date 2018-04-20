@@ -1,7 +1,6 @@
 package se.tdfpro.elements.server.physics.entity;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.DecodeConstructor;
 import se.tdfpro.elements.command.Encoder;

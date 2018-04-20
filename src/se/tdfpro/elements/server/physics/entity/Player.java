@@ -30,13 +30,6 @@ public class Player extends Circle {
     }
 
     @Override
-    public void init(GameClient game) {
-        if(controller == game.getPid()) {
-            game.createAbilities(this);
-        }
-    }
-
-    @Override
     public void encodeConstructorParams(Encoder encoder) {
         encoder.encode(position);
         encoder.encode(velocity);
@@ -93,7 +86,6 @@ public class Player extends Circle {
 
     }
 
-
     public Color getColor() {
         return color;
     }
@@ -110,9 +102,7 @@ public class Player extends Circle {
         return controller;
     }
 
-
     public String getUsername() {
         return username;
     }
-
 }

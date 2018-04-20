@@ -2,8 +2,6 @@ package se.tdfpro.elements.server.physics.entity;
 
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
-import se.tdfpro.elements.command.ServerCommand;
-import se.tdfpro.elements.command.server.CreateEntity;
 import se.tdfpro.elements.server.physics.Material;
 import se.tdfpro.elements.server.physics.Vec2;
 
@@ -28,5 +26,4 @@ public abstract class Circle extends DynamicEntity {
     public String toString() {
         return String.format("Circle [%s]", position);
     }
-
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -51,7 +51,7 @@ public class ElementsClient extends StateBasedGame {
         super("Elements");
         this.config = config;
         // yoda compare avoids NPE on missing key
-        if("false".equals(config.get("local"))) {
+        if ("false".equals(config.get("local"))) {
             try {
                 net = new InternetClient(config.get("host"), Integer.parseInt(config.get("port")));
             } catch (IOException e) {
@@ -71,5 +71,4 @@ public class ElementsClient extends StateBasedGame {
 //        addState(new MainMenu(net));
         addState(new GameClient(net, config));
     }
-
 }
