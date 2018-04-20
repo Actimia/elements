@@ -6,7 +6,7 @@ import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -108,7 +108,7 @@ public class Decoder<T extends Command> {
         var len = decodeInt();
         byte[] strBuffer = new byte[len];
         buf.get(strBuffer, 0, len);
-        return Charset.forName("UTF-8").decode(ByteBuffer.wrap(strBuffer)).toString();
+        return StandardCharsets.UTF_8.decode(ByteBuffer.wrap(strBuffer)).toString();
     }
 
     public static <T extends Command> T decode(byte[] buffer) {

@@ -5,7 +5,7 @@ import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -66,7 +66,7 @@ public class Encoder {
     }
 
     public void encode(String s) {
-        byte[] bytes = s.getBytes(Charset.forName("utf-8"));
+        byte[] bytes = s.getBytes(StandardCharsets.UTF_8);
 
         encode(bytes.length);
         buf.put(bytes);
