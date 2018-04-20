@@ -6,7 +6,6 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.server.physics.Vec2;
 
 public class Sprite extends InterfaceComponent {
-
     private final Image image;
     private final Vec2 size;
 
@@ -27,7 +26,7 @@ public class Sprite extends InterfaceComponent {
     @Override
     public void draw(GameClient game, Graphics g) {
         g.drawImage(image,
-            0,0, size.x, size.y,
+            0, 0, size.x, size.y,
             0, 0, image.getWidth(), image.getHeight(),
             getColor());
     }

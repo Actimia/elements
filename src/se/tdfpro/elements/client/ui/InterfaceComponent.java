@@ -18,6 +18,7 @@ public abstract class InterfaceComponent implements ClientEntity {
     public InterfaceComponent() {
         this(Vec2.ZERO);
     }
+
     public InterfaceComponent(Vec2 pos) {
         this.position = pos;
     }
@@ -35,7 +36,12 @@ public abstract class InterfaceComponent implements ClientEntity {
 
     @Override
     public void updateClient(GameContainer gc, GameClient game, float delta) {
+        updateUI(gc, game, delta);
         children.forEach(comp -> comp.updateClient(gc, game, delta));
+    }
+
+    protected void updateUI(GameContainer gc, GameClient game, float delta){
+
     }
 
     public Vec2 getPosition() {

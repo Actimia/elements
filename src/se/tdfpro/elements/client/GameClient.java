@@ -24,6 +24,9 @@ public class GameClient extends BasicGameState {
     public static final int ID = 1;
     public static final Map<String, Image> textures = loadTextures(Paths.get("assets", "sprites"));
 
+    // better solution needed here if two gameclients are ever run on the same jvm
+    private static long time = 0;
+
     public final Camera camera = new Camera();
     private final Map<Integer, PhysicsEntity> entities = new HashMap<>();
     private InterfaceComponent uiRoot = new Label(new Vec2(800, 800), () -> "Connecting").setCenteredHorizontal(true);
@@ -45,7 +48,7 @@ public class GameClient extends BasicGameState {
         hs.username = config.getOrDefault("username", "Player");
         var colorstr = Optional.ofNullable(config.get("color"))
             .orElseGet(() -> defaultColors.get((int) (defaultColors.size() * Math.random())));
-        // bit fiddling is to set max alpha so players arent invisible
+        // bit fiddling is to force max alpha so players cant make themselves invisible
         hs.color = Integer.parseInt(colorstr.substring(1), 16) | 0xff000000;
         net.send(hs);
     }
@@ -65,15 +68,16 @@ public class GameClient extends BasicGameState {
     }
 
     @Override
-    public void update(GameContainer gc, StateBasedGame game, int delta) {
-        var fDelta = delta / 1000f;
+    public void update(GameContainer gc, StateBasedGame game, int millis) {
+        GameClient.time += millis;
+        var delta = millis / 1000f;
         Input input = gc.getInput();
         if (input.isKeyDown(Input.KEY_ESCAPE)) {
             gc.exit();
         }
         net.getCommands().forEach(cmd -> cmd.execute(this));
-        entities.values().forEach(ent -> ent.updateClient(gc, this, fDelta));
-        uiRoot.updateClient(gc, this, fDelta);
+        entities.values().forEach(ent -> ent.updateClient(gc, this, delta));
+        uiRoot.updateClient(gc, this, delta);
     }
 
     @Override
@@ -84,6 +88,7 @@ public class GameClient extends BasicGameState {
     public void initialiseInterface(Player player) {
         uiRoot = new PlayerInterface(player);
     }
+
 
     public void addEntity(PhysicsEntity ent) {
         entities.put(ent.getEid(), ent);
@@ -108,6 +113,8 @@ public class GameClient extends BasicGameState {
     public void send(ClientCommand command) {
         net.send(command);
     }
+
+    public static long getTime() { return time; }
 
     private static void loadTextures(Map<String, Image> res, File directory, String prefix) {
         Arrays.stream(directory.listFiles()).forEach(file -> {

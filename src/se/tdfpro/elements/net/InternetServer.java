@@ -3,7 +3,6 @@ package se.tdfpro.elements.net;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.client.Disconnect;
-import se.tdfpro.elements.command.server.PlayerDisconnect;
 
 import java.io.IOException;
 import java.net.ServerSocket;

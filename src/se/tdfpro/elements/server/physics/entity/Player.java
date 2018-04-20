@@ -12,8 +12,6 @@ import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Materials;
 import se.tdfpro.elements.server.physics.Vec2;
 
-import java.util.List;
-
 public class Player extends Circle {
     private Vec2 impulse = Vec2.ZERO;
     private final int controller;
@@ -87,7 +85,7 @@ public class Player extends Circle {
                 game.send(new PlayerMove(getEid(), movement));
             }
 
-            game.camera.centerOn(this.position);
+//            game.camera.centerOn(this.position);
         }
         //facing = (float) mouse.theta();
 

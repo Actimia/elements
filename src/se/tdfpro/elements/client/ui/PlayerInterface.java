@@ -14,6 +14,7 @@ import se.tdfpro.elements.server.physics.entity.Player;
 public class PlayerInterface extends InterfaceComponent {
     private float ticks = 0;
     private float maxticks = 5f;
+
     public PlayerInterface(Player player) {
         super(new Vec2(676, 800));
         var hpbar = new ProgressBar(new Box(0, 0, 248, 20), () -> ticks / maxticks);
@@ -34,8 +35,7 @@ public class PlayerInterface extends InterfaceComponent {
     }
 
     @Override
-    public void updateClient(GameContainer gc, GameClient game, float delta) {
-        super.updateClient(gc, game, delta);
+    public void updateUI(GameContainer gc, GameClient game, float delta) {
         ticks += delta;
         if (ticks >= maxticks) ticks -= maxticks;
     }

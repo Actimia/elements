@@ -24,7 +24,7 @@ public class ProgressBar extends InterfaceComponent {
     public void draw(GameClient game, Graphics g) {
         var progress = clamp(this.progress.get(), 0, 1);
 
-        g.fillRect(0,0,size.x * progress, size.y);
-        g.drawRect(0,0, size.x, size.y);
+        g.fillRect(0, 0, size.x * progress, size.y);
+        g.drawRect(0, 0, size.x, size.y);
     }
 }

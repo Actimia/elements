@@ -1,6 +1,5 @@
 package se.tdfpro.elements.server;
 
-import org.newdawn.slick.Color;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.CreateEntity;
 import se.tdfpro.elements.command.server.DeleteEntity;

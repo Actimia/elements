@@ -1,21 +1,28 @@
 package se.tdfpro.elements.client;
 
 import se.tdfpro.elements.client.ui.AbilityIcon;
+import se.tdfpro.elements.client.ui.MultiCooldown;
+import se.tdfpro.elements.client.ui.SingleCooldown;
+import se.tdfpro.elements.client.ui.Cooldown;
 import se.tdfpro.elements.command.client.CastAbility;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.Player;
 import se.tdfpro.elements.server.physics.entity.Projectile;
 
-public enum Abilities {
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-    FIREBALL(1.5f, (game, cast) -> {
+public enum Abilities {
+    FIREBALL((game, cast) -> {
         var source = game.getEntity(cast.sourceEid);
         var direction = cast.target.sub(source.getPosition()).norm();
         var ball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source.getEid());
         game.spawnEntity(ball);
-    }),
-    BLINK(3f, (game, cast) -> {
+    }, 1.5f, Cooldowns.GCD),
+    BLINK((game, cast) -> {
         var source = game.getEntity(cast.sourceEid);
 
         var target = cast.target;
@@ -26,20 +33,23 @@ public enum Abilities {
         }
 
         source.setPosition(target);
-    }),
-    KICK(5f, (game, cast) -> {
+    }, 5f, Cooldowns.GCD),
+    KICK((game, cast) -> {
 
-    }),
-    SHIELDWALL(30f, (game, cast) -> {
-
-    });
+    }, 10f, Cooldowns.GCD),
+    SHIELDWALL((game, cast) -> {
+        var source = game.getEntity(cast.sourceEid);
+//        source.addStatusEffect();
+    }, 30f, Cooldowns.GCD);
 
     private final SpawnAbility onSpawn;
     private final float maxCooldown;
+    private final Cooldown[] sharedCooldowns;
 
-    Abilities(float maxCooldown, SpawnAbility onSpawn) {
+    Abilities(SpawnAbility onSpawn, float ownCooldown, Cooldown... sharedCooldowns) {
         this.onSpawn = onSpawn;
-        this.maxCooldown = maxCooldown;
+        this.maxCooldown = ownCooldown;
+        this.sharedCooldowns = sharedCooldowns;
     }
 
     public void onSpawn(GameServer game, CastAbility cast) {
@@ -47,10 +57,29 @@ public enum Abilities {
     }
 
     public AbilityIcon createIcon(Player source, Vec2 position, Keybind keybind) {
-        return new AbilityIcon(this, source, position, keybind);
+
+        return new AbilityIcon(this, source, position, keybind, createCooldown());
     }
 
+    private Cooldown createCooldown() {
+        var cooldowns = Stream.concat(
+            Arrays.stream(sharedCooldowns),
+            Stream.of(new SingleCooldown(maxCooldown))
+        ).filter(cd -> cd.getMax() > 0).collect(Collectors.toList());
+
+        switch(cooldowns.size()) {
+            case 0: throw new RuntimeException("Need at least one cooldown for " + this);
+            case 1: return cooldowns.get(0);
+            default: return new MultiCooldown(cooldowns);
+        }
+    }
     public float getMaxCooldown() {
         return maxCooldown;
     }
+
+    private static class Cooldowns {
+        private static final Cooldown GCD = new SingleCooldown(750);
+    }
 }
+
+

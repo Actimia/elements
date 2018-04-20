@@ -13,7 +13,7 @@ public class Box {
     }
 
     public Box(float x, float y, float width, float height) {
-        this(new Vec2(x,y), new Vec2(width, height));
+        this(new Vec2(x, y), new Vec2(width, height));
     }
 
     public Vec2 center() { return topLeft.add(size.scale(0.5f)); }

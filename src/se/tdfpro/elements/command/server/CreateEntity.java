@@ -4,7 +4,6 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
-import se.tdfpro.elements.server.physics.entity.Player;
 
 public class CreateEntity extends ServerCommand {
     @Send
