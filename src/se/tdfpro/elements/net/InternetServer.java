@@ -2,6 +2,7 @@ package se.tdfpro.elements.net;
 
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.ServerCommand;
+import se.tdfpro.elements.command.client.Disconnect;
 import se.tdfpro.elements.command.server.PlayerDisconnect;
 
 import java.io.IOException;
@@ -48,10 +49,10 @@ public class InternetServer implements Server {
         client.disconnect();
         clients.remove(pid);
 
-        PlayerDisconnect playerDisconnect = new PlayerDisconnect();
-        playerDisconnect.pid = pid;
+        var dc = new Disconnect();
+        dc.pid = pid;
         System.out.println(pid + " disconnected.");
-        broadcast(playerDisconnect);
+        inbox.accept(dc);
     }
 
     private void listen() {

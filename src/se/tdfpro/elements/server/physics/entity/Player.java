@@ -30,6 +30,13 @@ public class Player extends Circle {
     }
 
     @Override
+    public void init(GameClient game) {
+        if (getController() == game.getPid()) {
+            game.initialiseInterface(this);
+        }
+    }
+
+    @Override
     public void encodeConstructorParams(Encoder encoder) {
         encoder.encode(position);
         encoder.encode(velocity);

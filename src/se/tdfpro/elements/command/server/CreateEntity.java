@@ -19,13 +19,6 @@ public class CreateEntity extends ServerCommand {
     @Override
     public void execute(GameClient game) {
         game.addEntity(entity);
-
-        // ugly hack but better than having the entire entity system bend for this one block
-        if(entity instanceof Player) {
-            var player = (Player) entity;
-            if (player.getController() == game.getPid()) {
-                game.initialiseInterface(player);
-            }
-        }
+        entity.init(game);
     }
 }

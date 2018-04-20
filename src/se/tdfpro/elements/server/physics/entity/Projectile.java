@@ -1,5 +1,6 @@
 package se.tdfpro.elements.server.physics.entity;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.DecodeConstructor;
@@ -11,11 +12,18 @@ import se.tdfpro.elements.server.physics.Vec2;
 public class Projectile extends Circle {
     private int bounces = 5;
     private final int sourceEid;
+    private Color color;
 
     @DecodeConstructor
     public Projectile(Vec2 position, Vec2 velocity, int sourceEid) {
         super(position, velocity, 1f, Materials.PROJECTILE, 10f);
         this.sourceEid = sourceEid;
+    }
+
+    @Override
+    public void init(GameClient game) {
+        var source = (Player) game.getEntity(sourceEid);
+        color = source.getColor();
     }
 
     @Override
@@ -27,8 +35,8 @@ public class Projectile extends Circle {
 
     @Override
     public void draw(GameClient game, Graphics g) {
-        var source = (Player) game.getEntity(sourceEid);
-        var color = source.getColor();
+//        var source = (Player) game.getEntity(sourceEid);
+//        var color = source.getColor();
 
         var gradient = GameClient.textures.get("gradient").getScaledCopy(0.5f);
         g.drawImage(gradient, -gradient.getWidth() / 2, -gradient.getHeight() / 2, color);

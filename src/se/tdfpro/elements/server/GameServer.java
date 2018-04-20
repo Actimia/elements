@@ -3,6 +3,7 @@ package se.tdfpro.elements.server;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.CreateEntity;
 import se.tdfpro.elements.command.server.DeleteEntity;
+import se.tdfpro.elements.command.server.PlayerDisconnect;
 import se.tdfpro.elements.command.server.UpdateEntity;
 import se.tdfpro.elements.net.Server;
 import se.tdfpro.elements.server.physics.Box;
@@ -118,5 +119,18 @@ public class GameServer {
 
     public void broadcast(ServerCommand command) {
         networking.broadcast(command);
+    }
+
+    public void onDisconnect(int pid) {
+        getEntities().stream()
+            .filter(ent -> ent instanceof Player)
+            .map(ent -> (Player) ent)
+            .filter(p -> p.getController() == pid)
+            .findFirst()
+            .ifPresent(player -> {
+                var dc = new PlayerDisconnect();
+                dc.pid = pid;
+                broadcast(dc);
+            });
     }
 }

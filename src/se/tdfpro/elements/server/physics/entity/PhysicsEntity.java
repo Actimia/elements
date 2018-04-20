@@ -20,6 +20,10 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
         this.material = material;
     }
 
+    public void init(GameClient game) {
+
+    }
+
     @Override
     public void render(GameContainer gc, GameClient game, Graphics g) {
         g.pushTransform();

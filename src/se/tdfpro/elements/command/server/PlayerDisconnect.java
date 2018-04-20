@@ -6,10 +6,10 @@ import se.tdfpro.elements.command.ServerCommand;
 
 public class PlayerDisconnect extends ServerCommand {
 
-    public PlayerDisconnect() {}
-
     @Send
     public int pid;
+
+    public PlayerDisconnect() {}
 
     @Override
     public void execute(GameClient game) {
