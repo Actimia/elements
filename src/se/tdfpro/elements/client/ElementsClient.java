@@ -25,6 +25,8 @@ public class ElementsClient extends StateBasedGame {
 
     public static void main(String[] args) {
         try {
+            System.setProperty("java.library.path", "lib");
+            System.setProperty("org.lwjgl.librarypath", Paths.get("lib", "native").toAbsolutePath().toString());
             Map<String, String> config = loadConfig();
             AppGameContainer gc = new AppGameContainer(new ElementsClient(config));
             gc.setDisplayMode(1600, 1000, false);
