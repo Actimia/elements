@@ -87,12 +87,12 @@ public class GameServer {
 
         // Collision detection and resolving
         entities.stream()
-            .flatMap(a ->
-                entities.stream()
-                    .filter(b -> a.getEid() < b.getEid())
-                    .map(b -> checkCollision(a, b))
-            )
-            .flatMap(Optional::stream)
+            .flatMap(a -> entities.stream()
+                // strict less than ensures entities are never checked against themselves
+                .filter(b -> a.getEid() < b.getEid())
+                .map(b -> checkCollision(a, b))
+            ).filter(Optional::isPresent)
+            .map(Optional::get)
             .forEach(mani -> mani.resolve(this));
 
         // Update clients
