@@ -8,18 +8,18 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.client.Keybind;
 import se.tdfpro.elements.command.client.CastAbility;
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.Player;
+import se.tdfpro.elements.server.physics.entity.PlayerEntity;
 
 public class AbilityIcon extends Sprite {
 
     private static final float size = 56f;
 
     private final Abilities type;
-    private final Player source;
+    private final PlayerEntity source;
     private final Cooldown cooldown;
     private final Keybind keybind;
 
-    public AbilityIcon(Abilities type, Player player, Vec2 position, Keybind keybind, Cooldown cooldown) {
+    public AbilityIcon(Abilities type, PlayerEntity player, Vec2 position, Keybind keybind, Cooldown cooldown) {
         super(position, "ability-" + type.toString().toLowerCase());
         this.type = type;
         this.source = player;
@@ -28,13 +28,13 @@ public class AbilityIcon extends Sprite {
 
         var keybindLabel = new Label(new Vec2(size / 2, size + 5), this.keybind::getMnemonic);
         keybindLabel.setCenteredHorizontal(true);
-        children.add(keybindLabel);
+        addChild(keybindLabel);
 
         var omniCC = new Label(new Vec2(size / 2, size / 2), this.cooldown::getRemainingText);
         omniCC.setColor(Color.red);
         omniCC.setCenteredHorizontal(true);
         omniCC.setCenteredVertical(true);
-        children.add(omniCC);
+        addChild(omniCC);
     }
 
     @Override
@@ -52,15 +52,15 @@ public class AbilityIcon extends Sprite {
     }
 
     @Override
-    public void updateUI(GameContainer gc, GameClient game, float delta) {
-        var input = gc.getInput();
+    public void onUpdate(GameClient game, float delta) {
+        var input = game.getInput();
         if (keybind.test(input)) {
             if (cooldown.ready()) {
                 cooldown.start();
 
                 var cmd = new CastAbility();
                 cmd.spellRef = type.toString();
-                cmd.sourceEid = source.getEid();
+                cmd.sourceEid = source.getId();
                 cmd.target = game.camera.unproject(new Vec2(input.getMouseX(), input.getMouseY()));
 
                 game.send(cmd);

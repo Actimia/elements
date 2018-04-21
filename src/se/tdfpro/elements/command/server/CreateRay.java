@@ -20,7 +20,7 @@ public class CreateRay extends ServerCommand {
     }
 
     public CreateRay(Ray ray) {
-        this.eid = ray.getEid();
+        this.eid = ray.getId();
         this.position = ray.getPosition();
         this.direction = ray.getDirection();
     }
@@ -28,7 +28,7 @@ public class CreateRay extends ServerCommand {
     @Override
     public void execute(GameClient game) {
         Ray ray = new Ray(position, direction);
-        ray.setEid(eid);
+        ray.setId(eid);
         game.addEntity(ray);
     }
 }

@@ -6,7 +6,7 @@ import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.command.server.CreateEntity;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.Player;
+import se.tdfpro.elements.server.physics.entity.PlayerEntity;
 
 public class Handshake extends ClientCommand {
     @Send
@@ -24,9 +24,13 @@ public class Handshake extends ClientCommand {
 
         game.send(pid, new HandshakeReply(pid));
 
-        // broadcast current state
-        game.getEntities().forEach(e -> game.send(pid, new CreateEntity(e)));
+        var world = game.getRoot();
 
-        game.spawnEntity(new Player(new Vec2(100, 195), new Vec2(-15, 0), pid, username, color));
+        // send current state
+        world.tree()
+            .filter(e -> e.getId() >= 0)
+            .forEach(e -> game.send(pid, new CreateEntity(e)));
+
+        world.addChild(game.spawnEntity(new PlayerEntity(new Vec2(100, 195), new Vec2(-15, 0), pid, username, color)));
     }
 }

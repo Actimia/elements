@@ -1,6 +1,7 @@
 package se.tdfpro.elements.command;
 
 import org.newdawn.slick.Color;
+import se.tdfpro.elements.entity.Entity;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
@@ -71,7 +72,7 @@ public class Decoder<T extends Command> {
         return new Vec2(decodeFloat(), decodeFloat());
     }
 
-    private PhysicsEntity decodeEntity() {
+    private Entity decodeEntity() {
 
         try {
             var name = decodeString();
@@ -79,7 +80,7 @@ public class Decoder<T extends Command> {
 
             // hic sunt dracones
             @SuppressWarnings("unchecked")
-            Class<? extends PhysicsEntity> cls = (Class<? extends PhysicsEntity>) Class.forName(name);
+            Class<? extends Entity> cls = (Class<? extends Entity>) Class.forName(name);
             var constructor = Arrays.stream(cls.getDeclaredConstructors())
                 .filter(c -> c.getAnnotation(DecodeConstructor.class) != null).findFirst().get();
             var pTypes = constructor.getParameterTypes();
@@ -98,10 +99,10 @@ public class Decoder<T extends Command> {
                 }
             }
             @SuppressWarnings("JavaReflectionInvocation")
-            PhysicsEntity entity = (PhysicsEntity) constructor.newInstance(params);
+            Entity entity = (Entity) constructor.newInstance(params);
 
             // terra firma
-            entity.setEid(eid);
+            entity.setId(eid);
             return entity;
         } catch (ClassNotFoundException |
             InstantiationException |

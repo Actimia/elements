@@ -9,10 +9,11 @@ import se.tdfpro.elements.client.ui.Label;
 import se.tdfpro.elements.client.ui.PlayerInterface;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.client.Handshake;
+import se.tdfpro.elements.entity.Entity;
 import se.tdfpro.elements.net.Client;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
-import se.tdfpro.elements.server.physics.entity.Player;
+import se.tdfpro.elements.server.physics.entity.PlayerEntity;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -28,11 +29,12 @@ public class GameClient extends BasicGameState {
     private static long time = 0;
 
     public final Camera camera = new Camera();
-    private final Map<Integer, PhysicsEntity> entities = new HashMap<>();
+    private final Map<Integer, Entity> entities = new HashMap<>();
     private InterfaceComponent uiRoot = new Label(new Vec2(800, 800), () -> "Connecting").setCenteredHorizontal(true);
     private final Client net;
     private final Map<String, String> config;
     private int pid;
+    private Input input;
 
     public GameClient(Client net, Map<String, String> config) {
         this.net = net;
@@ -41,11 +43,12 @@ public class GameClient extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame game) {
+        input = gc.getInput();
         // clear the command cache before handshake
         net.getCommands();
 
         var hs = new Handshake();
-        hs.username = config.getOrDefault("username", "Player");
+        hs.username = config.getOrDefault("username", "PlayerEntity");
         var color = Optional.ofNullable(config.get("color"))
             .orElseGet(() -> defaultColors.get((int) (defaultColors.size() * Math.random())))
             .replace("#", "");
@@ -61,12 +64,12 @@ public class GameClient extends BasicGameState {
         g.pushTransform();
 
         camera.project(g);
-        entities.values().forEach(ent -> ent.render(gc, this, g));
+        entities.values().forEach(ent -> ent.render(this, g));
 
         g.popTransform();
 
         g.setAntiAlias(false);
-        uiRoot.render(gc, this, g);
+        uiRoot.render(this, g);
     }
 
     @Override
@@ -78,8 +81,8 @@ public class GameClient extends BasicGameState {
             gc.exit();
         }
         net.getCommands().forEach(cmd -> cmd.execute(this));
-        entities.values().forEach(ent -> ent.updateClient(gc, this, delta));
-        uiRoot.updateClient(gc, this, delta);
+        entities.values().forEach(ent -> ent.onUpdate(this, delta));
+//        uiRoot.update(this, delta);
     }
 
     @Override
@@ -87,19 +90,19 @@ public class GameClient extends BasicGameState {
         return ID;
     }
 
-    public void initialiseInterface(Player player) {
+    public void initialiseInterface(PlayerEntity player) {
         uiRoot = new PlayerInterface(player);
     }
 
-    public void addEntity(PhysicsEntity ent) {
-        entities.put(ent.getEid(), ent);
+    public void addEntity(Entity ent) {
+        entities.put(ent.getId(), ent);
     }
 
     public void deleteEntity(int eid) {
         entities.remove(eid);
     }
 
-    public PhysicsEntity getEntity(int eid) {
+    public Entity getEntity(int eid) {
         return entities.get(eid);
     }
 
@@ -139,5 +142,13 @@ public class GameClient extends BasicGameState {
         var res = new HashMap<String, Image>();
         loadTextures(res, path.toFile(), "");
         return res;
+    }
+
+    public Input getInput() {
+        return input;
+    }
+
+    public void removeEntity(Entity entity) {
+        entities.remove(entity.getId());
     }
 }

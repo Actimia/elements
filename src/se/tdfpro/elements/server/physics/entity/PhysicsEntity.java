@@ -1,58 +1,60 @@
 package se.tdfpro.elements.server.physics.entity;
 
-import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
-import se.tdfpro.elements.command.Encoder;
+import se.tdfpro.elements.entity.Entity;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Material;
 import se.tdfpro.elements.server.physics.Vec2;
 
-public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
-    private static int nextEid;
-    protected int eid = nextEid++;
-    protected Vec2 position;
+public abstract class PhysicsEntity extends Entity {
 
     protected final Material material;
 
     public PhysicsEntity(Vec2 position, Material material) {
-        this.position = position;
+        super(position);
         this.material = material;
     }
 
+    @Override
     public void init(GameClient game) {
-
+        super.init(game);
     }
 
     @Override
-    public void render(GameContainer gc, GameClient game, Graphics g) {
+    public void init(GameServer game) {
+        super.init(game);
+        game.addPhysicsEntity(this);
+    }
+
+    @Override
+    public void render(GameClient game, Graphics g) {
         g.pushTransform();
-
-        var pos = getPosition();
-        g.translate(pos.x, pos.y);
+        g.translate(position.x, position.y);
         g.rotate(0, 0, getVelocity().theta());
-
-        setupGraphics(g);
+        g.setColor(getColor());
 
         draw(game, g);
 
         g.popTransform();
     }
 
-    void setupGraphics(Graphics g) {
-        g.setColor(material.getColor());
+    @Override
+    public void onDestroy(GameServer game) {
+        game.removePhysicsEntity(this);
+    }
+
+    public void physicsStep(float delta) {
+
+    }
+
+    public Color getColor() {
+        return material.getColor();
     }
 
     public void onCollide(GameServer game, PhysicsEntity other) {
 
-    }
-
-    public Vec2 getPosition() {
-        return position;
-    }
-
-    public void setPosition(Vec2 position) {
-        this.position = position;
     }
 
     public Vec2 getVelocity() {
@@ -65,10 +67,6 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
 
     public boolean isDynamic() {
         return false;
-    }
-
-    public int getEid() {
-        return eid;
     }
 
     public float getInvMass() {
@@ -87,10 +85,8 @@ public abstract class PhysicsEntity implements ServerEntity, ClientEntity {
         position = position.add(delta);
     }
 
-    public void setEid(int eid) {
-        this.eid = eid;
-    }
 
-    @Override
-    public abstract void encodeConstructorParams(Encoder encoder);
+
+//    @Override
+//    public abstract void encodeConstructorParams(Encoder encoder);
 }

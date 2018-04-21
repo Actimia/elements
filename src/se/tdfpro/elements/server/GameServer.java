@@ -1,17 +1,15 @@
 package se.tdfpro.elements.server;
 
-import org.newdawn.slick.Color;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.CreateEntity;
-import se.tdfpro.elements.command.server.DeleteEntity;
+import se.tdfpro.elements.command.server.DestroyEntity;
 import se.tdfpro.elements.command.server.PlayerDisconnect;
 import se.tdfpro.elements.command.server.UpdateEntity;
+import se.tdfpro.elements.entity.Entity;
+import se.tdfpro.elements.entity.World;
 import se.tdfpro.elements.net.Server;
-import se.tdfpro.elements.server.physics.Box;
-import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
-import se.tdfpro.elements.server.physics.entity.Player;
-import se.tdfpro.elements.server.physics.entity.Ray;
+import se.tdfpro.elements.server.physics.entity.PlayerEntity;
 
 import java.util.*;
 
@@ -24,28 +22,19 @@ public class GameServer {
 
     private long lastTickStart = System.currentTimeMillis();
 
+    private int nextId = 0;
+
     private final Server networking;
-    private final Map<Integer, PhysicsEntity> entities = new HashMap<>();
+    private final Map<Integer, Entity> entities = new HashMap<>();
+    private final Map<Integer, PhysicsEntity> physicsEntities = new HashMap<>();
+
+    private final World world = new World();
 
     public GameServer(Server net) {
         this.networking = net;
 
-        var origin = new Vec2(0, 0);
-        var area = new Vec2(1600, 1000);
-        var playArea = new Box(origin, area);
 
-        var top = new Ray(playArea.topLeft(), Vec2.RIGHT);
-        var right = new Ray(playArea.topRight(), Vec2.DOWN);
-        var bottom = new Ray(playArea.bottomRight(), Vec2.LEFT);
-        var left = new Ray(playArea.bottomLeft(), Vec2.UP);
-
-        spawnEntity(top);
-        spawnEntity(bottom);
-        spawnEntity(left);
-        spawnEntity(right);
-
-        spawnEntity(new Player(new Vec2(800, 600), Vec2.ZERO, -1, "", Color.white));
-        spawnEntity(new Player(new Vec2(400, 600), new Vec2(20, 0), -1, "", Color.white));
+        world.init(this);
     }
 
     public void run() {
@@ -54,6 +43,7 @@ public class GameServer {
             lastTickStart = System.currentTimeMillis();
 
             executeCommands();
+            world.tree().forEach(ent -> ent.onUpdate(this, delta));
             updatePhysics(delta);
             var frameTime = System.currentTimeMillis() - lastTickStart;
             if (frameTime > TICK_TIME) {
@@ -71,25 +61,28 @@ public class GameServer {
         }
     }
 
-    public void spawnEntity(PhysicsEntity ent) {
-        entities.put(ent.getEid(), ent);
+    public Entity spawnEntity(Entity ent) {
+        int id = getNextId();
+        ent.setId(id);
+        entities.put(id, ent);
         broadcast(new CreateEntity(ent));
+        return ent;
     }
 
-    public void executeCommands() {
+    private void executeCommands() {
         var commands = networking.getCommands();
         commands.forEach(cmd -> cmd.execute(this));
     }
 
-    public void updatePhysics(float delta) {
-        var entities = new ArrayList<>(this.entities.values());
-        entities.forEach(ent -> ent.updateServer(this, delta));
+    private void updatePhysics(float delta) {
+        var entities = new ArrayList<>(this.physicsEntities.values());
+        entities.forEach(ent -> ent.physicsStep(delta));
 
         // Collision detection and resolving
         entities.stream()
             .flatMap(a -> entities.stream()
                 // strict less than ensures entities are never checked against themselves
-                .filter(b -> a.getEid() < b.getEid())
+                .filter(b -> a.getId() < b.getId())
                 .map(b -> checkCollision(a, b))
             ).filter(Optional::isPresent)
             .map(Optional::get)
@@ -101,16 +94,19 @@ public class GameServer {
             .forEach(ent -> broadcast(new UpdateEntity(ent)));
     }
 
-    public PhysicsEntity getEntity(int eid) {
+    public Entity getEntity(int eid) {
         return entities.get(eid);
     }
 
-    public void deleteEntity(int eid) {
-        entities.remove(eid);
-        broadcast(new DeleteEntity(eid));
+    public void removeEntity(Entity entity) {
+        entities.remove(entity.getId());
     }
 
-    public Collection<PhysicsEntity> getEntities() {
+    public int getNextId() {
+        return nextId++;
+    }
+
+    public Collection<Entity> getEntities() {
         return entities.values();
     }
 
@@ -124,8 +120,8 @@ public class GameServer {
 
     public void onDisconnect(int pid) {
         getEntities().stream()
-            .filter(ent -> ent instanceof Player)
-            .map(ent -> (Player) ent)
+            .filter(ent -> ent instanceof PlayerEntity)
+            .map(ent -> (PlayerEntity) ent)
             .filter(p -> p.getController() == pid)
             .findFirst()
             .ifPresent(player -> {
@@ -133,5 +129,22 @@ public class GameServer {
                 dc.pid = pid;
                 broadcast(dc);
             });
+    }
+
+    public void addPhysicsEntity(PhysicsEntity entity) {
+        physicsEntities.put(entity.getId(), entity);
+    }
+
+    public void removePhysicsEntity(PhysicsEntity entity) {
+        physicsEntities.remove(entity.getId());
+    }
+
+    public void destroyEntity(Entity entity) {
+        entity.tree().forEach(ent -> ent.onDestroy(this));
+        broadcast(new DestroyEntity(entity));
+    }
+
+    public Entity getRoot() {
+        return world;
     }
 }

@@ -18,7 +18,7 @@ public class UpdateEntity extends ServerCommand {
     public UpdateEntity() {}
 
     public UpdateEntity(PhysicsEntity ent) {
-        eid = ent.getEid();
+        eid = ent.getId();
         position = ent.getPosition();
         velocity = ent.getVelocity();
     }

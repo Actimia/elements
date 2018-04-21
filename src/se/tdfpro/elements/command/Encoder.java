@@ -62,7 +62,7 @@ public class Encoder {
 
     public void encode(PhysicsEntity ent) {
         encode(ent.getClass().getName());
-        encode(ent.getEid());
+        encode(ent.getId());
         ent.encodeConstructorParams(this);
     }
 

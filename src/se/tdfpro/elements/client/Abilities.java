@@ -7,7 +7,7 @@ import se.tdfpro.elements.client.ui.SingleCooldown;
 import se.tdfpro.elements.command.client.CastAbility;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.Player;
+import se.tdfpro.elements.server.physics.entity.PlayerEntity;
 import se.tdfpro.elements.server.physics.entity.Projectile;
 
 import java.util.Arrays;
@@ -18,7 +18,7 @@ public enum Abilities {
     FIREBALL((game, cast) -> {
         var source = game.getEntity(cast.sourceEid);
         var direction = cast.target.sub(source.getPosition()).norm();
-        var ball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source.getEid());
+        var ball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source.getId());
         game.spawnEntity(ball);
     }, 1.5f),
     BLINK((game, cast) -> {
@@ -55,7 +55,7 @@ public enum Abilities {
         onSpawn.execute(game, cast);
     }
 
-    public AbilityIcon createIcon(Player source, Vec2 position, Keybind keybind) {
+    public AbilityIcon createIcon(PlayerEntity source, Vec2 position, Keybind keybind) {
 
         return new AbilityIcon(this, source, position, keybind, createCooldown());
     }

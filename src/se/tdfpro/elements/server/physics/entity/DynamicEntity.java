@@ -18,7 +18,8 @@ public abstract class DynamicEntity extends PhysicsEntity {
         this.invMass = invMass;
     }
 
-    private void doEulerStep(float delta) {
+    @Override
+    public void physicsStep(float delta) {
         position = position.add(velocity.scale(delta));
         velocity = velocity.scale((float) Math.pow(material.getFriction(), delta));
         if (velocity.length2() < FRICTION_STOP) {
@@ -27,31 +28,37 @@ public abstract class DynamicEntity extends PhysicsEntity {
     }
 
     @Override
-    public void updateServer(GameServer game, float delta) {
-        doEulerStep(delta);
+    public void onUpdate(GameServer game, float delta) {
+
     }
 
     @Override
-    public void updateClient(GameContainer gc, GameClient game, float delta) {
-        doEulerStep(delta);
+    public void onUpdate(GameClient game, float delta) {
+        // do full physics step as interpolation
+        physicsStep(delta);
     }
 
+    @Override
     public Vec2 getVelocity() {
         return velocity;
     }
 
+    @Override
     public void setVelocity(Vec2 velocity) {
         this.velocity = velocity;
     }
 
+    @Override
     public void changeVelocity(Vec2 delta) {
         velocity = velocity.add(delta);
     }
 
+    @Override
     public float getInvMass() {
         return invMass;
     }
 
+    @Override
     public boolean isDynamic() {
         return true;
     }

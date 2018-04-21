@@ -6,7 +6,7 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.DecodeConstructor;
 import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Materials;
+import se.tdfpro.elements.server.physics.Material;
 import se.tdfpro.elements.server.physics.Vec2;
 
 public class Ray extends PhysicsEntity {
@@ -15,7 +15,7 @@ public class Ray extends PhysicsEntity {
 
     @DecodeConstructor
     public Ray(Vec2 position, Vec2 dir) {
-        super(position, Materials.WALL);
+        super(position, Material.WALL);
         this.direction = dir.norm();
     }
 
@@ -36,7 +36,12 @@ public class Ray extends PhysicsEntity {
     }
 
     @Override
-    public void updateClient(GameContainer gc, GameClient game, float delta) {
+    public void onUpdate(GameClient game, float delta) {
+
+    }
+
+    @Override
+    public void onUpdate(GameServer game, float delta) {
 
     }
 
@@ -47,15 +52,6 @@ public class Ray extends PhysicsEntity {
 
     public Vec2 getDirection() {
         return direction;
-    }
-
-    @Override
-    public void updateServer(GameServer game, float delta) {
-
-    }
-
-    public boolean isRHS(Vec2 point) {
-        return point.sub(position).dot(direction.perpendicular()) > 0;
     }
 
     public float closestDistance(Vec2 point) {

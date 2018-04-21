@@ -3,16 +3,17 @@ package se.tdfpro.elements.command.server;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.command.ServerCommand;
+import se.tdfpro.elements.entity.Entity;
 
-public class DeleteEntity extends ServerCommand {
+public class DestroyEntity extends ServerCommand {
     @Send
     public int eid;
 
-    public DeleteEntity() {
+    public DestroyEntity() {
     }
 
-    public DeleteEntity(int eid) {
-        this.eid = eid;
+    public DestroyEntity(Entity ent) {
+        this.eid = ent.getId();
     }
 
     @Override

@@ -9,33 +9,33 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.client.Keybind;
 import se.tdfpro.elements.server.physics.Box;
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.Player;
+import se.tdfpro.elements.server.physics.entity.PlayerEntity;
 
 public class PlayerInterface extends InterfaceComponent {
     private float ticks = 0;
     private float maxticks = 5f;
 
-    public PlayerInterface(Player player) {
+    public PlayerInterface(PlayerEntity player) {
         super(new Vec2(676, 800));
         var hpbar = new ProgressBar(new Box(0, 0, 248, 20), () -> ticks / maxticks);
-        children.add(hpbar);
+        addChild(hpbar);
 
         var hplabel = new Label(new Vec2(124, 10), () -> String.format("%.1f/%.1f", ticks, maxticks));
         hplabel.setCenteredHorizontal(true);
         hplabel.setCenteredVertical(true);
         hplabel.setColor(Color.black);
-        children.add(hplabel);
+        addChild(hplabel);
 
         var actionbar = new ActionBar(new Vec2(0, 28), player);
         actionbar.addAbility(Abilities.FIREBALL, Keybind.mouse(Input.MOUSE_LEFT_BUTTON));
         actionbar.addAbility(Abilities.BLINK, Keybind.mouse(Input.MOUSE_RIGHT_BUTTON));
         actionbar.addAbility(Abilities.KICK, Keybind.key(Input.KEY_1));
         actionbar.addAbility(Abilities.SHIELDWALL, Keybind.key(Input.KEY_2));
-        children.add(actionbar);
+        addChild(actionbar);
     }
 
     @Override
-    public void updateUI(GameContainer gc, GameClient game, float delta) {
+    public void onUpdate(GameClient game, float delta) {
         ticks += delta;
         if (ticks >= maxticks) ticks -= maxticks;
     }

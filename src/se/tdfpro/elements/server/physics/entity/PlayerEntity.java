@@ -1,7 +1,6 @@
 package se.tdfpro.elements.server.physics.entity;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.GameClient;
@@ -9,18 +8,18 @@ import se.tdfpro.elements.command.DecodeConstructor;
 import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.command.client.PlayerMove;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Materials;
+import se.tdfpro.elements.server.physics.Material;
 import se.tdfpro.elements.server.physics.Vec2;
 
-public class Player extends Circle {
+public class PlayerEntity extends Circle {
     private Vec2 impulse = Vec2.ZERO;
     private final int controller;
     private final String username;
     private final Color color;
 
     @DecodeConstructor
-    public Player(Vec2 position, Vec2 velocity, int controller, String username, Color color) {
-        super(position, velocity, 0.5f, Materials.PLAYER, 30f);
+    public PlayerEntity(Vec2 position, Vec2 velocity, int controller, String username, Color color) {
+        super(position, velocity, 0.5f, Material.PLAYER, 30f);
         this.controller = controller;
         this.username = username;
         this.color = color;
@@ -50,22 +49,17 @@ public class Player extends Circle {
     }
 
     @Override
-    void setupGraphics(Graphics g) {
-        g.setColor(this.getColor());
-    }
-
-    @Override
-    public void updateServer(GameServer game, float delta) {
+    public void onUpdate(GameServer game, float delta) {
         velocity = velocity.add(impulse);
         impulse = Vec2.ZERO;
-        super.updateServer(game, delta);
+        super.onUpdate(game, delta);
     }
 
     @Override
-    public void updateClient(GameContainer gc, GameClient game, float delta) {
-        super.updateClient(gc, game, delta);
+    public void onUpdate(GameClient game, float delta) {
+        super.onUpdate(game, delta);
         if (controller == game.getPid()) {
-            Input input = gc.getInput();
+            Input input = game.getInput();
             var movement = new Vec2(0, 0);
             if (input.isKeyDown(Input.KEY_W)) {
                 movement = movement.add(Vec2.UP);
@@ -82,7 +76,7 @@ public class Player extends Circle {
 
             if (movement.length2() != 0) {
                 movement = movement.norm();
-                game.send(new PlayerMove(getEid(), movement));
+                game.send(new PlayerMove(getId(), movement));
             }
 
 //            game.camera.centerOn(this.position);
@@ -91,6 +85,7 @@ public class Player extends Circle {
 
     }
 
+    @Override
     public Color getColor() {
         return color;
     }
