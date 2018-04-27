@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.DecodeConstructor;
 import se.tdfpro.elements.command.Encoder;
+import se.tdfpro.elements.entity.Entity;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Material;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -21,9 +22,10 @@ public class Projectile extends Circle {
     }
 
     @Override
-    public void init(GameClient game) {
+    public Entity init(GameClient game) {
         var source = (PlayerEntity) game.getEntity(sourceEid);
         color = source.getColor();
+        return super.init(game);
     }
 
     @Override

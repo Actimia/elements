@@ -18,8 +18,8 @@ public enum Abilities {
     FIREBALL((game, cast) -> {
         var source = game.getEntity(cast.sourceEid);
         var direction = cast.target.sub(source.getPosition()).norm();
-        var ball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source.getId());
-        game.spawnEntity(ball);
+        var ball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source.getId
+            ()).init(game);
     }, 1.5f),
     BLINK((game, cast) -> {
         var source = game.getEntity(cast.sourceEid);

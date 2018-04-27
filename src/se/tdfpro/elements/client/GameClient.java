@@ -10,9 +10,9 @@ import se.tdfpro.elements.client.ui.PlayerInterface;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.client.Handshake;
 import se.tdfpro.elements.entity.Entity;
+import se.tdfpro.elements.entity.World;
 import se.tdfpro.elements.net.Client;
 import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 import se.tdfpro.elements.server.physics.entity.PlayerEntity;
 
 import java.io.File;
@@ -31,6 +31,8 @@ public class GameClient extends BasicGameState {
     public final Camera camera = new Camera();
     private final Map<Integer, Entity> entities = new HashMap<>();
     private InterfaceComponent uiRoot = new Label(new Vec2(800, 800), () -> "Connecting").setCenteredHorizontal(true);
+
+    private Entity root = new World();
     private final Client net;
     private final Map<String, String> config;
     private int pid;
@@ -46,7 +48,8 @@ public class GameClient extends BasicGameState {
         input = gc.getInput();
         // clear the command cache before handshake
         net.getCommands();
-
+        root.setId(0);
+        root.init(this);
         var hs = new Handshake();
         hs.username = config.getOrDefault("username", "PlayerEntity");
         var color = Optional.ofNullable(config.get("color"))
@@ -81,7 +84,7 @@ public class GameClient extends BasicGameState {
             gc.exit();
         }
         net.getCommands().forEach(cmd -> cmd.execute(this));
-        entities.values().forEach(ent -> ent.onUpdate(this, delta));
+        entities.values().forEach(ent -> ent.update(this, delta));
 //        uiRoot.update(this, delta);
     }
 
@@ -92,6 +95,10 @@ public class GameClient extends BasicGameState {
 
     public void initialiseInterface(PlayerEntity player) {
         uiRoot = new PlayerInterface(player);
+    }
+
+    public Entity getRoot() {
+        return root;
     }
 
     public void addEntity(Entity ent) {

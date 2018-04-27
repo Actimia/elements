@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 public abstract class Entity {
     private int id = -1;
-    private final List<Entity> children = new ArrayList<>();
+    protected final List<Entity> children = new ArrayList<>();
     protected Vec2 position;
 
     public Entity() {
@@ -24,7 +24,7 @@ public abstract class Entity {
     }
 
     public void setId(int id) {
-        if (id == -1) {
+        if (this.id == -1) {
             this.id = id;
         } else {
             throw new IllegalStateException("Id set twice");
@@ -34,6 +34,7 @@ public abstract class Entity {
     public abstract void encodeConstructorParams(Encoder encoder);
 
     public Stream<Entity> tree() {
+        // dfs tree walk
         return Stream.concat(Stream.of(this), children.stream().flatMap(Entity::tree));
     }
 
@@ -41,12 +42,14 @@ public abstract class Entity {
         return id;
     }
 
-    public void init(GameClient game) {
+    public Entity init(GameClient game) {
         game.addEntity(this);
+        return this;
     }
 
-    public void init(GameServer game) {
-
+    public Entity init(GameServer game) {
+        game.addEntity(this);
+        return this;
     }
 
     public void addChild(Entity child) {
@@ -65,21 +68,24 @@ public abstract class Entity {
 
     }
 
-    public void onUpdate(GameClient game, float delta){
-
+    public void update(GameClient game, float delta){
+        children.forEach(c -> c.update(game, delta));
     }
 
 
-    public void onUpdate(GameServer game, float delta){
-
+    public void update(GameServer game, float delta){
+        children.forEach(c -> c.update(game, delta));
     }
 
-    public void onDestroy(GameClient game) {
-
+    public void destroy(GameClient game) {
+        children.forEach(c -> c.destroy(game));
+        game.removeEntity(this);
     }
 
-    public void onDestroy(GameServer game) {
-
+    public void destroy(GameServer game) {
+        // children first to ensure there are never any dangling trees.
+        children.forEach(c -> c.destroy(game));
+        game.removeEntity(this);
     }
 
     public Vec2 getPosition() {

@@ -7,6 +7,7 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.DecodeConstructor;
 import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.command.client.PlayerMove;
+import se.tdfpro.elements.entity.Entity;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.server.physics.Material;
 import se.tdfpro.elements.server.physics.Vec2;
@@ -26,10 +27,11 @@ public class PlayerEntity extends Circle {
     }
 
     @Override
-    public void init(GameClient game) {
+    public Entity init(GameClient game) {
         if (getController() == game.getPid()) {
             game.initialiseInterface(this);
         }
+        return super.init(game);
     }
 
     @Override
@@ -49,15 +51,15 @@ public class PlayerEntity extends Circle {
     }
 
     @Override
-    public void onUpdate(GameServer game, float delta) {
+    public void update(GameServer game, float delta) {
         velocity = velocity.add(impulse);
         impulse = Vec2.ZERO;
-        super.onUpdate(game, delta);
+        super.update(game, delta);
     }
 
     @Override
-    public void onUpdate(GameClient game, float delta) {
-        super.onUpdate(game, delta);
+    public void update(GameClient game, float delta) {
+        super.update(game, delta);
         if (controller == game.getPid()) {
             Input input = game.getInput();
             var movement = new Vec2(0, 0);

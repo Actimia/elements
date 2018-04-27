@@ -4,7 +4,7 @@ import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.CreateEntity;
 import se.tdfpro.elements.command.server.DestroyEntity;
 import se.tdfpro.elements.command.server.PlayerDisconnect;
-import se.tdfpro.elements.command.server.UpdateEntity;
+import se.tdfpro.elements.command.server.UpdatePhysics;
 import se.tdfpro.elements.entity.Entity;
 import se.tdfpro.elements.entity.World;
 import se.tdfpro.elements.net.Server;
@@ -43,7 +43,7 @@ public class GameServer {
             lastTickStart = System.currentTimeMillis();
 
             executeCommands();
-            world.tree().forEach(ent -> ent.onUpdate(this, delta));
+            world.tree().forEach(ent -> ent.update(this, delta));
             updatePhysics(delta);
             var frameTime = System.currentTimeMillis() - lastTickStart;
             if (frameTime > TICK_TIME) {
@@ -61,7 +61,7 @@ public class GameServer {
         }
     }
 
-    public Entity spawnEntity(Entity ent) {
+    public Entity addEntity(Entity ent) {
         int id = getNextId();
         ent.setId(id);
         entities.put(id, ent);
@@ -91,7 +91,7 @@ public class GameServer {
         // Update clients
         entities.stream()
             .filter(PhysicsEntity::isDynamic)
-            .forEach(ent -> broadcast(new UpdateEntity(ent)));
+            .forEach(ent -> broadcast(new UpdatePhysics(ent)));
     }
 
     public Entity getEntity(int eid) {
@@ -140,7 +140,7 @@ public class GameServer {
     }
 
     public void destroyEntity(Entity entity) {
-        entity.tree().forEach(ent -> ent.onDestroy(this));
+        entity.tree().forEach(ent -> ent.destroy(this));
         broadcast(new DestroyEntity(entity));
     }
 

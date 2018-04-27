@@ -6,7 +6,7 @@ import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.server.physics.Vec2;
 import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
-public class UpdateEntity extends ServerCommand {
+public class UpdatePhysics extends ServerCommand {
 
     @Send
     public int eid;
@@ -15,9 +15,9 @@ public class UpdateEntity extends ServerCommand {
     @Send
     public Vec2 velocity;
 
-    public UpdateEntity() {}
+    public UpdatePhysics() {}
 
-    public UpdateEntity(PhysicsEntity ent) {
+    public UpdatePhysics(PhysicsEntity ent) {
         eid = ent.getId();
         position = ent.getPosition();
         velocity = ent.getVelocity();
@@ -25,7 +25,7 @@ public class UpdateEntity extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        var ent = game.getEntity(eid);
+        var ent = (PhysicsEntity) game.getEntity(eid);
         if (ent == null) return;
         ent.setPosition(position);
         ent.setVelocity(velocity);

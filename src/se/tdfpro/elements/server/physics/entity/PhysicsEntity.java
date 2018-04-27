@@ -18,14 +18,14 @@ public abstract class PhysicsEntity extends Entity {
     }
 
     @Override
-    public void init(GameClient game) {
-        super.init(game);
+    public Entity init(GameClient game) {
+        return super.init(game);
     }
 
     @Override
-    public void init(GameServer game) {
-        super.init(game);
+    public Entity init(GameServer game) {
         game.addPhysicsEntity(this);
+        return super.init(game);
     }
 
     @Override
@@ -41,7 +41,7 @@ public abstract class PhysicsEntity extends Entity {
     }
 
     @Override
-    public void onDestroy(GameServer game) {
+    public void destroy(GameServer game) {
         game.removePhysicsEntity(this);
     }
 

@@ -36,12 +36,12 @@ public class Ray extends PhysicsEntity {
     }
 
     @Override
-    public void onUpdate(GameClient game, float delta) {
+    public void update(GameClient game, float delta) {
 
     }
 
     @Override
-    public void onUpdate(GameServer game, float delta) {
+    public void update(GameServer game, float delta) {
 
     }
 

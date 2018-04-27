@@ -28,12 +28,12 @@ public abstract class DynamicEntity extends PhysicsEntity {
     }
 
     @Override
-    public void onUpdate(GameServer game, float delta) {
+    public void update(GameServer game, float delta) {
 
     }
 
     @Override
-    public void onUpdate(GameClient game, float delta) {
+    public void update(GameClient game, float delta) {
         // do full physics step as interpolation
         physicsStep(delta);
     }

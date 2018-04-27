@@ -35,7 +35,7 @@ public class PlayerInterface extends InterfaceComponent {
     }
 
     @Override
-    public void onUpdate(GameClient game, float delta) {
+    public void update(GameClient game, float delta) {
         ticks += delta;
         if (ticks >= maxticks) ticks -= maxticks;
     }

@@ -21,12 +21,12 @@ public abstract class InterfaceComponent extends Entity {
     }
 
     @Override
-    public void onUpdate(GameClient game, float delta) {
+    public void update(GameClient game, float delta) {
 
     }
 
     @Override
-    public void onUpdate(GameServer game, float delta) {
+    public void update(GameServer game, float delta) {
         throw new UnsupportedOperationException("UI update on server");
     }
 

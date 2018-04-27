@@ -8,6 +8,8 @@ import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
 public class CreateEntity extends ServerCommand {
     @Send
+    public int parentid;
+    @Send
     public Entity entity;
 
     public CreateEntity() {}
@@ -18,7 +20,6 @@ public class CreateEntity extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        game.addEntity(entity);
-        entity.init(game);
+        game.getRoot().addChild(entity.init(game));
     }
 }

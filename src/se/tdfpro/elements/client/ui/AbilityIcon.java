@@ -52,7 +52,7 @@ public class AbilityIcon extends Sprite {
     }
 
     @Override
-    public void onUpdate(GameClient game, float delta) {
+    public void update(GameClient game, float delta) {
         var input = game.getInput();
         if (keybind.test(input)) {
             if (cooldown.ready()) {

@@ -31,6 +31,8 @@ public class Handshake extends ClientCommand {
             .filter(e -> e.getId() >= 0)
             .forEach(e -> game.send(pid, new CreateEntity(e)));
 
-        world.addChild(game.spawnEntity(new PlayerEntity(new Vec2(100, 195), new Vec2(-15, 0), pid, username, color)));
+        var player = new PlayerEntity(new Vec2(100, 195), new Vec2(-15, 0), pid, username, color);
+        player.init(game);
+        world.addChild(player);
     }
 }
