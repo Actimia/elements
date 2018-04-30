@@ -1,4 +1,4 @@
-package se.tdfpro.elements.server.physics;
+package se.tdfpro.elements.util;
 
 import org.newdawn.slick.geom.Vector2f;
 

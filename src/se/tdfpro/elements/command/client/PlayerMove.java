@@ -3,8 +3,8 @@ package se.tdfpro.elements.command.client;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.PlayerEntity;
+import se.tdfpro.elements.util.Vec2;
+import se.tdfpro.elements.entity.physics.PlayerEntity;
 
 public class PlayerMove extends ClientCommand {
 

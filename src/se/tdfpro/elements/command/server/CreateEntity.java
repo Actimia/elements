@@ -4,7 +4,6 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.entity.Entity;
-import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
 
 public class CreateEntity extends ServerCommand {
     @Send
@@ -20,6 +19,6 @@ public class CreateEntity extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        game.getRoot().addChild(entity.init(game));
+        game.addEntity(entity.init(game));
     }
 }

@@ -1,4 +1,4 @@
-package se.tdfpro.elements;
+package se.tdfpro.elements.util;
 
 public final class Utils {
 

@@ -1,9 +1,7 @@
-package se.tdfpro.elements.server.physics;
+package se.tdfpro.elements.entity.physics;
 
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.entity.Circle;
-import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
-import se.tdfpro.elements.server.physics.entity.Ray;
+import se.tdfpro.elements.util.Vec2;
 
 import java.util.Optional;
 
@@ -67,11 +65,6 @@ public class CollisionManifold {
             // beyond the wall
             return Optional.of(new CollisionManifold(a, b, normal.scale(Math.abs(dist)), dist - limit));
         }
-//        var normal = perp.scale(dist);
-//        if (normal.length2() < limit * limit) {
-//            var depth = normal.length() - limit;
-//            return Optional.of(new CollisionManifold(a, b, normal.project(perp), depth));
-//        }
 
         return Optional.empty();
     }

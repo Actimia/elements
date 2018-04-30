@@ -1,7 +1,7 @@
 package se.tdfpro.elements.client;
 
 import org.newdawn.slick.Graphics;
-import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.util.Vec2;
 
 public class Camera {
     private static final Vec2 viewport = new Vec2(1600, 1000);

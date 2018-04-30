@@ -1,12 +1,11 @@
-package se.tdfpro.elements.server.physics.entity;
+package se.tdfpro.elements.entity.physics;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.entity.Entity;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Material;
-import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.util.Vec2;
 
 public abstract class PhysicsEntity extends Entity {
 
@@ -15,17 +14,6 @@ public abstract class PhysicsEntity extends Entity {
     public PhysicsEntity(Vec2 position, Material material) {
         super(position);
         this.material = material;
-    }
-
-    @Override
-    public Entity init(GameClient game) {
-        return super.init(game);
-    }
-
-    @Override
-    public Entity init(GameServer game) {
-        game.addPhysicsEntity(this);
-        return super.init(game);
     }
 
     @Override
@@ -38,11 +26,6 @@ public abstract class PhysicsEntity extends Entity {
         draw(game, g);
 
         g.popTransform();
-    }
-
-    @Override
-    public void destroy(GameServer game) {
-        game.removePhysicsEntity(this);
     }
 
     public void physicsStep(float delta) {

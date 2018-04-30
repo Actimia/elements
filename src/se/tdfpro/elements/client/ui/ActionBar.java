@@ -1,11 +1,9 @@
 package se.tdfpro.elements.client.ui;
 
-import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.Abilities;
-import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.client.Keybind;
-import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.PlayerEntity;
+import se.tdfpro.elements.util.Vec2;
+import se.tdfpro.elements.entity.physics.PlayerEntity;
 
 public class ActionBar extends InterfaceComponent {
     private final PlayerEntity caster;

@@ -3,7 +3,7 @@ package se.tdfpro.elements.client.ui;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import se.tdfpro.elements.client.GameClient;
-import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.util.Vec2;
 
 public class Sprite extends InterfaceComponent {
     private final Image image;

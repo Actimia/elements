@@ -1,20 +1,24 @@
 package se.tdfpro.elements.server;
 
+import org.newdawn.slick.Color;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.CreateEntity;
 import se.tdfpro.elements.command.server.DestroyEntity;
 import se.tdfpro.elements.command.server.PlayerDisconnect;
 import se.tdfpro.elements.command.server.UpdatePhysics;
 import se.tdfpro.elements.entity.Entity;
-import se.tdfpro.elements.entity.World;
+import se.tdfpro.elements.entity.physics.Ray;
+import se.tdfpro.elements.entity.physics.World;
 import se.tdfpro.elements.net.Server;
-import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
-import se.tdfpro.elements.server.physics.entity.PlayerEntity;
+import se.tdfpro.elements.entity.physics.PhysicsEntity;
+import se.tdfpro.elements.entity.physics.PlayerEntity;
+import se.tdfpro.elements.util.Box;
+import se.tdfpro.elements.util.Vec2;
 
 import java.util.*;
 
 import static java.lang.Thread.sleep;
-import static se.tdfpro.elements.server.physics.CollisionManifold.checkCollision;
+import static se.tdfpro.elements.entity.physics.CollisionManifold.checkCollision;
 
 public class GameServer {
     public static final int TICKS = 20;
@@ -28,13 +32,21 @@ public class GameServer {
     private final Map<Integer, Entity> entities = new HashMap<>();
     private final Map<Integer, PhysicsEntity> physicsEntities = new HashMap<>();
 
-    private final World world = new World();
-
     public GameServer(Server net) {
         this.networking = net;
 
 
-        world.init(this);
+        var origin = new Vec2(0, 0);
+        var area = new Vec2(1600, 1000);
+        var playArea = new Box(origin, area);
+
+        createEntity(new Ray(playArea.topLeft(), Vec2.RIGHT));
+        createEntity(new Ray(playArea.topRight(), Vec2.DOWN));
+        createEntity(new Ray(playArea.bottomRight(), Vec2.LEFT));
+        createEntity(new Ray(playArea.bottomLeft(), Vec2.UP));
+
+        createEntity(new PlayerEntity(new Vec2(800, 600), Vec2.ZERO, -1, "Steve", Color.white));
+        createEntity(new PlayerEntity(new Vec2(400, 600), new Vec2(20, 0), -1, "Bob", Color.white));
     }
 
     public void run() {
@@ -43,8 +55,9 @@ public class GameServer {
             lastTickStart = System.currentTimeMillis();
 
             executeCommands();
-            world.tree().forEach(ent -> ent.update(this, delta));
+            getEntities().forEach(e -> e.update(this, delta));
             updatePhysics(delta);
+
             var frameTime = System.currentTimeMillis() - lastTickStart;
             if (frameTime > TICK_TIME) {
                 System.out.println("Very long frame warning: " + frameTime + "ms");
@@ -61,12 +74,26 @@ public class GameServer {
         }
     }
 
-    public Entity addEntity(Entity ent) {
+    public void createEntity(Entity entity) {
         int id = getNextId();
-        ent.setId(id);
-        entities.put(id, ent);
-        broadcast(new CreateEntity(ent));
-        return ent;
+        entity.setId(id);
+        entity.init(this);
+        entities.put(id, entity);
+        if (entity instanceof PhysicsEntity) {
+            physicsEntities.put(id, (PhysicsEntity) entity);
+        }
+        broadcast(new CreateEntity(entity));
+    }
+
+
+    public void destroyEntity(Entity entity) {
+        var id = entity.getId();
+        entity.destroy(this);
+        entities.remove(id);
+        if (entity instanceof PhysicsEntity) {
+            physicsEntities.remove(id);
+        }
+        broadcast(new DestroyEntity(entity));
     }
 
     private void executeCommands() {
@@ -98,9 +125,6 @@ public class GameServer {
         return entities.get(eid);
     }
 
-    public void removeEntity(Entity entity) {
-        entities.remove(entity.getId());
-    }
 
     public int getNextId() {
         return nextId++;
@@ -131,20 +155,4 @@ public class GameServer {
             });
     }
 
-    public void addPhysicsEntity(PhysicsEntity entity) {
-        physicsEntities.put(entity.getId(), entity);
-    }
-
-    public void removePhysicsEntity(PhysicsEntity entity) {
-        physicsEntities.remove(entity.getId());
-    }
-
-    public void destroyEntity(Entity entity) {
-        entity.tree().forEach(ent -> ent.destroy(this));
-        broadcast(new DestroyEntity(entity));
-    }
-
-    public Entity getRoot() {
-        return world;
-    }
 }

@@ -4,7 +4,7 @@ import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.util.Vec2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +43,10 @@ public abstract class Entity {
     }
 
     public Entity init(GameClient game) {
-        game.addEntity(this);
         return this;
     }
 
     public Entity init(GameServer game) {
-        game.addEntity(this);
         return this;
     }
 
@@ -79,13 +77,10 @@ public abstract class Entity {
 
     public void destroy(GameClient game) {
         children.forEach(c -> c.destroy(game));
-        game.removeEntity(this);
     }
 
     public void destroy(GameServer game) {
-        // children first to ensure there are never any dangling trees.
         children.forEach(c -> c.destroy(game));
-        game.removeEntity(this);
     }
 
     public Vec2 getPosition() {

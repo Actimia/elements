@@ -2,7 +2,7 @@ package se.tdfpro.elements.client.ui;
 
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
-import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.util.Vec2;
 
 import java.util.function.Supplier;
 
@@ -27,7 +27,7 @@ public class Label extends InterfaceComponent {
         var text = this.text.get();
         var xOffset = centerHorizontal ? -font.getWidth(text) / 2 : 0;
         var yOffset = centerVertical ? -font.getHeight(text) / 2 : 0;
-
+        g.setColor(getColor());
         g.drawString(text, xOffset, yOffset);
     }
 

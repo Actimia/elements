@@ -1,15 +1,14 @@
 package se.tdfpro.elements.client.ui;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.Abilities;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.client.Keybind;
-import se.tdfpro.elements.server.physics.Box;
-import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.PlayerEntity;
+import se.tdfpro.elements.util.Box;
+import se.tdfpro.elements.util.Vec2;
+import se.tdfpro.elements.entity.physics.PlayerEntity;
 
 public class PlayerInterface extends InterfaceComponent {
     private float ticks = 0;
@@ -36,8 +35,7 @@ public class PlayerInterface extends InterfaceComponent {
 
     @Override
     public void update(GameClient game, float delta) {
-        ticks += delta;
-        if (ticks >= maxticks) ticks -= maxticks;
+        super.update(game, delta);
     }
 
     @Override

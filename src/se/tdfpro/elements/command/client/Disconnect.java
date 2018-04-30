@@ -2,9 +2,7 @@ package se.tdfpro.elements.command.client;
 
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.Send;
-import se.tdfpro.elements.command.server.PlayerDisconnect;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.entity.PlayerEntity;
 
 public class Disconnect extends ClientCommand {
     @Send
@@ -21,7 +19,7 @@ public class Disconnect extends ClientCommand {
 //                var dc = new PlayerDisconnect();
 //                dc.pid = pid;
 //                game.broadcast(dc);
-//                game.removeEntity(player.getId());
+//                game.destroyEntity(player.getId());
 //            });
     }
 }

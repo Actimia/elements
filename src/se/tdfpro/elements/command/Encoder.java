@@ -1,8 +1,8 @@
 package se.tdfpro.elements.command;
 
 import org.newdawn.slick.Color;
-import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
+import se.tdfpro.elements.util.Vec2;
+import se.tdfpro.elements.entity.physics.PhysicsEntity;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;

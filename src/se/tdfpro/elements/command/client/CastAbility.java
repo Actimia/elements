@@ -4,7 +4,7 @@ import se.tdfpro.elements.client.Abilities;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.util.Vec2;
 
 public class CastAbility extends ClientCommand {
 

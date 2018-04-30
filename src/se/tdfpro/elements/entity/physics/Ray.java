@@ -1,13 +1,11 @@
-package se.tdfpro.elements.server.physics.entity;
+package se.tdfpro.elements.entity.physics;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.DecodeConstructor;
 import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Material;
-import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.util.Vec2;
 
 public class Ray extends PhysicsEntity {
 

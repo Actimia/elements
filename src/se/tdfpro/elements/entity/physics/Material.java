@@ -1,4 +1,4 @@
-package se.tdfpro.elements.server.physics;
+package se.tdfpro.elements.entity.physics;
 
 import org.newdawn.slick.Color;
 

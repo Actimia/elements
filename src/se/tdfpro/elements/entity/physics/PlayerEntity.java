@@ -1,16 +1,16 @@
-package se.tdfpro.elements.server.physics.entity;
+package se.tdfpro.elements.entity.physics;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import se.tdfpro.elements.client.GameClient;
+import se.tdfpro.elements.client.ui.PlayerInterface;
 import se.tdfpro.elements.command.DecodeConstructor;
 import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.command.client.PlayerMove;
 import se.tdfpro.elements.entity.Entity;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Material;
-import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.util.Vec2;
 
 public class PlayerEntity extends Circle {
     private Vec2 impulse = Vec2.ZERO;
@@ -29,7 +29,7 @@ public class PlayerEntity extends Circle {
     @Override
     public Entity init(GameClient game) {
         if (getController() == game.getPid()) {
-            game.initialiseInterface(this);
+            game.setUIRoot(new PlayerInterface(this));
         }
         return super.init(game);
     }

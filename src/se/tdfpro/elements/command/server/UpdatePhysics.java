@@ -3,8 +3,8 @@ package se.tdfpro.elements.command.server;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.command.ServerCommand;
-import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.PhysicsEntity;
+import se.tdfpro.elements.util.Vec2;
+import se.tdfpro.elements.entity.physics.PhysicsEntity;
 
 public class UpdatePhysics extends ServerCommand {
 

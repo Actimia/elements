@@ -1,4 +1,4 @@
-package se.tdfpro.elements.server.physics;
+package se.tdfpro.elements.util;
 
 import java.util.stream.Stream;
 

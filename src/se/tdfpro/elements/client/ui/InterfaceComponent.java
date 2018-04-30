@@ -5,7 +5,7 @@ import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.command.Encoder;
 import se.tdfpro.elements.entity.Entity;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.util.Vec2;
 
 
 public abstract class InterfaceComponent extends Entity {
@@ -22,12 +22,7 @@ public abstract class InterfaceComponent extends Entity {
 
     @Override
     public void update(GameClient game, float delta) {
-
-    }
-
-    @Override
-    public void update(GameServer game, float delta) {
-        throw new UnsupportedOperationException("UI update on server");
+        super.update(game, delta);
     }
 
     public Color getColor() {

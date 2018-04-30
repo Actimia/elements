@@ -6,9 +6,9 @@ import se.tdfpro.elements.client.ui.MultiCooldown;
 import se.tdfpro.elements.client.ui.SingleCooldown;
 import se.tdfpro.elements.command.client.CastAbility;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Vec2;
-import se.tdfpro.elements.server.physics.entity.PlayerEntity;
-import se.tdfpro.elements.server.physics.entity.Projectile;
+import se.tdfpro.elements.util.Vec2;
+import se.tdfpro.elements.entity.physics.PlayerEntity;
+import se.tdfpro.elements.entity.physics.Projectile;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -19,7 +19,8 @@ public enum Abilities {
         var source = game.getEntity(cast.sourceEid);
         var direction = cast.target.sub(source.getPosition()).norm();
         var ball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source.getId
-            ()).init(game);
+            ());
+        game.createEntity(ball);
     }, 1.5f),
     BLINK((game, cast) -> {
         var source = game.getEntity(cast.sourceEid);

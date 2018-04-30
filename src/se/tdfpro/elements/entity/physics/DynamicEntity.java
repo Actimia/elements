@@ -1,10 +1,8 @@
-package se.tdfpro.elements.server.physics.entity;
+package se.tdfpro.elements.entity.physics;
 
-import org.newdawn.slick.GameContainer;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.server.GameServer;
-import se.tdfpro.elements.server.physics.Material;
-import se.tdfpro.elements.server.physics.Vec2;
+import se.tdfpro.elements.util.Vec2;
 
 public abstract class DynamicEntity extends PhysicsEntity {
     protected static final float FRICTION_STOP = 1;
