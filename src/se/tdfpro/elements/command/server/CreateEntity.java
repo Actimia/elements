@@ -19,6 +19,6 @@ public class CreateEntity extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        game.addEntity(entity.init(game));
+        game.createEntity(entity);
     }
 }

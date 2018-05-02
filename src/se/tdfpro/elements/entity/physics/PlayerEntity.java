@@ -27,11 +27,10 @@ public class PlayerEntity extends Circle {
     }
 
     @Override
-    public Entity init(GameClient game) {
+    public void init(GameClient game) {
         if (getController() == game.getPid()) {
             game.setUIRoot(new PlayerInterface(this));
         }
-        return super.init(game);
     }
 
     @Override

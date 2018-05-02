@@ -77,6 +77,7 @@ public class Decoder<T extends Command> {
         try {
             var name = decodeString();
             var eid = decodeInt();
+            var parent = decodeInt();
 
             // hic sunt dracones
             @SuppressWarnings("unchecked")
@@ -103,6 +104,7 @@ public class Decoder<T extends Command> {
 
             // terra firma
             entity.setId(eid);
+            entity.setParent(parent);
             return entity;
         } catch (ClassNotFoundException |
             InstantiationException |

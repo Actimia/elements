@@ -5,6 +5,7 @@ import se.tdfpro.elements.client.ui.Cooldown;
 import se.tdfpro.elements.client.ui.MultiCooldown;
 import se.tdfpro.elements.client.ui.SingleCooldown;
 import se.tdfpro.elements.command.client.CastAbility;
+import se.tdfpro.elements.entity.physics.PhysicsEntity;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.util.Vec2;
 import se.tdfpro.elements.entity.physics.PlayerEntity;
@@ -16,14 +17,14 @@ import java.util.stream.Stream;
 
 public enum Abilities {
     FIREBALL((game, cast) -> {
-        var source = game.getEntity(cast.sourceEid);
+        var source = (PhysicsEntity) game.getEntity(cast.sourceEid);
         var direction = cast.target.sub(source.getPosition()).norm();
-        var ball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source.getId
+        var fireball = new Projectile(source.getPosition().add(direction.scale(45f)), direction.scale(400), source.getId
             ());
-        game.createEntity(ball);
+        game.createEntity(0, fireball);
     }, 1.5f),
     BLINK((game, cast) -> {
-        var source = game.getEntity(cast.sourceEid);
+        var source = (PhysicsEntity) game.getEntity(cast.sourceEid);
 
         var target = cast.target;
         var direction = target.sub(source.getPosition());

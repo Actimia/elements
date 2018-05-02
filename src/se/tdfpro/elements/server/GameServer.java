@@ -26,27 +26,21 @@ public class GameServer {
 
     private long lastTickStart = System.currentTimeMillis();
 
-    private int nextId = 0;
+    private int nextId = 1;
 
     private final Server networking;
     private final Map<Integer, Entity> entities = new HashMap<>();
     private final Map<Integer, PhysicsEntity> physicsEntities = new HashMap<>();
 
+    private final World world = new World();
+
     public GameServer(Server net) {
         this.networking = net;
 
 
-        var origin = new Vec2(0, 0);
-        var area = new Vec2(1600, 1000);
-        var playArea = new Box(origin, area);
-
-        createEntity(new Ray(playArea.topLeft(), Vec2.RIGHT));
-        createEntity(new Ray(playArea.topRight(), Vec2.DOWN));
-        createEntity(new Ray(playArea.bottomRight(), Vec2.LEFT));
-        createEntity(new Ray(playArea.bottomLeft(), Vec2.UP));
-
-        createEntity(new PlayerEntity(new Vec2(800, 600), Vec2.ZERO, -1, "Steve", Color.white));
-        createEntity(new PlayerEntity(new Vec2(400, 600), new Vec2(20, 0), -1, "Bob", Color.white));
+        world.setId(0);
+        entities.put(world.getId(), world);
+        world.init(this);
     }
 
     public void run() {
@@ -55,7 +49,7 @@ public class GameServer {
             lastTickStart = System.currentTimeMillis();
 
             executeCommands();
-            getEntities().forEach(e -> e.update(this, delta));
+            world.update(this, delta);
             updatePhysics(delta);
 
             var frameTime = System.currentTimeMillis() - lastTickStart;
@@ -74,26 +68,30 @@ public class GameServer {
         }
     }
 
-    public void createEntity(Entity entity) {
+    public Entity createEntity(int parent, Entity entity) {
         int id = getNextId();
         entity.setId(id);
-        entity.init(this);
         entities.put(id, entity);
+        entities.get(parent).addChild(entity);
+        entity.init(this);
         if (entity instanceof PhysicsEntity) {
             physicsEntities.put(id, (PhysicsEntity) entity);
         }
         broadcast(new CreateEntity(entity));
+        return entity;
     }
 
 
-    public void destroyEntity(Entity entity) {
+    public Entity destroyEntity(Entity entity) {
         var id = entity.getId();
         entity.destroy(this);
         entities.remove(id);
+        entities.get(entity.getParent()).removeChild(entity);
         if (entity instanceof PhysicsEntity) {
             physicsEntities.remove(id);
         }
         broadcast(new DestroyEntity(entity));
+        return entity;
     }
 
     private void executeCommands() {
@@ -154,5 +152,6 @@ public class GameServer {
                 broadcast(dc);
             });
     }
+
 
 }

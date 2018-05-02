@@ -16,19 +16,21 @@ import static se.tdfpro.elements.entity.physics.CollisionManifold.checkCollision
 public class World extends Entity {
 
     @Override
-    public Entity init(GameServer game) {
+    public void init(GameServer game) {
         var origin = new Vec2(0, 0);
         var area = new Vec2(1600, 1000);
         var playArea = new Box(origin, area);
 
-        addChild(new Ray(playArea.topLeft(), Vec2.RIGHT).init(game));
-        addChild(new Ray(playArea.topRight(), Vec2.DOWN).init(game));
-        addChild(new Ray(playArea.bottomRight(), Vec2.LEFT).init(game));
-        addChild(new Ray(playArea.bottomLeft(), Vec2.UP).init(game));
 
-        addChild(new PlayerEntity(new Vec2(800, 600), Vec2.ZERO, -1, "", Color.white).init(game));
-        addChild(new PlayerEntity(new Vec2(400, 600), new Vec2(20, 0), -1, "", Color.white).init(game));
-        return super.init(game);
+        var id = getId();
+
+        game.createEntity(id, new Ray(playArea.topLeft(), Vec2.RIGHT));
+        game.createEntity(id, new Ray(playArea.topRight(), Vec2.DOWN));
+        game.createEntity(id, new Ray(playArea.bottomRight(), Vec2.LEFT));
+        game.createEntity(id, new Ray(playArea.bottomLeft(), Vec2.UP));
+
+        game.createEntity(id, new PlayerEntity(new Vec2(800, 600), Vec2.ZERO, -1, "", Color.white));
+        game.createEntity(id, new PlayerEntity(new Vec2(400, 600), new Vec2(20, 0), -1, "", Color.white));
     }
 
     @Override
@@ -38,6 +40,7 @@ public class World extends Entity {
 
     @Override
     public void update(GameServer game, float delta) {
+        // copy the list as not to get ConcurrentModificationException
         var physics = children.stream().filter(c -> c instanceof PhysicsEntity).map(c -> (PhysicsEntity) c).collect(Collectors.toList());
         physics.forEach(ent -> ent.physicsStep(delta));
 

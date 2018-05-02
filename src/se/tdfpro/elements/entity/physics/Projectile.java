@@ -21,10 +21,9 @@ public class Projectile extends Circle {
     }
 
     @Override
-    public Entity init(GameClient game) {
+    public void init(GameClient game) {
         var source = (PlayerEntity) game.getEntity(sourceEid);
         color = source.getColor();
-        return super.init(game);
     }
 
     @Override

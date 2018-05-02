@@ -18,6 +18,7 @@ public class DestroyEntity extends ServerCommand {
 
     @Override
     public void execute(GameClient game) {
-        game.deleteEntity(eid);
+        var entity = game.getEntity(eid);
+        game.destroyEntity(entity);
     }
 }

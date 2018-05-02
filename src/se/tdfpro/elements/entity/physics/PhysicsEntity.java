@@ -8,11 +8,11 @@ import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.util.Vec2;
 
 public abstract class PhysicsEntity extends Entity {
-
+    protected Vec2 position;
     protected final Material material;
 
     public PhysicsEntity(Vec2 position, Material material) {
-        super(position);
+        this.position = position;
         this.material = material;
     }
 
@@ -24,7 +24,7 @@ public abstract class PhysicsEntity extends Entity {
         g.setColor(getColor());
 
         draw(game, g);
-
+        children.forEach(c -> c.render(game, g));
         g.popTransform();
     }
 
@@ -68,8 +68,12 @@ public abstract class PhysicsEntity extends Entity {
         position = position.add(delta);
     }
 
+    public Vec2 getPosition() {
+        return position;
+    }
 
+    public void setPosition(Vec2 position) {
+        this.position = position;
+    }
 
-//    @Override
-//    public abstract void encodeConstructorParams(Encoder encoder);
 }

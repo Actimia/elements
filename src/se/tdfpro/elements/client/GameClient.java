@@ -6,7 +6,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 import se.tdfpro.elements.client.ui.InterfaceComponent;
 import se.tdfpro.elements.client.ui.Label;
-import se.tdfpro.elements.client.ui.PlayerInterface;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.client.Handshake;
 import se.tdfpro.elements.entity.Entity;
@@ -30,6 +29,7 @@ public class GameClient extends BasicGameState {
     public final Camera camera = new Camera();
     private final Map<Integer, Entity> entities = new HashMap<>();
     private InterfaceComponent uiRoot = new Label(new Vec2(800, 800), () -> "Connecting").setCenteredHorizontal(true);
+    private World world = new World();
 
     private final Client net;
     private final Map<String, String> config;
@@ -44,6 +44,11 @@ public class GameClient extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame game) {
         input = gc.getInput();
+
+        world.setId(0);
+        world.init(this);
+        entities.put(0, world);
+
         // clear the command cache before handshake
         net.getCommands();
         var hs = new Handshake();
@@ -63,7 +68,8 @@ public class GameClient extends BasicGameState {
         g.pushTransform();
 
         camera.project(g);
-        entities.values().forEach(ent -> ent.render(this, g));
+        world.render(this, g);
+//        entities.values().forEach(ent -> ent.render(this, g));
 
         g.popTransform();
 
@@ -80,7 +86,8 @@ public class GameClient extends BasicGameState {
             gc.exit();
         }
         net.getCommands().forEach(cmd -> cmd.execute(this));
-        entities.values().forEach(ent -> ent.update(this, delta));
+        world.update(this, delta);
+//        entities.values().forEach(ent -> ent.update(this, delta));
         uiRoot.update(this, delta);
     }
 
@@ -93,12 +100,16 @@ public class GameClient extends BasicGameState {
         uiRoot = comp;
     }
 
-    public void addEntity(Entity ent) {
+    public void createEntity(Entity ent) {
+        entities.get(ent.getParent()).addChild(ent);
         entities.put(ent.getId(), ent);
+        ent.init(this);
     }
 
-    public void deleteEntity(int eid) {
-        entities.remove(eid);
+    public void destroyEntity(Entity ent) {
+        ent.destroy(this);
+        entities.get(ent.getParent()).removeChild(ent);
+        entities.remove(ent.getId());
     }
 
     public Entity getEntity(int eid) {
@@ -147,7 +158,4 @@ public class GameClient extends BasicGameState {
         return input;
     }
 
-    public void removeEntity(Entity entity) {
-        entities.remove(entity.getId());
-    }
 }

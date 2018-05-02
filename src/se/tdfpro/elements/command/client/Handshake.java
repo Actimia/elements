@@ -25,10 +25,11 @@ public class Handshake extends ClientCommand {
         game.send(pid, new HandshakeReply(pid));
 
         // send current state
-        game.getEntities()
-            .forEach(e -> game.send(pid, new CreateEntity(e)));
+        game.getEntity(0).tree()
+            .skip(1) // the world itself already exists on client
+            .forEach(ent -> game.send(pid, new CreateEntity(ent)));
 
         var player = new PlayerEntity(new Vec2(100, 195), new Vec2(-15, 0), pid, username, color);
-        game.createEntity(player);
+        game.createEntity(0, player);
     }
 }
