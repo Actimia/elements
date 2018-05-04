@@ -27,7 +27,7 @@ public abstract class DynamicEntity extends PhysicsEntity {
 
     @Override
     public void update(GameServer game, float delta) {
-
+        physicsStep(delta);
     }
 
     @Override

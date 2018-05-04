@@ -40,9 +40,10 @@ public class World extends Entity {
 
     @Override
     public void update(GameServer game, float delta) {
+        super.update(game, delta);
         // copy the list as not to get ConcurrentModificationException
         var physics = children.stream().filter(c -> c instanceof PhysicsEntity).map(c -> (PhysicsEntity) c).collect(Collectors.toList());
-        physics.forEach(ent -> ent.physicsStep(delta));
+//        physics.forEach(ent -> ent.physicsStep(delta));
 
         // Collision detection and resolving
         physics.stream()

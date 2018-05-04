@@ -101,7 +101,7 @@ public class GameServer {
 
     private void updatePhysics(float delta) {
         var entities = new ArrayList<>(this.physicsEntities.values());
-        entities.forEach(ent -> ent.physicsStep(delta));
+//        entities.forEach(ent -> ent.physicsStep(delta));
 
         // Collision detection and resolving
         entities.stream()
@@ -109,8 +109,7 @@ public class GameServer {
                 // strict less than ensures entities are never checked against themselves
                 .filter(b -> a.getId() < b.getId())
                 .map(b -> checkCollision(a, b))
-            ).filter(Optional::isPresent)
-            .map(Optional::get)
+            ).flatMap(Optional::stream)
             .forEach(mani -> mani.resolve(this));
 
         // Update clients
