@@ -3,18 +3,18 @@ package se.tdfpro.elements.client.ui;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import se.tdfpro.elements.client.Abilities;
+import se.tdfpro.elements.client.ability.Abilities;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.client.Keybind;
+import se.tdfpro.elements.entity.physics.Player;
 import se.tdfpro.elements.util.Box;
 import se.tdfpro.elements.util.Vec2;
-import se.tdfpro.elements.entity.physics.PlayerEntity;
 
 public class PlayerInterface extends InterfaceComponent {
     private float ticks = 0;
     private float maxticks = 5f;
 
-    public PlayerInterface(PlayerEntity player) {
+    public PlayerInterface(Player player) {
         super(new Vec2(676, 800));
         var hpbar = new ProgressBar(new Box(0, 0, 248, 20), () -> ticks / maxticks);
         addChild(hpbar);

@@ -4,7 +4,7 @@ import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.util.Vec2;
-import se.tdfpro.elements.entity.physics.PlayerEntity;
+import se.tdfpro.elements.entity.physics.Player;
 
 public class PlayerMove extends ClientCommand {
 
@@ -23,7 +23,7 @@ public class PlayerMove extends ClientCommand {
 
     @Override
     public void execute(GameServer game) {
-        var player = (PlayerEntity) game.getEntity(eid);
+        var player = (Player) game.getEntity(eid);
         player.setImpulse(direction.scale(50f));
     }
 }

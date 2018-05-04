@@ -1,6 +1,6 @@
 package se.tdfpro.elements.command.client;
 
-import se.tdfpro.elements.client.Abilities;
+import se.tdfpro.elements.client.ability.Abilities;
 import se.tdfpro.elements.command.ClientCommand;
 import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.server.GameServer;

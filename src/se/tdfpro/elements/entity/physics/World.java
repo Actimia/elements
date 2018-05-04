@@ -29,8 +29,8 @@ public class World extends Entity {
         game.createEntity(id, new Ray(playArea.bottomRight(), Vec2.LEFT));
         game.createEntity(id, new Ray(playArea.bottomLeft(), Vec2.UP));
 
-        game.createEntity(id, new PlayerEntity(new Vec2(800, 600), Vec2.ZERO, -1, "", Color.white));
-        game.createEntity(id, new PlayerEntity(new Vec2(400, 600), new Vec2(20, 0), -1, "", Color.white));
+        game.createEntity(id, new Player(new Vec2(800, 600), Vec2.ZERO, -1, "", Color.white));
+        game.createEntity(id, new Player(new Vec2(400, 600), new Vec2(20, 0), -1, "", Color.white));
     }
 
     @Override

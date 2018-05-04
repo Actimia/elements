@@ -2,23 +2,24 @@ package se.tdfpro.elements.client.ui;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import se.tdfpro.elements.client.Abilities;
+import se.tdfpro.elements.client.ability.Abilities;
 import se.tdfpro.elements.client.GameClient;
 import se.tdfpro.elements.client.Keybind;
+import se.tdfpro.elements.client.ability.Cooldown;
 import se.tdfpro.elements.command.client.CastAbility;
 import se.tdfpro.elements.util.Vec2;
-import se.tdfpro.elements.entity.physics.PlayerEntity;
+import se.tdfpro.elements.entity.physics.Player;
 
 public class AbilityIcon extends Sprite {
 
     private static final float size = 56f;
 
     private final Abilities type;
-    private final PlayerEntity source;
+    private final Player source;
     private final Cooldown cooldown;
     private final Keybind keybind;
 
-    public AbilityIcon(Abilities type, PlayerEntity player, Vec2 position, Keybind keybind, Cooldown cooldown) {
+    public AbilityIcon(Abilities type, Player player, Vec2 position, Keybind keybind, Cooldown cooldown) {
         super(position, "ability-" + type.toString().toLowerCase());
         this.type = type;
         this.source = player;

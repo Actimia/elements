@@ -12,14 +12,14 @@ import se.tdfpro.elements.entity.Entity;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.util.Vec2;
 
-public class PlayerEntity extends Circle {
+public class Player extends Circle {
     private Vec2 impulse = Vec2.ZERO;
     private final int controller;
     private final String username;
     private final Color color;
 
     @DecodeConstructor
-    public PlayerEntity(Vec2 position, Vec2 velocity, int controller, String username, Color color) {
+    public Player(Vec2 position, Vec2 velocity, int controller, String username, Color color) {
         super(position, velocity, 0.5f, Material.PLAYER, 30f);
         this.controller = controller;
         this.username = username;

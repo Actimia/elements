@@ -52,7 +52,7 @@ public class GameClient extends BasicGameState {
         // clear the command cache before handshake
         net.getCommands();
         var hs = new Handshake();
-        hs.username = config.getOrDefault("username", "PlayerEntity");
+        hs.username = config.getOrDefault("username", "Player");
         var color = Optional.ofNullable(config.get("color"))
             .orElseGet(() -> defaultColors.get((int) (defaultColors.size() * Math.random())))
             .replace("#", "");

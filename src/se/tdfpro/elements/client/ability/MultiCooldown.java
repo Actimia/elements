@@ -1,4 +1,4 @@
-package se.tdfpro.elements.client.ui;
+package se.tdfpro.elements.client.ability;
 
 import java.util.Comparator;
 import java.util.List;

@@ -1,16 +1,16 @@
 package se.tdfpro.elements.client.ui;
 
-import se.tdfpro.elements.client.Abilities;
+import se.tdfpro.elements.client.ability.Abilities;
 import se.tdfpro.elements.client.Keybind;
+import se.tdfpro.elements.entity.physics.Player;
 import se.tdfpro.elements.util.Vec2;
-import se.tdfpro.elements.entity.physics.PlayerEntity;
 
 public class ActionBar extends InterfaceComponent {
-    private final PlayerEntity caster;
+    private final Player caster;
     private Vec2 offset = new Vec2(64, 0);
     private int index = 0;
 
-    public ActionBar(Vec2 position, PlayerEntity caster) {
+    public ActionBar(Vec2 position, Player caster) {
         super(position);
         this.caster = caster;
     }

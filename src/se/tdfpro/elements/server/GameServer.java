@@ -1,19 +1,15 @@
 package se.tdfpro.elements.server;
 
-import org.newdawn.slick.Color;
 import se.tdfpro.elements.command.ServerCommand;
 import se.tdfpro.elements.command.server.CreateEntity;
 import se.tdfpro.elements.command.server.DestroyEntity;
 import se.tdfpro.elements.command.server.PlayerDisconnect;
 import se.tdfpro.elements.command.server.UpdatePhysics;
 import se.tdfpro.elements.entity.Entity;
-import se.tdfpro.elements.entity.physics.Ray;
 import se.tdfpro.elements.entity.physics.World;
 import se.tdfpro.elements.net.Server;
 import se.tdfpro.elements.entity.physics.PhysicsEntity;
-import se.tdfpro.elements.entity.physics.PlayerEntity;
-import se.tdfpro.elements.util.Box;
-import se.tdfpro.elements.util.Vec2;
+import se.tdfpro.elements.entity.physics.Player;
 
 import java.util.*;
 
@@ -141,8 +137,8 @@ public class GameServer {
 
     public void onDisconnect(int pid) {
         getEntities().stream()
-            .filter(ent -> ent instanceof PlayerEntity)
-            .map(ent -> (PlayerEntity) ent)
+            .filter(ent -> ent instanceof Player)
+            .map(ent -> (Player) ent)
             .filter(p -> p.getController() == pid)
             .findFirst()
             .ifPresent(player -> {

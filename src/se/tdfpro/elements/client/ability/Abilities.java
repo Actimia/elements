@@ -1,14 +1,16 @@
-package se.tdfpro.elements.client;
+package se.tdfpro.elements.client.ability;
 
+import se.tdfpro.elements.client.Keybind;
+import se.tdfpro.elements.client.SpawnAbility;
 import se.tdfpro.elements.client.ui.AbilityIcon;
-import se.tdfpro.elements.client.ui.Cooldown;
-import se.tdfpro.elements.client.ui.MultiCooldown;
-import se.tdfpro.elements.client.ui.SingleCooldown;
+import se.tdfpro.elements.client.ability.Cooldown;
+import se.tdfpro.elements.client.ability.MultiCooldown;
+import se.tdfpro.elements.client.ability.SingleCooldown;
 import se.tdfpro.elements.command.client.CastAbility;
 import se.tdfpro.elements.entity.physics.PhysicsEntity;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.util.Vec2;
-import se.tdfpro.elements.entity.physics.PlayerEntity;
+import se.tdfpro.elements.entity.physics.Player;
 import se.tdfpro.elements.entity.physics.Projectile;
 
 import java.util.Arrays;
@@ -57,7 +59,7 @@ public enum Abilities {
         onSpawn.execute(game, cast);
     }
 
-    public AbilityIcon createIcon(PlayerEntity source, Vec2 position, Keybind keybind) {
+    public AbilityIcon createIcon(Player source, Vec2 position, Keybind keybind) {
 
         return new AbilityIcon(this, source, position, keybind, createCooldown());
     }

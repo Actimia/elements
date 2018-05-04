@@ -1,4 +1,4 @@
-package se.tdfpro.elements.client.ui;
+package se.tdfpro.elements.client.ability;
 
 public interface Cooldown {
     boolean ready();

@@ -6,7 +6,7 @@ import se.tdfpro.elements.command.Send;
 import se.tdfpro.elements.command.server.CreateEntity;
 import se.tdfpro.elements.server.GameServer;
 import se.tdfpro.elements.util.Vec2;
-import se.tdfpro.elements.entity.physics.PlayerEntity;
+import se.tdfpro.elements.entity.physics.Player;
 
 public class Handshake extends ClientCommand {
     @Send
@@ -29,7 +29,7 @@ public class Handshake extends ClientCommand {
             .skip(1) // the world itself already exists on client
             .forEach(ent -> game.send(pid, new CreateEntity(ent)));
 
-        var player = new PlayerEntity(new Vec2(100, 195), new Vec2(-15, 0), pid, username, color);
+        var player = new Player(new Vec2(100, 195), new Vec2(-15, 0), pid, username, color);
         game.createEntity(0, player);
     }
 }

@@ -18,14 +18,16 @@ public class Assets {
                 var y = j - (size / 2);
                 var dist = Math.sqrt(x * x + y * y);
                 if (dist > max) dist = max;
-                var alpha = 255 - 255 * (dist / max);
+                var q = dist/max;
+                q *= q;
+                var alpha = 255 - 255 * q;
                 var color = (int) alpha << 24 | 0xffffff;
                 img.setRGB(i, j, color);
             }
         }
 
         try {
-            var file = new File("assets/gradient.png");
+            var file = new File("assets/gradient2.png");
             if (!file.exists()) file.createNewFile();
             ImageIO.write(img, "png", file);
         } catch (IOException e) {

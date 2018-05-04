@@ -11,8 +11,8 @@ public class Disconnect extends ClientCommand {
     @Override
     public void execute(GameServer game) {
 //        game.getEntities().stream()
-//            .filter(ent -> ent instanceof PlayerEntity)
-//            .map(ent -> (PlayerEntity) ent)
+//            .filter(ent -> ent instanceof Player)
+//            .map(ent -> (Player) ent)
 //            .filter(p -> p.getController() == pid)
 //            .findFirst()
 //            .ifPresent(player -> {
