@@ -1,0 +1,2 @@
+#Frontier Trade Company
+The Company is the biggest corporation by quite a margin. Their near-monopoly on goods from the outer rims of the world has given them wealth beyond compare. This has been further bolstered by running the most reliable banking and insurance system. The Company is not afraid of using underhanded tactics to squash upstart competitors, but they usually stay within the law - atleast when operating on the mainland. Their headquarters are located in Greystone.

@@ -1,0 +1,2 @@
+#Berserker Tribes
+Hailing from the outlying islands, dwarven berserkers are a menace to all villages along the shore. When they show up you can either pay tribute or prepare to fight. Choosing the latter is not likely to leave you alive for long. Ruthless and vicious fighters, they value honor in life and death. Some tribes have become mercenaries, providing their weapons to the highest bidder instead of pillaging the coast. Their ideology forbids them from not fulfilling a contract, unless by death.

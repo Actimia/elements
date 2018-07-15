@@ -1,0 +1,2 @@
+#Axomancer Cults
+Some of the most secretive societies of all, to the point that most people believe they are merely a fairytale. Small cliques gather in utmost secrecy to share methods of "defeating the cycle" - raising the dead, summoning pure elementals and other unnatural processes. This kind of magic at the very edge of reality is highly forbidden as straying to far from balance is unnatural and destructive. Members live in constant fear of being discovered by the Justicars who hunt them mercilessly.

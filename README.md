@@ -51,13 +51,13 @@ Even if classes are marked tank or heal it doesn't mean they completely lack off
  - Water, light
  - Healing-focused. Effective healing builds Serenity which unlocks abilities at higher levels.
 
-#### Demonologist (dps)
- - Ritualist // NYI
+#### Axomancer (dps)
+ - Archon // Necromancy
  - 1h weapon, medium armor.
- - Corruption.
- - Physical, shadow, fire.
+ - Instability.
+ - Chaos magic
  - Medium range elemental fighter.
- - Abilites build corruption on self, high corruption quickly becomes dangerous, but can also be unleashed against enemies.
+ - Abilites build instability on self, high instability quickly becomes dangerous, but can also be unleashed against enemies.
 
 #### Druid (dps/heal)
  - Loremaster // Astromancy

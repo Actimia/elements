@@ -1,0 +1,2 @@
+#Wanderers
+Little is known for certain about the Wanderers except that they are the few surviving remnants of an ancient gathering of nature worshipping druids. They can commune with the world in ways only passed between druid-kind. They are friends of the Rangers, whom they view as less wise but more martially abled allies in the protection and care of the wild. Ever looking at the stars, they have learned to use the powers of the skies to aid them in their pursuits. They read the stars and interpret dream visions to guide them and others.

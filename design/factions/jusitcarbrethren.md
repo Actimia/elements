@@ -1,0 +1,4 @@
+#Justicar Brethren
+The justicars are heavily armored sentinels and the armed wing of the Balance. Their order is commited to protecting pilgrims of their faith. The justicars value fervor and discipline above everything else. Clad in white and black and travelling on horseback, pairs of Justicars patrol the countryside, keeping the peace.
+
+Justicars are recruited from young pairs of Balance monks. Their training starts with both drilling in arms and horse riding and continued schooling in the Balance. At the end of their training. The pair will go out in the world together and enforce the Balance. The only way a Justicar can be released from their sacred vows is through the death of their partner. Making enemies of the Justicar Brethren is something that should be avoided at all costs.
